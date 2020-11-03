@@ -22,6 +22,17 @@ args = parser.parse_args()
 # op, size, address, block = line.split()
 #####
 
+def write_next_fields(instruction, instruction_field, instruction_field_value, instruction_fields_iter, line_iter):
+    instruction.update({instruction_field: instruction_field_value})
+    instruction_field = next(instruction_fields_iter)
+    for i in range(int(instruction_field_value)):
+        reg = next(line_iter)
+        instruction.update(
+            {instruction_field + "_" + str(i): reg}
+        )
+
+    return instruction
+
 memory_instructions_in_block = []
 number_of_memory_instructions_in_block = 0
 stat_trace_aux = []
@@ -41,7 +52,7 @@ with open(args.stat_trace, "r") as stat:
 
             else:
                 line_iter = iter(line.split())
-                was_memory_instruction = False
+                # was_memory_instruction = False
                 instruction = {}
                 instruction_fields_iter = iter(
                     [
@@ -69,62 +80,40 @@ with open(args.stat_trace, "r") as stat:
                         instruction_field_value = next(line_iter)
 
                         if instruction_field == "number_of_read_registers":
-                            instruction.update(
-                                {instruction_field: instruction_field_value}
-                            )
-                            instruction_field = next(instruction_fields_iter)
-                            for i in range(int(instruction_field_value)):
-                                read_reg = next(line_iter)
-                                instruction.update(
-                                    {instruction_field + "_" + str(i): read_reg}
-                                )
+                            instruction = write_next_fields(instruction, instruction_field, instruction_field_value, instruction_fields_iter, line_iter)
 
                         elif instruction_field == "number_of_write_registers":
-                            instruction.update(
-                                {instruction_field: instruction_field_value}
-                            )
-                            instruction_field = next(instruction_fields_iter)
-                            for i in range(int(instruction_field_value)):
-                                write_reg = next(line_iter)
-                                instruction.update(
-                                    {instruction_field + "_" + str(i): write_reg}
-                                )
-
+                            instruction = write_next_fields(instruction, instruction_field, instruction_field_value, instruction_fields_iter, line_iter)
+                        
                         elif (
                             instruction_field == "is_read_flag"
                             and instruction_field_value == "1"
                         ):
-                            number_of_memory_instructions_in_block = (
-                                number_of_memory_instructions_in_block + 1
-                            )
+                            number_of_memory_instructions_in_block += 1
                             instruction.update(
                                 {instruction_field: instruction_field_value}
                             )
-                            was_memory_instruction = True
+                            # was_memory_instruction = True
 
                         elif (
                             instruction_field == "is_read2_flag"
                             and instruction_field_value == "1"
                         ):
-                            number_of_memory_instructions_in_block = (
-                                number_of_memory_instructions_in_block + 2
-                            )
+                            number_of_memory_instructions_in_block += 2
                             instruction.update(
                                 {instruction_field: instruction_field_value}
                             )
-                            was_memory_instruction = True
+                            # was_memory_instruction = True
 
                         elif (
                             instruction_field == "is_write_flag"
                             and instruction_field_value == "1"
                         ):
-                            number_of_memory_instructions_in_block = (
-                                number_of_memory_instructions_in_block + 1
-                            )
+                            number_of_memory_instructions_in_block += 1
                             instruction.update(
                                 {instruction_field: instruction_field_value}
                             )
-                            was_memory_instruction = True
+                            # was_memory_instruction = True
 
                         else:
                             instruction.update(
@@ -132,9 +121,9 @@ with open(args.stat_trace, "r") as stat:
                             )
 
                     except StopIteration:
-                        if was_memory_instruction:
-                            stat_trace_aux.append(instruction)
-                        break
+                        # if was_memory_instruction:
+                        stat_trace_aux.append(instruction)
+                        # break
 
         line = stat.readline()
 
