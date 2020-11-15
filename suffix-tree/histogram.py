@@ -144,8 +144,8 @@ with open(args.mem_trace, "r") as mem:
         if line.startswith("#"):
             line = mem.readline()
             continue
-
-        if i >= 20:
+        
+        if i >= 3:
             break
 
         op, size, address, block = line.split()
@@ -169,58 +169,49 @@ with open(args.mem_trace, "r") as mem:
                     info = memory_instructions_info[instruction]
                     info = updateStrideInAccess(info, address, "access1")
 
-                    if stat_trace[int(block)][j]["is_write_flag"] == "1":
-                        op, size, address, block = mem.readline().split()
-
-                        info = updateStrideInAccess(info, address, "access3")
-
-                    info.update({"count": info["count"] + 1})
-
                 else:
                     info["access1_strides"].update({int(address): 1})
                     info.update({"last_address_in_access1": int(address)})
-
-                    if stat_trace[int(block)][j]["is_write_flag"] == "1":
-                        op, size, address, block = mem.readline().split()
-
-                        info["access3_strides"].update({int(address): 1})
-                        info.update({"last_address_in_access3": int(address)})
-
-                    info.update({"count": 1})
-
+                
             elif stat_trace[int(block)][j]["is_read2_flag"] == "1":
                 if instruction in memory_instructions_info.keys():
                     info = memory_instructions_info[instruction]
                     info = updateStrideInAccess(info, address, "access1")
 
                     op, size, address, block = mem.readline().split()
-
+                    i = i + 1
+                    if i >= 3:
+                        break
                     info = updateStrideInAccess(info, address, "access2")
-
-                    if stat_trace[int(block)][j]["is_write_flag"] == "1":
-                        op, size, address, block = mem.readline().split()
-
-                        info = updateStrideInAccess(info, address, "access3")
-
-                    info.update({"count": info["count"] + 1})
 
                 else:
                     info["access1_strides"].update({int(address): 1})
                     info.update({"last_address_in_access1": int(address)})
 
                     op, size, address, block = mem.readline().split()
-
+                    i = i + 1
+                    if i >= 3:
+                        break
                     info["access2_strides"].update({int(address): 1})
                     info.update({"last_address_in_access2": int(address)})
 
-                    if stat_trace[int(block)][j]["is_write_flag"] == "1":
-                        op, size, address, block = mem.readline().split()
+            if stat_trace[int(block)][j]["is_write_flag"] == "1":
+                if instruction in memory_instructions_info.keys():
+                    op, size, address, block = mem.readline().split()
+                    i = i + 1
+                    if i >= 3:
+                        break
+                    info = updateStrideInAccess(info, address, "access3")
 
-                        info["access3_strides"].update({int(address): 1})
-                        info.update({"last_address_in_access3": int(address)})
+                else:
+                    op, size, address, block = mem.readline().split()
+                    i = i + 1
+                    if i >= 3:
+                        break
+                    info["access3_strides"].update({int(address): 1})
+                    info.update({"last_address_in_access3": int(address)})
 
-                    info.update({"count": 1})
-
+            info.update({"count": info["count"] + 1})
             memory_instructions_info.update({instruction: info})
             line = mem.readline()
             i = i + 1
