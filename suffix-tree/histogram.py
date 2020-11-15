@@ -1,5 +1,9 @@
 #!./pypy3.7-v7.3.2-linux64/bin/pypy3
 import argparse
+import matplotlib
+import matplotlib.pyplot as plt
+import collections
+import simplejson as json
 
 parser = argparse.ArgumentParser(
     description="Create memory stride histogram from memory trace."
@@ -135,7 +139,7 @@ def updateStrideInAccess(info, address, access):
 memory_instructions_info = {}
 with open(args.mem_trace, "r") as mem:
     line = mem.readline()
-    i = 0
+    i = 1
     while line:
         if line.startswith("#"):
             line = mem.readline()
@@ -144,12 +148,11 @@ with open(args.mem_trace, "r") as mem:
         if i >= 20:
             break
 
-        # print(line, end="\n")
         op, size, address, block = line.split()
-
+        
         for j in range(memory_instructions_in_block[int(block)]):
-            # print("LOOP: " + str(j))
-            # print(stat_trace[int(block)][j]["instruction_addr"], end="\n\n")
+            op, size, address, block = line.split()
+
             instruction = stat_trace[int(block)][j]["instruction_addr"]
             info = {
                 "access1_strides": {},
@@ -219,7 +222,9 @@ with open(args.mem_trace, "r") as mem:
                     info.update({"count": 1})
 
             memory_instructions_info.update({instruction: info})
-        line = mem.readline()
-        i = i + 1
+            line = mem.readline()
+            i = i + 1
 
-print(memory_instructions_info)
+program_name = args.stat_trace.split('.')[0]
+with open("strides_" + program_name + ".json", "w+") as memory_info_json:
+    json.dump(memory_instructions_info, memory_info_json)
