@@ -1,6 +1,8 @@
 #!./pypy3.7-v7.3.2-linux64/bin/pypy3
 import argparse
 import simplejson as json
+import matplotlib
+import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(
     description="Create memory stride histogram from memory trace."
@@ -77,27 +79,26 @@ for instruction_address in memory_instructions_info.keys():
     info["access2_strides"].update(memory_instructions_info[instruction_address]["access2_strides"])
     info["access3_strides"].update(memory_instructions_info[instruction_address]["access3_strides"])
 
-fig, ax = plt.subplots(3)
-fig.suptitle("Stride Histograms")
-# print(list(memory_instructions_info[instruction_address]['access1_strides'].keys()))
-# print(memory_instructions_info[instruction_address]['access1_strides'].values())
+# print(info)
 
-ax[0].bar(
-    list(memory_instructions_info[instruction_address]['access1_strides'].keys())[1:],
-    list(memory_instructions_info[instruction_address]['access1_strides'].values())[1:],
-    color='r', label='read' 
-)
+# fig, ax = plt.subplots(3)
+# fig.suptitle("Stride Histograms")
+print(list(info['access1_strides'].keys()))
+# count = [ x*100 for x in ]
 
-ax[1].bar(
-    list(memory_instructions_info[instruction_address]['access2_strides'].keys())[1:],
-    list(memory_instructions_info[instruction_address]['access2_strides'].values())[1:],
-    color='b', label='read2'
-)
+plt.bar(range(len(list(info['access1_strides'].values()))), list(info['access1_strides'].values()), align='center', color='r')
+plt.xticks(range(len(list(info['access1_strides'].values()))), list(info['access1_strides'].keys()))
 
-ax[2].bar(
-    list(memory_instructions_info[instruction_address]['access3_strides'].keys())[1:],
-    list(memory_instructions_info[instruction_address]['access3_strides'].values())[1:],
-    color='g', label='write'
-)
+# ax[1].bar(
+#     list(info['access2_strides'].keys())[1:],
+#     list(info['access2_strides'].values())[1:],
+#     color='b', label='read2'
+# )
+
+# ax[2].bar(
+#     list(info['access3_strides'].keys())[1:],
+#     list(info['access3_strides'].values())[1:],
+#     color='g', label='write'
+# )
 
 plt.show()
