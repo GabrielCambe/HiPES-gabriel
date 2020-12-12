@@ -1,0 +1,2 @@
+ERROR: Could not open the memory file.
+traces_info/bzip2.CINT.PP200M.tid0.mem.out.gz

@@ -1,0 +1,2 @@
+memory_instructions_fetched: 94157250
+steady_instructions: 51478566
