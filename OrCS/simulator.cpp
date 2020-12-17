@@ -179,6 +179,8 @@ int main(int argc, char **argv) {
     uint64_t max_size = 2;
     MemoryInstructionInfo *memory_instructions_info = (MemoryInstructionInfo *) malloc(sizeof(MemoryInstructionInfo) * max_size);
     bool is_read, is_read2, is_write, is_new_info;
+    uint64_t memory_accesses = 0;
+    uint64_t steady_accesses = 0;
     // =============================================================================
 
     /// Start CLOCK for all the components
@@ -228,6 +230,9 @@ int main(int argc, char **argv) {
                         &(instruction_info->read_status)
                     );
                 }
+                memory_accesses++;
+                if(instruction_info->read_status.current_status == STEADY)
+                    steady_accesses++;
             }
             #ifdef DEBUG
             else {
@@ -250,6 +255,9 @@ int main(int argc, char **argv) {
                         &(instruction_info->read2_status)
                     );
                 }
+                memory_accesses++;
+                if(instruction_info->read2_status.current_status == STEADY)
+                    steady_accesses++;
             }
             #ifdef DEBUG
             else {
@@ -272,6 +280,10 @@ int main(int argc, char **argv) {
                         &(instruction_info->write_status)
                     );
                 }
+                memory_accesses++;
+                if(instruction_info->write_status.current_status == STEADY)
+                    steady_accesses++;
+
             }
             #ifdef DEBUG
             else {
@@ -304,7 +316,7 @@ int main(int argc, char **argv) {
     orcs_engine.processor->statistics();
 
     uint64_t memory_instructions = 0;
-    uint64_t steady_instructions = 0;
+    uint64_t integrally_steady_instructions = 0;
     #ifdef DEBUG
     uint64_t non_linear_instructions = 0;
     #endif
@@ -319,9 +331,10 @@ int main(int argc, char **argv) {
             display_status(memory_instructions_info[i].read.status);
             #endif
 
+            // Cada acesso acontece count vezes, se todas as count vezes forem STEADY, eu adiciono na contagem dos acessos steady
             memory_instructions += memory_instructions_info[i].count;
             if (memory_instructions_info[i].read.status == STEADY){
-                steady_instructions += memory_instructions_info[i].count;
+                integrally_steady_instructions += memory_instructions_info[i].count;
             }
             #ifdef DEBUG
             else { // == NON_LINEAR
@@ -338,7 +351,7 @@ int main(int argc, char **argv) {
 
             memory_instructions += memory_instructions_info[i].count;
             if (memory_instructions_info[i].read2.status == STEADY){
-                steady_instructions += memory_instructions_info[i].count;
+                integrally_steady_instructions += memory_instructions_info[i].count;
             }
             #ifdef DEBUG
             else { // == NON_LINEAR
@@ -356,7 +369,7 @@ int main(int argc, char **argv) {
 
             memory_instructions += memory_instructions_info[i].count;
             if (memory_instructions_info[i].write.status == STEADY){
-                steady_instructions += memory_instructions_info[i].count;
+                integrally_steady_instructions += memory_instructions_info[i].count;
             }
             #ifdef DEBUG
             else { // == NON_LINEAR
@@ -373,7 +386,9 @@ int main(int argc, char **argv) {
 
     printf("\n");
     printf("memory_instructions_fetched: %lu\n", memory_instructions);
-    printf("steady_instructions: %lu\n", steady_instructions);
+    printf("integrally_steady_instructions: %lu\n", integrally_steady_instructions);
+    printf("memory_accesses: %lu\n", memory_instructions);
+    printf("steady_memory_accesses: %lu\n", integrally_steady_instructions);
     #ifdef DEBUG
     printf("non_linear_instructions: %lu\n", non_linear_instructions);
     #endif

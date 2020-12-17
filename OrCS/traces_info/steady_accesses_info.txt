@@ -1,84 +1,140 @@
 astar.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 75112242
-steady_instructions: 45642065
+integrally_steady_instructions: 45642065
+memory_accesses: 75112242
+steady_memory_accesses: 45642065
 bwaves.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 96216958
-steady_instructions: 43401465
+integrally_steady_instructions: 43401465
+memory_accesses: 96216958
+steady_memory_accesses: 43401465
 cactusADM.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 110340536
-steady_instructions: 90267942
+integrally_steady_instructions: 90267942
+memory_accesses: 110340536
+steady_memory_accesses: 90267942
 calculix.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 43605979
-steady_instructions: 10669516
+integrally_steady_instructions: 10669516
+memory_accesses: 43605979
+steady_memory_accesses: 10669516
 dealII.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 87569983
-steady_instructions: 41499151
+integrally_steady_instructions: 41499151
+memory_accesses: 87569983
+steady_memory_accesses: 41499151
 gamess.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 83299433
-steady_instructions: 55820294
+integrally_steady_instructions: 55820294
+memory_accesses: 83299433
+steady_memory_accesses: 55820294
 gcc.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 94157250
-steady_instructions: 51478566
+integrally_steady_instructions: 51478566
+memory_accesses: 94157250
+steady_memory_accesses: 51478566
 GemsFDTD.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 113827405
-steady_instructions: 56443331
+integrally_steady_instructions: 56443331
+memory_accesses: 113827405
+steady_memory_accesses: 56443331
 gobmk.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 74676420
-steady_instructions: 30261238
+integrally_steady_instructions: 30261238
+memory_accesses: 74676420
+steady_memory_accesses: 30261238
 gromacs.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 70058364
-steady_instructions: 58753559
+integrally_steady_instructions: 58753559
+memory_accesses: 70058364
+steady_memory_accesses: 58753559
 h264ref.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 93553352
-steady_instructions: 37198053
+integrally_steady_instructions: 37198053
+memory_accesses: 93553352
+steady_memory_accesses: 37198053
 hmmer.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 121254008
-steady_instructions: 63314196
+integrally_steady_instructions: 63314196
+memory_accesses: 121254008
+steady_memory_accesses: 63314196
 lbm.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 48087919
-steady_instructions: 25770065
+integrally_steady_instructions: 25770065
+memory_accesses: 48087919
+steady_memory_accesses: 25770065
 leslie3d.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 108799807
-steady_instructions: 44092341
+integrally_steady_instructions: 44092341
+memory_accesses: 108799807
+steady_memory_accesses: 44092341
 libquantum.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 52245479
-steady_instructions: 32672249
+integrally_steady_instructions: 32672249
+memory_accesses: 52245479
+steady_memory_accesses: 32672249
 mcf.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 89659753
-steady_instructions: 15570665
+integrally_steady_instructions: 15570665
+memory_accesses: 89659753
+steady_memory_accesses: 15570665
 milc.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 67089932
-steady_instructions: 39797152
+integrally_steady_instructions: 39797152
+memory_accesses: 67089932
+steady_memory_accesses: 39797152
 namd.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 70031538
-steady_instructions: 46853787
+integrally_steady_instructions: 46853787
+memory_accesses: 70031538
+steady_memory_accesses: 46853787
 omnetpp.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 94176549
-steady_instructions: 51341642
+integrally_steady_instructions: 51341642
+memory_accesses: 94176549
+steady_memory_accesses: 51341642
 perlbench.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 92239043
-steady_instructions: 46818938
+integrally_steady_instructions: 46818938
+memory_accesses: 92239043
+steady_memory_accesses: 46818938
 povray.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 99648714
-steady_instructions: 42137891
+integrally_steady_instructions: 42137891
+memory_accesses: 99648714
+steady_memory_accesses: 42137891
 sjeng.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 63354802
-steady_instructions: 24976702
+integrally_steady_instructions: 24976702
+memory_accesses: 63354802
+steady_memory_accesses: 24976702
 soplex.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 88913585
-steady_instructions: 40659212
+integrally_steady_instructions: 40659212
+memory_accesses: 88913585
+steady_memory_accesses: 40659212
 sphinx3.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 56467069
-steady_instructions: 7411129
+integrally_steady_instructions: 7411129
+memory_accesses: 56467069
+steady_memory_accesses: 7411129
 tonto.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 90348767
-steady_instructions: 40351774
+integrally_steady_instructions: 40351774
+memory_accesses: 90348767
+steady_memory_accesses: 40351774
 wrf.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 78497634
-steady_instructions: 31953133
+integrally_steady_instructions: 31953133
+memory_accesses: 78497634
+steady_memory_accesses: 31953133
 xalancbmk.CINT.PP200M.memory_info.txt
 memory_instructions_fetched: 88266974
-steady_instructions: 32847660
+integrally_steady_instructions: 32847660
+memory_accesses: 88266974
+steady_memory_accesses: 32847660
 zeusmp.CFP.PP200M.memory_info.txt
 memory_instructions_fetched: 68333980
-steady_instructions: 36893341
+integrally_steady_instructions: 36893341
+memory_accesses: 68333980
+steady_memory_accesses: 36893341
