@@ -1,0 +1,4 @@
+memory_instructions_fetched: 750775636
+integrally_steady_instructions: 244473141
+memory_accesses: 750775636
+steady_memory_accesses: 244473141
