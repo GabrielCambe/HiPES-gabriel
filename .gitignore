@@ -5,4 +5,4 @@ pypy3.7-v7.3.2-linux64/*
 *histogram_input*
 *strides_astar*
 spectraces.tar.gz
-spec_cpu2017/*
+# spec_cpu2017/*
