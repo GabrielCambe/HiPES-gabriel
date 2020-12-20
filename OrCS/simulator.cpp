@@ -210,6 +210,7 @@ int main(int argc, char **argv) {
             )) == NULL){
                 instruction_info = new MemoryInstructionInfo();
                 instruction_info->opcode_address = opcode_address;
+                instruction_info->count = 0;
                 is_new_info = true;
             } else {
                 is_new_info = false;
