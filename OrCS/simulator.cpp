@@ -4,6 +4,7 @@ orcs_engine_t orcs_engine;
 // =============================================================================
 #include <stdlib.h>     /* malloc, free, realloc */
 #include <inttypes.h>
+
 enum status_t {
     LEARN,
     STEADY,
@@ -75,6 +76,8 @@ class MemoryInstructionInfo {
         MemoryAccessInfo write;
         StatusMachine write_status;
         uint64_t count = 0;
+        StatusMachine status;
+
 };
 
 void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {

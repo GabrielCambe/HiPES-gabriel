@@ -2,7 +2,6 @@
 import argparse
 import matplotlib
 import matplotlib.pyplot as plt
-
 by_first = lambda x: x[0] 
 
 parser = argparse.ArgumentParser(
@@ -10,11 +9,15 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument('-i', '--info', dest='info')
 args = parser.parse_args()
+
+#aux
 program_names = []
 steady_instructions_percentages = []
 steady_accesses_percentages = []
 
+# le arquivo de informações dos acessos passado para a opção -i
 with open(args.info, 'r') as info:
+    # lê primeira linha
     name = info.readline()
     total_instructions = info.readline()
     steady_instructions = info.readline()
@@ -22,16 +25,19 @@ with open(args.info, 'r') as info:
     steady_accesses = info.readline()
 
     while name and total_instructions and steady_instructions:
+        # processa linha
         name = name.split('.')[0]
         label1, total = total_instructions.split()
         label2, steady = steady_instructions.split()
         label3, total_accesses = memory_accesses.split()
         label4, steady_accesses = steady_accesses.split()
 
+        # atualiza aux
         program_names.append(name)
         steady_instructions_percentages.append(float(steady)/float(total))
         steady_accesses_percentages.append(float(steady_accesses)/float(total_accesses))
 
+        # le próxima linha
         name = info.readline()
         total_instructions = info.readline()
         steady_instructions = info.readline()

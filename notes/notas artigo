@@ -1,0 +1,14 @@
+Notas Hipes
+
+Análise de padrões de acesso à memória em aplicações single thread
+
+* Introdução
+* Experimento e resultados
+* Conclusão e trabalhos futuros
+
+
+Fazer a análise do acesso usando apenas uma máquina de estados para cada instrução em vez de uma para cada acesso.
+
+Piorou 10%? (lembre-se que a maioria das instruções não usa dodos os acessos possíveis, e assim os resultados podem não ser significantemente diferentes)
+
+explicar a tabela montada durante a análise
