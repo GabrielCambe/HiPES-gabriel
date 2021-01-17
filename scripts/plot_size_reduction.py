@@ -2,7 +2,9 @@
 import argparse
 import matplotlib
 import matplotlib.pyplot as plt
-from hurry.filesize import size
+import numpy as np
+from calmsize import size, ByteSize
+
 by_first = lambda x: x[0]
 
 parser = argparse.ArgumentParser(
@@ -77,73 +79,50 @@ if args.info:
 
     # aux
     steady_instructions_plot = list(zip(steady_instructions_percentages, program_names))
-    steady_sizes = []
-    steady_names = []
+    reduced_sizes = []
+    reduced_names = []
 
     # calcula o tamanho da redução prevista para os traços uncompressed dos programas
     for program_steady_percentages in steady_instructions_plot:
-        steady_sizes.append((int(program_steady_percentages[0]*program_sizes[program_steady_percentages[1]]), program_steady_percentages[1])) 
+        program_name = program_steady_percentages[1]
+        steady_size = int(program_steady_percentages[0]*program_sizes[program_name])
+        reduced_size = program_sizes[program_name] - steady_size
+        reduced_sizes.append((reduced_size, program_name))
 
     # ordena os tamanhos das reduções
-    steady_sizes = sorted(steady_sizes, key=by_first)
-    steady_sizes, steady_names = zip(*steady_sizes)
-    steady_sizes = list(steady_sizes)
+    reduced_sizes = sorted(reduced_sizes, key=by_first)
+    reduced_sizes, reduced_names = zip(*reduced_sizes)
+    reduced_sizes = list(reduced_sizes)
     # calcula media das reduções
-    steady_sizes_mean = sum([x/GBFACTOR for x in steady_sizes])/float(len(steady_sizes))
+    reduced_sizes_mean = sum([x/GBFACTOR for x in reduced_sizes])/float(len(reduced_sizes))
 
-    ##
-    # steady_accesses_plot = list(zip(steady_accesses_percentages, program_names))
-
-    # steady_instructions_plot = sorted(steady_instructions_plot, key=by_first)
-    # steady_accesses_plot = sorted(steady_accesses_plot, key=by_first)
-
-    # steady_instructions_percentages, program_names = zip(*steady_instructions_plot)
-    # steady_accesses_percentages, program_names = zip(*steady_accesses_plot)
 
     if args.plot:
-        # plt.xlabel('Programs')
-        # plt.ylabel('Integral Steady Accesses')
-        # plt.axhline(y=instruction_percentages_mean, color='r', linestyle='--')
-        # bar = plt.bar(range(len(steady_instructions_percentages)), steady_instructions_percentages, align='center', color='g')
-        # for rect in bar:
-        #     height = rect.get_height()
-        #     plt.text(rect.get_x() + rect.get_width()/2.0, height, '%d%%' % int(height*100.0), ha='center', va='bottom')
-        # plt.xticks(range(len(steady_instructions_percentages)), program_names, rotation='vertical')
-        # plt.tight_layout()
-        # plt.savefig("integrally_memory_accesses_plt.png")
-        # plt.show()
-        # plt.clf()
-
-        # plt.xlabel('Programs')
-        # plt.ylabel('Steady Accesses')
-        # plt.axhline(y=accesses_percentages_mean, color='r', linestyle='--')
-        # bar = plt.bar(range(len(steady_accesses_percentages)), steady_accesses_percentages, align='center', color='g')
-        # for rect in bar:
-        #     height = rect.get_height()
-        #     plt.text(rect.get_x() + rect.get_width()/2.0, height, '%d%%' % int(height*100.0), ha='center', va='bottom')
-        # plt.xticks(range(len(steady_accesses_percentages)), program_names, rotation='vertical')
-        # plt.tight_layout()
-        # plt.savefig("partially_memory_accesses_plt.png")
-        # plt.show()
-
-        # labels dos eixos
+        # seta os labels dos eixos e o tamanho máximo do eixo y
         plt.xlabel('Programs')
         plt.ylabel('Size Reduction in GB')
+        axes = plt.gca()
+        axes.set_ylim([0,4.6])
 
         # plota tamanho dos traços de memoria uncompressed
-        whole_program_sizes = [program_sizes[program_name]/GBFACTOR for program_name in steady_names]
-        whole_program_sizes_bar = plt.bar(range(len(whole_program_sizes)), whole_program_sizes, align='center', color='b')
+        whole_program_sizes = [program_sizes[program_name]/GBFACTOR for program_name in reduced_names]
+        whole_sizes_bar = plt.bar(range(len(whole_program_sizes)), whole_program_sizes, align='center', color=( 1, 0.65, 0.65, 1), edgecolor='r')
 
-        # plota tamanho das reduções dos traços de memoria uncompressed e sua média e escreve o valor em cima de cada barra
-        plt.axhline(y=steady_sizes_mean, color='r', linestyle='--')
-        steady_sizes = [x/GBFACTOR for x in steady_sizes]
-        bar = plt.bar(range(len(steady_sizes)), steady_sizes, align='center', color='g')
-        for rect in bar:
-            height = rect.get_height()
-            plt.text(rect.get_x() + rect.get_width()/2.0, height, '%s' % size(int(height*GBFACTOR)), ha='center', va='bottom')
+        # plota tamanho das reduções dos traços de memoria uncompressed e sua média
+        # plt.axhline(y=reduced_sizes_mean, color='r', linestyle='--')
+        reduced_sizes = [x/GBFACTOR for x in reduced_sizes]
+        reduced_sizes_bar = plt.bar(range(len(reduced_sizes)), reduced_sizes, align='center', color='r')
 
-        # plota o nome dos programas no eixo x        
-        plt.xticks(range(len(steady_sizes)), steady_names, rotation='vertical')
+        # Escreve o valor da redução do traço em cima de cada barra
+        for rects in zip(whole_sizes_bar, reduced_sizes_bar):
+            whole_height = rects[0].get_height()
+            reduced_height = rects[1].get_height()
+
+            plt.text(rects[0].get_x() + rects[0].get_width()/2.0, whole_height+0.1, '-%s' % '{:.2f}'.format(size(int((whole_height - reduced_height)* GBFACTOR))), rotation='vertical', ha='center', va='bottom')
+
+        # plota o nome dos programas no eixo x e seta os ticks do eixo y       
+        plt.xticks(range(len(reduced_sizes)), reduced_names, rotation='vertical')
+        plt.yticks(np.arange(0, 4.6, step=0.5))
 
         # salva o grafico plotado
         plt.tight_layout()
