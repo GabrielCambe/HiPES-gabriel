@@ -99,8 +99,8 @@ if args.info:
 
     if args.plot:
         # seta os labels dos eixos e o tamanho máximo do eixo y
-        plt.xlabel('Programs')
-        plt.ylabel('Size Reduction in GB')
+        plt.xlabel('Programas')
+        plt.ylabel('Tamanho do traço de memória em GB')
         axes = plt.gca()
         axes.set_ylim([0,4.6])
 
