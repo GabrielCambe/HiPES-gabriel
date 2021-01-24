@@ -80,21 +80,6 @@ class MemoryInstructionInfo {
 
 };
 
-struct CacheCell {
-    u_int64_t tag;
-    MemoryInstructionInfo instruction_info;
-};
-
-// Union para interpretar um endereço de 64 bits como o endereço de uma cache conjunto associativo com 2^18 conjuntos e 8 vias
-typedef union {
-    uint64_t opcode_address;
-    struct {
-        uint64_t tag:43;
-        uint64_t set:18;
-        uint64_t offset:3;
-    } cache;
-} instruction_address;
-
 void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
     uint64_t stride = address - memory_access_info->last_address;
     memory_access_info->last_address = address;
@@ -190,17 +175,15 @@ int main(int argc, char **argv) {
     orcs_engine.simulator_alive = true;
 
     // =============================================================================
-    CacheCell **memory_instructions_info = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << 18));
-    for (uint64_t i = 0; i < (2 << 18); i++) {
-        memory_instructions_info[i] = (CacheCell*) malloc(sizeof(CacheCell) * 8);
-        memory_instructions_info[i]->tag = 0;
-    }
-    instruction_address current;
+    #ifdef DEBUG
+    uint64_t br = 0;
+    #endif
+    uint64_t size = 0;
+    uint64_t max_size = 2;
+    MemoryInstructionInfo *memory_instructions_info = (MemoryInstructionInfo *) malloc(sizeof(MemoryInstructionInfo) * max_size);
     bool is_read, is_read2, is_write, is_new_info;
     uint64_t memory_accesses = 0;
     uint64_t steady_accesses = 0;
-
-    uint64_t cache_conflicts = 0;
     // =============================================================================
 
     /// Start CLOCK for all the components
@@ -209,25 +192,31 @@ int main(int argc, char **argv) {
         orcs_engine.global_cycle++;
 
         // =============================================================================
+        MemoryInstructionInfo *instruction_info;
         is_read = orcs_engine.trace_reader->current_instruction->is_read;
         is_read2 = orcs_engine.trace_reader->current_instruction->is_read2;
         is_write = orcs_engine.trace_reader->current_instruction->is_write;
         if ( is_read || is_read2 || is_write ) {
-            current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
+            uint64_t opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
             uint64_t read_address = orcs_engine.trace_reader->current_instruction->read_address;
             uint64_t read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
             uint64_t write_address = orcs_engine.trace_reader->current_instruction->write_address;
 
-            MemoryInstructionInfo *instruction_info = &memory_instructions_info[current.cache.set][current.cache.offset].instruction_info;
-            uint64_t* tag = &memory_instructions_info[current.cache.set][current.cache.offset].tag;
-            if (!(*tag)){
-                (*tag) =  current.cache.tag;
-                instruction_info->opcode_address = current.opcode_address;
+            #ifdef DEBUG
+            printf("%" PRIu64 " ", opcode_address);
+            #endif
+
+            if ((instruction_info = search_instruction_info(
+                opcode_address,
+                memory_instructions_info,
+                size
+            )) == NULL){
+                instruction_info = new MemoryInstructionInfo();
+                instruction_info->opcode_address = opcode_address;
                 instruction_info->count = 0;
+                is_new_info = true;
             } else {
-                if ((*tag) != current.cache.tag) {
-                    cache_conflicts++;
-                }             
+                is_new_info = false;
             }
 
             if ( is_read ) {
@@ -249,6 +238,11 @@ int main(int argc, char **argv) {
                 if(instruction_info->read_status.current_status == STEADY)
                     steady_accesses++;
             }
+            #ifdef DEBUG
+            else {
+                printf("-1 ");
+            }
+            #endif 
             
             if ( is_read2 ) {
                 #ifdef DEBUG
@@ -269,6 +263,11 @@ int main(int argc, char **argv) {
                 if(instruction_info->read2_status.current_status == STEADY)
                     steady_accesses++;
             }
+            #ifdef DEBUG
+            else {
+                printf("-1 ");
+            }
+            #endif
 
             if ( is_write ) {
                 #ifdef DEBUG
@@ -290,10 +289,31 @@ int main(int argc, char **argv) {
                     steady_accesses++;
 
             }
+            #ifdef DEBUG
+            else {
+                printf("-1\n");
+            }
+            #endif
 
             instruction_info->count++;
+
+            if (is_new_info) {
+                memory_instructions_info[size] = (*instruction_info);
+
+                if (++size == max_size) {
+                    max_size *= 2;
+                    memory_instructions_info = (MemoryInstructionInfo *) realloc(memory_instructions_info, sizeof(MemoryInstructionInfo) * max_size);
+                }
+            }
+            #ifdef DEBUG
+            br++;
+            #endif
         }
 
+        #ifdef DEBUG
+        if (br >= 20)
+            break;        
+        #endif
     }
 	ORCS_PRINTF("\nEnd of Simulation\n")
 	orcs_engine.trace_reader->statistics();
@@ -301,32 +321,71 @@ int main(int argc, char **argv) {
 
     uint64_t memory_instructions = 0;
     uint64_t integrally_steady_instructions = 0;
+    #ifdef DEBUG
+    uint64_t non_linear_instructions = 0;
+    #endif
 
-    for (uint64_t i = 0; i < (2 << 18); i++){
-        for (uint64_t j = 0; j < 8; j++){
-            if (memory_instructions_info[i][j].tag) {
-                if(memory_instructions_info[i][j].instruction_info.read.status != LEARN){
-                    memory_instructions += memory_instructions_info[i][j].instruction_info.count;
-                    if (memory_instructions_info[i][j].instruction_info.read.status == STEADY){
-                        integrally_steady_instructions += memory_instructions_info[i][j].instruction_info.count;
-                    }
-                }
+    for (uint64_t i = 0; i < size; i++){
+        #ifdef DEBUG
+        printf("\nopcode_address: %lu\n", memory_instructions_info[i].opcode_address);
+        #endif
+        if(memory_instructions_info[i].read.status != LEARN){
+            #ifdef DEBUG
+            printf("read: %lu ", memory_instructions_info[i].read.stride);
+            display_status(memory_instructions_info[i].read.status);
+            #endif
 
-                if(memory_instructions_info[i][j].instruction_info.read2.status != LEARN){
-                    memory_instructions += memory_instructions_info[i][j].instruction_info.count;
-                    if (memory_instructions_info[i][j].instruction_info.read2.status == STEADY){
-                        integrally_steady_instructions += memory_instructions_info[i][j].instruction_info.count;
-                    }
-                }
-
-                if(memory_instructions_info[i][j].instruction_info.write.status != LEARN){
-                    memory_instructions += memory_instructions_info[i][j].instruction_info.count;
-                    if (memory_instructions_info[i][j].instruction_info.write.status == STEADY){
-                        integrally_steady_instructions += memory_instructions_info[i][j].instruction_info.count;
-                    }
-                }
+            // Cada acesso acontece count vezes, se todas as count vezes forem STEADY, eu adiciono na contagem dos acessos steady
+            memory_instructions += memory_instructions_info[i].count;
+            if (memory_instructions_info[i].read.status == STEADY){
+                integrally_steady_instructions += memory_instructions_info[i].count;
             }
+            #ifdef DEBUG
+            else { // == NON_LINEAR
+                non_linear_instructions += memory_instructions_info[i].count;
+            }
+            #endif
         }
+
+        if(memory_instructions_info[i].read2.status != LEARN){
+            #ifdef DEBUG
+            printf("read2: %lu ", memory_instructions_info[i].read2.stride);
+            display_status(memory_instructions_info[i].read2.status);
+            #endif
+
+            memory_instructions += memory_instructions_info[i].count;
+            if (memory_instructions_info[i].read2.status == STEADY){
+                integrally_steady_instructions += memory_instructions_info[i].count;
+            }
+            #ifdef DEBUG
+            else { // == NON_LINEAR
+                non_linear_instructions += memory_instructions_info[i].count;
+            }
+            #endif
+
+        }
+
+        if(memory_instructions_info[i].write.status != LEARN){
+            #ifdef DEBUG
+            printf("write: %lu ", memory_instructions_info[i].write.stride);
+            display_status(memory_instructions_info[i].write.status);
+            #endif
+
+            memory_instructions += memory_instructions_info[i].count;
+            if (memory_instructions_info[i].write.status == STEADY){
+                integrally_steady_instructions += memory_instructions_info[i].count;
+            }
+            #ifdef DEBUG
+            else { // == NON_LINEAR
+                non_linear_instructions += memory_instructions_info[i].count;
+            }
+            #endif
+        }
+
+        #ifdef DEBUG
+        printf("count: %lu ", memory_instructions_info[i].count);
+        printf("\n");
+        #endif
     }
 
     printf("\n");
@@ -334,6 +393,9 @@ int main(int argc, char **argv) {
     printf("integrally_steady_instructions: %lu\n", integrally_steady_instructions);
     printf("memory_accesses: %lu\n", memory_instructions);
     printf("steady_memory_accesses: %lu\n", integrally_steady_instructions);
+    #ifdef DEBUG
+    printf("non_linear_instructions: %lu\n", non_linear_instructions);
+    #endif
 
     return(EXIT_SUCCESS);
 }
