@@ -231,9 +231,6 @@ int main(int argc, char **argv) {
             }
 
             if ( is_read ) {
-                #ifdef DEBUG
-                printf("%" PRIu64 " ", read_address);
-                #endif
                 if (instruction_info->count == 0) {
                     instruction_info->read.first_address = read_address;
                     instruction_info->read.last_address = read_address;
@@ -251,9 +248,6 @@ int main(int argc, char **argv) {
             }
             
             if ( is_read2 ) {
-                #ifdef DEBUG
-                printf("%" PRIu64 " ", read2_address);
-                #endif
                 if (instruction_info->count == 0) {
                     instruction_info->read2.first_address = read2_address;
                     instruction_info->read2.last_address = read2_address;
@@ -271,9 +265,6 @@ int main(int argc, char **argv) {
             }
 
             if ( is_write ) {
-                #ifdef DEBUG
-                printf("%" PRIu64 "\n", write_address);
-                #endif
                 if (instruction_info->count == 0) {
                     instruction_info->write.first_address = write_address;
                     instruction_info->write.last_address = write_address;
@@ -334,6 +325,7 @@ int main(int argc, char **argv) {
     printf("integrally_steady_instructions: %lu\n", integrally_steady_instructions);
     printf("memory_accesses: %lu\n", memory_instructions);
     printf("steady_memory_accesses: %lu\n", integrally_steady_instructions);
+    printf("cache_conflicts: %lu\n", cache_conflicts);
 
     return(EXIT_SUCCESS);
 }
