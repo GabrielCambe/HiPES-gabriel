@@ -89,9 +89,9 @@ struct CacheCell {
 typedef union {
     uint64_t opcode_address;
     struct {
-        uint64_t tag:43;
-        uint64_t set:18;
         uint64_t offset:3;
+        uint64_t set:18;
+        uint64_t tag:43;
     } cache;
 } instruction_address;
 
@@ -196,7 +196,7 @@ int main(int argc, char **argv) {
         memory_instructions_info[i]->tag = 0;
     }
     instruction_address current;
-    bool is_read, is_read2, is_write, is_new_info;
+    bool is_read, is_read2, is_write;
     uint64_t memory_accesses = 0;
     uint64_t steady_accesses = 0;
 
