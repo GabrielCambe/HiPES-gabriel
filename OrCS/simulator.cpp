@@ -115,7 +115,7 @@ int main(int argc, char **argv) {
             instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
             tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
 
-            if ((*tag) == 2 << 43){ // O campo da cache não foi inicializado
+            if ((*tag) == 0){ // O campo da cache não foi inicializado
                 (*tag) = current.cache.tag;
                 instruction_info->opcode_address = current.opcode_address;
 
@@ -254,7 +254,7 @@ int main(int argc, char **argv) {
 
     for (uint64_t i = 0; i < (2 << 18); i++){
         for (uint64_t j = 0; j < 8; j++){
-            if (memory_instructions_info[i][j].tag != (2 << 43)) {
+            if (memory_instructions_info[i][j].tag != (0)) {
                 if(memory_instructions_info[i][j].info.read.status != LEARN){
                     read_accesses += memory_instructions_info[i][j].info.read.count;
                     if (memory_instructions_info[i][j].info.read.status == STEADY){

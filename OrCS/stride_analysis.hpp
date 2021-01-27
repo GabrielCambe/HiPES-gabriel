@@ -121,7 +121,7 @@ void allocate_cache(CacheCell ***memory_instructions_info) {
     (*memory_instructions_info) = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << 18));
     for (uint64_t i = 0; i < (2 << 18); i++) {
         (*memory_instructions_info)[i] = (CacheCell*) malloc(sizeof(CacheCell) * 8);
-        (*memory_instructions_info)[i]->tag = 2 << 43;
+        (*memory_instructions_info)[i]->tag = 0;
     }
     return;
 }
