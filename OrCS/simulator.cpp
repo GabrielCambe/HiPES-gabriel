@@ -4,119 +4,7 @@ orcs_engine_t orcs_engine;
 // =============================================================================
 #include <stdlib.h>     /* malloc, free, realloc */
 #include <inttypes.h>
-
-enum status_t {
-    LEARN,
-    STEADY,
-    NON_LINEAR
-};
-
-void display_status(status_t status) {
-    switch (status) {
-        case LEARN:
-            printf("LEARN\n");
-            break;
-        case STEADY:
-            printf("STEADY\n");
-            break;
-        case NON_LINEAR:
-            printf("NON_LINEAR\n");
-            break;
-        default:
-            break;
-    }
-}
-
-class StatusMachine {
-    public:
-        unsigned int first_access = 1;
-        status_t current_status = LEARN;
-        uint64_t last_stride;
-
-        StatusMachine(){}
-
-        status_t update(uint64_t stride) {
-            if (current_status == LEARN){
-                current_status = STEADY;
-            }
-            else if (current_status == STEADY){
-                if ((first_access == 1) || (last_stride == stride)){
-                    current_status = STEADY;
-                    first_access = 0;
-                }
-                else {
-                    current_status = NON_LINEAR; 
-                } 
-            }
-            // else if (current_status == NON_LINEAR){
-            //     ;
-            // }
-
-            last_stride = stride;
-            return current_status;
-        }
-};
-
-class MemoryAccessInfo {
-    public:
-        uint64_t first_address = 0;
-        uint64_t last_address = 0;
-        uint64_t stride;
-        status_t status;
-
-};
-
-class MemoryInstructionInfo {
-    public:
-        uint64_t opcode_address;
-        MemoryAccessInfo read;
-        StatusMachine read_status;
-        MemoryAccessInfo read2;
-        StatusMachine read2_status;
-        MemoryAccessInfo write;
-        StatusMachine write_status;
-        uint64_t count = 0;
-        StatusMachine status;
-
-};
-
-struct CacheCell {
-    u_int64_t tag;
-    MemoryInstructionInfo instruction_info;
-};
-
-// Union para interpretar um endereço de 64 bits como o endereço de uma cache conjunto associativo com 2^18 conjuntos e 8 vias
-typedef union {
-    uint64_t opcode_address;
-    struct {
-        uint64_t offset:3;
-        uint64_t set:18;
-        uint64_t tag:43;
-    } cache;
-} instruction_address;
-
-void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
-    uint64_t stride = address - memory_access_info->last_address;
-    memory_access_info->last_address = address;
-    memory_access_info->stride = stride;
-    memory_access_info->status = status_state_machine->update(stride);
-    return;
-}
-
-MemoryInstructionInfo *search_instruction_info(uint64_t opcode_address, MemoryInstructionInfo *infos, uint64_t size){
-    for (uint64_t i = 0; i < size; i++){
-        #ifdef DEBUG
-        // printf("s-%" PRIu64 " == %" PRIu64 "?\n\n", opcode_address, infos[i].opcode_address);
-        #endif
-        if(opcode_address == infos[i].opcode_address){
-            #ifdef DEBUG
-            // printf("s-%" PRIu64 "\n\n", infos[i].opcode_address);
-            #endif
-            return &infos[i];
-        }
-    }
-    return NULL;
-}
+#include "stride_analysis.hpp"
 
 // =============================================================================
 static void display_use() {
@@ -177,7 +65,6 @@ static void process_argv(int argc, char **argv) {
 
 };
 
-
 // =============================================================================
 int main(int argc, char **argv) {
     process_argv(argc, argv);
@@ -186,21 +73,25 @@ int main(int argc, char **argv) {
     orcs_engine.allocate();
     orcs_engine.trace_reader->allocate(orcs_engine.arg_trace_file_name);
     orcs_engine.processor->allocate();
-
     orcs_engine.simulator_alive = true;
 
     // =============================================================================
-    CacheCell **memory_instructions_info = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << 18));
-    for (uint64_t i = 0; i < (2 << 18); i++) {
-        memory_instructions_info[i] = (CacheCell*) malloc(sizeof(CacheCell) * 8);
-        memory_instructions_info[i]->tag = 0;
-    }
-    instruction_address current;
     bool is_read, is_read2, is_write;
-    uint64_t memory_accesses = 0;
-    uint64_t steady_accesses = 0;
+    instruction_address current;
+    uint64_t read_address;
+    uint64_t read2_address;
+    uint64_t write_address;
 
+    CacheCell **memory_instructions_info = NULL; allocate_cache(&memory_instructions_info);
+    MemoryInstructionInfo *instruction_info = NULL;
+    uint64_t* tag = NULL;
     uint64_t cache_conflicts = 0;
+    bool cache_miss = false;    
+
+    uint64_t memory_instructions_fetched = 0;
+    uint64_t memory_accesses = 0; // memory_instructions fetched and analysed
+    uint64_t partially_steady_accesses = 0;
+    uint64_t partially_steady_instructions = 0;
     // =============================================================================
 
     /// Start CLOCK for all the components
@@ -212,120 +103,198 @@ int main(int argc, char **argv) {
         is_read = orcs_engine.trace_reader->current_instruction->is_read;
         is_read2 = orcs_engine.trace_reader->current_instruction->is_read2;
         is_write = orcs_engine.trace_reader->current_instruction->is_write;
-        if ( is_read || is_read2 || is_write ) {
-            current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
-            uint64_t read_address = orcs_engine.trace_reader->current_instruction->read_address;
-            uint64_t read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
-            uint64_t write_address = orcs_engine.trace_reader->current_instruction->write_address;
+        
+        if ( is_read || is_read2 || is_write ) { // É uma instrução de memória 
 
-            MemoryInstructionInfo *instruction_info = &memory_instructions_info[current.cache.set][current.cache.offset].instruction_info;
-            uint64_t* tag = &memory_instructions_info[current.cache.set][current.cache.offset].tag;
-            if (!(*tag)){
-                (*tag) =  current.cache.tag;
+            current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
+            read_address = orcs_engine.trace_reader->current_instruction->read_address;
+            read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
+            write_address = orcs_engine.trace_reader->current_instruction->write_address;
+            memory_instructions_fetched++;
+
+            instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
+            tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
+
+            if ((*tag) == 2 << 43){ // O campo da cache não foi inicializado
+                (*tag) = current.cache.tag;
                 instruction_info->opcode_address = current.opcode_address;
-                instruction_info->count = 0;
+
             } else {
-                if ((*tag) != current.cache.tag) {
+                if ((*tag) != current.cache.tag) { // O campo foi inicializado e a tag corrente é diferente
                     cache_conflicts++;
+                    cache_miss = true;
                 }             
             }
 
-            if ( is_read ) {
-                if (instruction_info->count == 0) {
-                    instruction_info->read.first_address = read_address;
-                    instruction_info->read.last_address = read_address;
-                    instruction_info->read.status = instruction_info->read_status.update(0);
-                } else {
-                    updateAccessInfo(
-                        &(instruction_info->read),
-                        read_address,
-                        &(instruction_info->read_status)
-                    );
-                }
+            if (!cache_miss) {
                 memory_accesses++;
-                if(instruction_info->read_status.current_status == STEADY)
-                    steady_accesses++;
-            }
-            
-            if ( is_read2 ) {
-                if (instruction_info->count == 0) {
-                    instruction_info->read2.first_address = read2_address;
-                    instruction_info->read2.last_address = read2_address;
-                    instruction_info->read2.status = instruction_info->read2_status.update(0);
-                } else {
-                    updateAccessInfo(
-                        &(instruction_info->read2),
-                        read2_address,
-                        &(instruction_info->read2_status)
-                    );
+
+                if ( is_read ) {
+                    if (instruction_info->read.status == LEARN) {
+                        instruction_info->read.first_address = read_address;
+                        instruction_info->read.last_address = read_address;
+                        instruction_info->read.status = instruction_info->read_status.update(0);
+
+                    } else {
+                        updateAccessInfo(
+                            &(instruction_info->read),
+                            read_address,
+                            &(instruction_info->read_status)
+                        );
+                    }
+
+                    instruction_info->read.count++;
+                    if(instruction_info->read_status.current_status == STEADY)
+                        partially_steady_accesses++;
                 }
-                memory_accesses++;
-                if(instruction_info->read2_status.current_status == STEADY)
-                    steady_accesses++;
-            }
+                
+                if ( is_read2 ) {
+                    if (instruction_info->read2.status == LEARN) {
+                        instruction_info->read2.first_address = read2_address;
+                        instruction_info->read2.last_address = read2_address;
+                        instruction_info->read2.status = instruction_info->read2_status.update(0);
 
-            if ( is_write ) {
-                if (instruction_info->count == 0) {
-                    instruction_info->write.first_address = write_address;
-                    instruction_info->write.last_address = write_address;
-                    instruction_info->write.status = instruction_info->write_status.update(0);
-                } else {
-                    updateAccessInfo(
-                        &(instruction_info->write),
-                        write_address,
-                        &(instruction_info->write_status)
-                    );
+                        
+                    } else {
+                        updateAccessInfo(
+                            &(instruction_info->read2),
+                            read2_address,
+                            &(instruction_info->read2_status)
+                        );
+                    }
+
+                    instruction_info->read2.count++;
+                    if(instruction_info->read2_status.current_status == STEADY)
+                        partially_steady_accesses++;
                 }
-                memory_accesses++;
-                if(instruction_info->write_status.current_status == STEADY)
-                    steady_accesses++;
 
+                if ( is_write ) {
+                    if (instruction_info->write.status == LEARN) {
+                        instruction_info->write.first_address = write_address;
+                        instruction_info->write.last_address = write_address;
+                        instruction_info->write.status = instruction_info->write_status.update(0);
+
+                    } else {
+                        updateAccessInfo(
+                            &(instruction_info->write),
+                            write_address,
+                            &(instruction_info->write_status)
+                        );
+                    }
+
+                    instruction_info->write.count++;
+                    if(instruction_info->write_status.current_status == STEADY)
+                        partially_steady_accesses++;
+
+                }
+
+                if (instruction_info->instruction.status == LEARN) {
+                    if ( is_read ) {                        
+                        instruction_info->instruction.first_address = read_address;
+                        instruction_info->instruction.last_address = read_address;
+                        instruction_info->instruction.status = instruction_info->status.update(0);
+                    }
+
+                    if ( is_read2 ) {
+                        instruction_info->instruction.first_address = read2_address;
+                        instruction_info->instruction.last_address = read2_address;
+                        instruction_info->instruction.status = instruction_info->status.update(0);
+                    }
+
+                    if ( is_write ) {
+                        instruction_info->instruction.first_address = write_address;
+                        instruction_info->instruction.last_address = write_address;
+                        instruction_info->instruction.status = instruction_info->status.update(0);
+                    }
+
+                } else {
+                    if ( is_read ) {
+                        updateAccessInfo(
+                            &(instruction_info->instruction),
+                            read_address,
+                            &(instruction_info->status)
+                        );
+                    }
+
+                    if ( is_read2 ) {
+                        updateAccessInfo(
+                            &(instruction_info->instruction),
+                            read2_address,
+                            &(instruction_info->status)
+                        );
+                    }
+
+                    if ( is_write ) {
+                        updateAccessInfo(
+                            &(instruction_info->instruction),
+                            write_address,
+                            &(instruction_info->status)
+                        );
+                    }
+                }
+
+                instruction_info->count++;
+                if(instruction_info->status.current_status == STEADY)
+                    partially_steady_instructions++;
             }
-
-            instruction_info->count++;
+            cache_miss = false;
         }
-
+        // =============================================================================
     }
 	ORCS_PRINTF("\nEnd of Simulation\n")
 	orcs_engine.trace_reader->statistics();
     orcs_engine.processor->statistics();
 
-    uint64_t memory_instructions = 0;
-    uint64_t integrally_steady_instructions = 0;
+    uint64_t memory_instructions_counted = 0;
+    uint64_t integrally_steady_accesses = 0;
 
     for (uint64_t i = 0; i < (2 << 18); i++){
         for (uint64_t j = 0; j < 8; j++){
-            if (memory_instructions_info[i][j].tag) {
-                if(memory_instructions_info[i][j].instruction_info.read.status != LEARN){
-                    memory_instructions += memory_instructions_info[i][j].instruction_info.count;
-                    if (memory_instructions_info[i][j].instruction_info.read.status == STEADY){
-                        integrally_steady_instructions += memory_instructions_info[i][j].instruction_info.count;
+            if (memory_instructions_info[i][j].tag != (2 << 43)) {
+                if(memory_instructions_info[i][j].info.read.status != LEARN){
+                    memory_accesses_counted += memory_instructions_info[i][j].info.read.count;
+                    if (memory_instructions_info[i][j].info.read.status == STEADY){
+                        integrally_steady_accesses += memory_instructions_info[i][j].info.count;
                     }
                 }
 
-                if(memory_instructions_info[i][j].instruction_info.read2.status != LEARN){
-                    memory_instructions += memory_instructions_info[i][j].instruction_info.count;
-                    if (memory_instructions_info[i][j].instruction_info.read2.status == STEADY){
-                        integrally_steady_instructions += memory_instructions_info[i][j].instruction_info.count;
+                if(memory_instructions_info[i][j].info.read2.status != LEARN){
+                    memory_accesses_counted += memory_instructions_info[i][j].info.read.count;
+                    if (memory_instructions_info[i][j].info.read2.status == STEADY){
+                        integrally_steady_accesses += memory_instructions_info[i][j].info.count;
                     }
                 }
 
-                if(memory_instructions_info[i][j].instruction_info.write.status != LEARN){
-                    memory_instructions += memory_instructions_info[i][j].instruction_info.count;
-                    if (memory_instructions_info[i][j].instruction_info.write.status == STEADY){
-                        integrally_steady_instructions += memory_instructions_info[i][j].instruction_info.count;
+                if(memory_instructions_info[i][j].info.write.status != LEARN){
+                    write_memory_accesses_counted += memory_instructions_info[i][j].info.read.count;
+                    if (memory_instructions_info[i][j].info.write.status == STEADY){
+                        integrally_steady_accesses += memory_instructions_info[i][j].info.count;
                     }
+                }
+           
+                if(memory_instructions_info[i][j].info.instruction.status != LEARN){
+                    memory_instructions_counted += memory_instructions_info[i][j].info.count;
+                    if (memory_instructions_info[i][j].info.instruction.status == STEADY){
+                        integrally_steady_instructions++;
+                        integrally_steady_instruction_accesses += memory_instructions_info[i][j].info.count;
+                    }
+                    
                 }
             }
         }
     }
 
     printf("\n");
-    printf("memory_instructions_fetched: %lu\n", memory_instructions);
-    printf("integrally_steady_instructions: %lu\n", integrally_steady_instructions);
-    printf("memory_accesses: %lu\n", memory_instructions);
-    printf("steady_memory_accesses: %lu\n", integrally_steady_instructions);
+    printf("memory_instructions_fetched: %lu\n", memory_instructions_fetched);
+    printf("memory_accesses: %lu\n", memory_accesses);
     printf("cache_conflicts: %lu\n", cache_conflicts);
+
+    printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
+    printf("read_acesses: %lu\n", read_acesses);
+    printf("read2_acesses: %lu\n", read2_acesses);
+    printf("write_acesses: %lu\n", write_acesses);
+    printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
+    printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
 
     return(EXIT_SUCCESS);
 }
