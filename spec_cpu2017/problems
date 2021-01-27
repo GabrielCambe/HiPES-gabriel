@@ -1,1 +1,5 @@
-gcc_s, wrf_s, gznamd_r, x264_r, gzwrf_r e xalancbmk_s
+0 spec_cpu2017/wrf_s.CFP.PP2B.tid0.dyn.out.gz
+0 spec_cpu2017/wrf_s.CFP.PP2B.tid0.stat.out.gz
+0 spec_cpu2017/wrf_s.CFP.PP2B.tid0.mem.out.gz
+
+x264_r, gzwrf_r e xalancbmk_s
