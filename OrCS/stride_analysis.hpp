@@ -84,16 +84,26 @@ struct CacheCell {
     MemoryInstructionInfo info;
 };
 
-// Union para interpretar um endereço de 64 bits como o endereço de uma cache conjunto associativo com 2^18 conjuntos e 8 vias
-typedef union {
+#define ASSOCIATIVITY 4
+#define SETS 18
+#define TAG 42
+typedef union { // Union para interpretar um endereço de 64 bits como o endereço de uma cache conjunto associativo com 2^18 conjuntos e 8 vias
     uint64_t opcode_address;
     struct {
-        uint64_t offset:4;
-        uint64_t set:18;
-        uint64_t tag:42;
+        uint64_t offset:ASSOCIATIVITY;
+        uint64_t set:SETS;
+        uint64_t tag:TAG;
     } cache;
 } instruction_address;
 
+void allocate_cache(CacheCell ***memory_instructions_info) {
+    (*memory_instructions_info) = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << SETS));
+    for (uint64_t i = 0; i < (2 << SETS); i++) {
+        (*memory_instructions_info)[i] = (CacheCell*) malloc(sizeof(CacheCell) * 2 << ASSOCIATIVITY);
+        (*memory_instructions_info)[i]->tag = 0;
+    }
+    return;
+}
 void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
     uint64_t stride = address - memory_access_info->last_address;
     memory_access_info->last_address = address;
@@ -115,13 +125,4 @@ MemoryInstructionInfo *search_instruction_info(uint64_t opcode_address, MemoryIn
         }
     }
     return NULL;
-}
-
-void allocate_cache(CacheCell ***memory_instructions_info) {
-    (*memory_instructions_info) = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << 18));
-    for (uint64_t i = 0; i < (2 << 18); i++) {
-        (*memory_instructions_info)[i] = (CacheCell*) malloc(sizeof(CacheCell) * 8);
-        (*memory_instructions_info)[i]->tag = 0;
-    }
-    return;
 }
