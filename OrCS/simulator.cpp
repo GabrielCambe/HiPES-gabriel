@@ -91,7 +91,7 @@ int main(int argc, char **argv) {
     uint64_t memory_instructions_fetched = 0;
     uint64_t memory_instructions_analysed = 0;
 
-    uint64_t total_memory_accesses = 0; // individual acesses from instructions
+    uint64_t total_memory_accesses = 0; // individual accesses from instructions
     uint64_t partially_steady_accesses = 0;
     uint64_t partially_steady_instruction_accesses = 0;
     // =============================================================================
@@ -142,11 +142,14 @@ int main(int argc, char **argv) {
                             read_address,
                             &(instruction_info->read_status)
                         );
+
+                        if(instruction_info->read_status.current_status == STEADY)
+                            partially_steady_accesses++;
                     }
 
                     instruction_info->read.count++;
-                    if(instruction_info->read_status.current_status == STEADY)
-                        partially_steady_accesses++;
+                    // if(instruction_info->read_status.current_status == STEADY)
+                    //     partially_steady_accesses++;
 
                     total_memory_accesses++;
                 }
@@ -164,11 +167,14 @@ int main(int argc, char **argv) {
                             read2_address,
                             &(instruction_info->read2_status)
                         );
+
+                        if(instruction_info->read2_status.current_status == STEADY)
+                            partially_steady_accesses++;
                     }
 
                     instruction_info->read2.count++;
-                    if(instruction_info->read2_status.current_status == STEADY)
-                        partially_steady_accesses++;
+                    // if(instruction_info->read2_status.current_status == STEADY)
+                    //     partially_steady_accesses++;
                 
                     total_memory_accesses++;
                 }
@@ -185,11 +191,14 @@ int main(int argc, char **argv) {
                             write_address,
                             &(instruction_info->write_status)
                         );
+
+                        if(instruction_info->write_status.current_status == STEADY)
+                            partially_steady_accesses++;
                     }
 
                     instruction_info->write.count++;
-                    if(instruction_info->write_status.current_status == STEADY)
-                        partially_steady_accesses++;
+                    // if(instruction_info->write_status.current_status == STEADY)
+                    //     partially_steady_accesses++;
 
                     total_memory_accesses++;
                 }
@@ -237,11 +246,14 @@ int main(int argc, char **argv) {
                             &(instruction_info->status)
                         );
                     }
+                    
+                    if(instruction_info->status.current_status == STEADY)
+                        partially_steady_instruction_accesses++;
                 }
 
                 instruction_info->count++;
-                if(instruction_info->status.current_status == STEADY)
-                    partially_steady_instruction_accesses++;
+                // if(instruction_info->status.current_status == STEADY)
+                //     partially_steady_instruction_accesses++;
 
                 memory_instructions_analysed++;
             }
@@ -262,7 +274,7 @@ int main(int argc, char **argv) {
 
     for (uint64_t i = 0; i < (2 << 18); i++){
         for (uint64_t j = 0; j < 8; j++){
-            if (memory_instructions_info[i][j].tag != (0)) {
+            if (memory_instructions_info[i][j].tag != 0) {
                 if(memory_instructions_info[i][j].info.read.status != LEARN){
                     read_accesses += memory_instructions_info[i][j].info.read.count;
                     if (memory_instructions_info[i][j].info.read.status == STEADY){
