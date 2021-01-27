@@ -89,9 +89,11 @@ int main(int argc, char **argv) {
     bool cache_miss = false;    
 
     uint64_t memory_instructions_fetched = 0;
-    uint64_t memory_accesses = 0; // memory_instructions fetched and analysed
+    uint64_t memory_instructions_analysed = 0;
+
+    uint64_t total_memory_accesses = 0; // individual acesses from instructions
     uint64_t partially_steady_accesses = 0;
-    uint64_t partially_steady_instructions = 0;
+    uint64_t partially_steady_instruction_accesses = 0;
     // =============================================================================
 
     /// Start CLOCK for all the components
@@ -127,7 +129,6 @@ int main(int argc, char **argv) {
             }
 
             if (!cache_miss) {
-                memory_accesses++;
 
                 if ( is_read ) {
                     if (instruction_info->read.status == LEARN) {
@@ -146,6 +147,8 @@ int main(int argc, char **argv) {
                     instruction_info->read.count++;
                     if(instruction_info->read_status.current_status == STEADY)
                         partially_steady_accesses++;
+
+                    total_memory_accesses++;
                 }
                 
                 if ( is_read2 ) {
@@ -166,6 +169,8 @@ int main(int argc, char **argv) {
                     instruction_info->read2.count++;
                     if(instruction_info->read2_status.current_status == STEADY)
                         partially_steady_accesses++;
+                
+                    total_memory_accesses++;
                 }
 
                 if ( is_write ) {
@@ -186,6 +191,7 @@ int main(int argc, char **argv) {
                     if(instruction_info->write_status.current_status == STEADY)
                         partially_steady_accesses++;
 
+                    total_memory_accesses++;
                 }
 
                 if (instruction_info->instruction.status == LEARN) {
@@ -235,7 +241,9 @@ int main(int argc, char **argv) {
 
                 instruction_info->count++;
                 if(instruction_info->status.current_status == STEADY)
-                    partially_steady_instructions++;
+                    partially_steady_instruction_accesses++;
+
+                memory_instructions_analysed++;
             }
             cache_miss = false;
         }
@@ -288,16 +296,18 @@ int main(int argc, char **argv) {
     }
 
     printf("\n");
-    printf("memory_instructions_fetched: %lu\n", memory_instructions_fetched);
+    printf("memory_instructions_analysed: %lu\n", memory_instructions_analysed);
     printf("cache_conflicts: %lu\n", cache_conflicts);
-    printf("memory_accesses: %lu\n", memory_accesses);
+    printf("memory_instructions_fetched: %lu\n", memory_instructions_fetched);
 
     printf("read_accesses: %lu\n", read_accesses);
     printf("read2_accesses: %lu\n", read2_accesses);
     printf("write_accesses: %lu\n", write_accesses);
+    printf("memory_accesses: %lu\n", total_memory_accesses);
 
     printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
     printf("integrally_steady_instruction_accesses: %lu\n", integrally_steady_instruction_accesses);
+    printf("partially_steady_instruction_accesses: %lu\n", partially_steady_instruction_accesses);
 
     printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
     printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
