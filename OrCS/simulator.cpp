@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
 
     uint64_t total_memory_accesses = 0; // individual accesses from instructions
     uint64_t partially_steady_accesses = 0;
-    uint64_t partially_steady_instruction_accesses = 0;
+    uint64_t partially_steady_instructions = 0;
     // =============================================================================
 
     /// Start CLOCK for all the components
@@ -248,12 +248,12 @@ int main(int argc, char **argv) {
                     }
                     
                     if(instruction_info->status.current_status == STEADY)
-                        partially_steady_instruction_accesses++;
+                        partially_steady_instructions++;
                 }
 
                 instruction_info->count++;
                 // if(instruction_info->status.current_status == STEADY)
-                //     partially_steady_instruction_accesses++;
+                //     partially_steady_instructions++;
 
                 memory_instructions_analysed++;
             }
@@ -269,7 +269,7 @@ int main(int argc, char **argv) {
     uint64_t read2_accesses = 0;
     uint64_t write_accesses = 0;
     uint64_t memory_instructions_counted = 0;
-    uint64_t integrally_steady_instruction_accesses = 0;
+    uint64_t integrally_steady_instructions = 0;
     uint64_t integrally_steady_accesses = 0;
 
     for (uint64_t i = 0; i < (2 << 18); i++){
@@ -299,7 +299,7 @@ int main(int argc, char **argv) {
                 if(memory_instructions_info[i][j].info.instruction.status != LEARN){
                     memory_instructions_counted += memory_instructions_info[i][j].info.count;
                     if (memory_instructions_info[i][j].info.instruction.status == STEADY){
-                        integrally_steady_instruction_accesses += memory_instructions_info[i][j].info.count;
+                        integrally_steady_instructions += memory_instructions_info[i][j].info.count;
                     }
                     
                 }
@@ -308,18 +308,18 @@ int main(int argc, char **argv) {
     }
 
     printf("\n");
+    printf("memory_instructions_fetched: %lu\n", memory_instructions_fetched);
     printf("memory_instructions_analysed: %lu\n", memory_instructions_analysed);
     printf("cache_conflicts: %lu\n", cache_conflicts);
-    printf("memory_instructions_fetched: %lu\n", memory_instructions_fetched);
 
+    printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
+    printf("partially_steady_instructions: %lu\n", partially_steady_instructions);
+    printf("integrally_steady_instructions: %lu\n", integrally_steady_instructions);
+
+    printf("memory_accesses: %lu\n", total_memory_accesses);
     printf("read_accesses: %lu\n", read_accesses);
     printf("read2_accesses: %lu\n", read2_accesses);
     printf("write_accesses: %lu\n", write_accesses);
-    printf("memory_accesses: %lu\n", total_memory_accesses);
-
-    printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
-    printf("integrally_steady_instruction_accesses: %lu\n", integrally_steady_instruction_accesses);
-    printf("partially_steady_instruction_accesses: %lu\n", partially_steady_instruction_accesses);
 
     printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
     printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
