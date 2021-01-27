@@ -245,37 +245,40 @@ int main(int argc, char **argv) {
 	orcs_engine.trace_reader->statistics();
     orcs_engine.processor->statistics();
 
+    uint64_t read_accesses = 0;
+    uint64_t read2_accesses = 0;
+    uint64_t write_accesses = 0;
     uint64_t memory_instructions_counted = 0;
+    uint64_t integrally_steady_instruction_accesses = 0;
     uint64_t integrally_steady_accesses = 0;
 
     for (uint64_t i = 0; i < (2 << 18); i++){
         for (uint64_t j = 0; j < 8; j++){
             if (memory_instructions_info[i][j].tag != (2 << 43)) {
                 if(memory_instructions_info[i][j].info.read.status != LEARN){
-                    memory_accesses_counted += memory_instructions_info[i][j].info.read.count;
+                    read_accesses += memory_instructions_info[i][j].info.read.count;
                     if (memory_instructions_info[i][j].info.read.status == STEADY){
-                        integrally_steady_accesses += memory_instructions_info[i][j].info.count;
+                        integrally_steady_accesses += memory_instructions_info[i][j].info.read.count;
                     }
                 }
 
                 if(memory_instructions_info[i][j].info.read2.status != LEARN){
-                    memory_accesses_counted += memory_instructions_info[i][j].info.read.count;
+                    read2_accesses += memory_instructions_info[i][j].info.read2.count;
                     if (memory_instructions_info[i][j].info.read2.status == STEADY){
-                        integrally_steady_accesses += memory_instructions_info[i][j].info.count;
+                        integrally_steady_accesses += memory_instructions_info[i][j].info.read2.count;
                     }
                 }
 
                 if(memory_instructions_info[i][j].info.write.status != LEARN){
-                    write_memory_accesses_counted += memory_instructions_info[i][j].info.read.count;
+                    write_accesses += memory_instructions_info[i][j].info.write.count;
                     if (memory_instructions_info[i][j].info.write.status == STEADY){
-                        integrally_steady_accesses += memory_instructions_info[i][j].info.count;
+                        integrally_steady_accesses += memory_instructions_info[i][j].info.write.count;
                     }
                 }
            
                 if(memory_instructions_info[i][j].info.instruction.status != LEARN){
                     memory_instructions_counted += memory_instructions_info[i][j].info.count;
                     if (memory_instructions_info[i][j].info.instruction.status == STEADY){
-                        integrally_steady_instructions++;
                         integrally_steady_instruction_accesses += memory_instructions_info[i][j].info.count;
                     }
                     
@@ -286,13 +289,16 @@ int main(int argc, char **argv) {
 
     printf("\n");
     printf("memory_instructions_fetched: %lu\n", memory_instructions_fetched);
-    printf("memory_accesses: %lu\n", memory_accesses);
     printf("cache_conflicts: %lu\n", cache_conflicts);
+    printf("memory_accesses: %lu\n", memory_accesses);
+
+    printf("read_accesses: %lu\n", read_accesses);
+    printf("read2_accesses: %lu\n", read2_accesses);
+    printf("write_accesses: %lu\n", write_accesses);
 
     printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
-    printf("read_acesses: %lu\n", read_acesses);
-    printf("read2_acesses: %lu\n", read2_acesses);
-    printf("write_acesses: %lu\n", write_acesses);
+    printf("integrally_steady_instruction_accesses: %lu\n", integrally_steady_instruction_accesses);
+
     printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
     printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
 
