@@ -281,6 +281,8 @@ int main(int argc, char **argv) {
                         integrally_steady_accesses += memory_instructions_info[i][j].info.read.count;
                     }
                 }
+                
+                printf("At read indices %lu and %lu stride was %lu\n", i, j, memory_instructions_info[i][j].info.read_status.last_stride);
 
                 if(memory_instructions_info[i][j].info.read2.status != LEARN){
                     read2_accesses += memory_instructions_info[i][j].info.read2.count;
