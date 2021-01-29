@@ -105,7 +105,7 @@ void allocate_cache(CacheCell ***memory_instructions_info) {
     return;
 }
 void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
-    uint64_t stride = abs(address - memory_access_info->last_address);
+    uint64_t stride = labs(address - memory_access_info->last_address);
     memory_access_info->last_address = address;
     memory_access_info->stride = stride;
     memory_access_info->status = status_state_machine->update(stride);
