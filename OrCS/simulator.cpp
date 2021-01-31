@@ -129,7 +129,6 @@ int main(int argc, char **argv) {
             }
 
             if (!cache_miss) {
-
                 if ( is_read ) {
                     if (instruction_info->read.status == LEARN) {
                         instruction_info->read.first_address = read_address;
@@ -150,6 +149,7 @@ int main(int argc, char **argv) {
                     instruction_info->read.count++;
  
                     total_memory_accesses++;
+                    // updateMemoryInfo(&(instruction_info->read), read_address, &(instruction_info->read_status), &partially_steady_accesses, &total_memory_accesses);
                 }
                 
                 if ( is_read2 ) {
@@ -172,6 +172,7 @@ int main(int argc, char **argv) {
                     instruction_info->read2.count++;
                 
                     total_memory_accesses++;
+                    // updateMemoryInfo(&(instruction_info->read2), read2_address, &(instruction_info->read2_status), &partially_steady_accesses, &total_memory_accesses);
                 }
 
                 if ( is_write ) {
@@ -194,6 +195,7 @@ int main(int argc, char **argv) {
                     instruction_info->write.count++;
 
                     total_memory_accesses++;
+                    // updateMemoryInfo(&(instruction_info->write), write_address, &(instruction_info->write_status), &partially_steady_accesses, &total_memory_accesses);
                 }
 
                 if (instruction_info->instruction.status == LEARN) {
