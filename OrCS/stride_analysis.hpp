@@ -85,9 +85,9 @@ struct CacheCell {
 };
 
 #define ASSOCIATIVITY 4
-#define SETS 18
-#define TAG 42
-typedef union { // Union para interpretar um endereço de 64 bits como o endereço de uma cache conjunto associativo com 2^18 conjuntos e 8 vias
+#define SETS 17
+#define TAG 43
+typedef union { // Union para interpretar um endereço de 64 bits como o endereço de uma cache conjunto associativo com 2^SETS conjuntos e 2^ASSOCIATIVITY vias
     uint64_t opcode_address;
     struct {
         uint64_t offset:ASSOCIATIVITY;
