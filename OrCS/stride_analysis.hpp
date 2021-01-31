@@ -2,6 +2,8 @@
 #include <stdlib.h>     /* malloc, free, realloc, abs */
 #include <inttypes.h>
 
+
+//////////// Código associado ao status ////////////
 enum status_t {
     LEARN,
     STEADY,
@@ -54,6 +56,7 @@ class StatusMachine {
         }
 };
 
+//////////// Mecanismo para analise dos strides ////////////
 class MemoryAccessInfo {
     public:
         uint64_t first_address = 0;
@@ -79,31 +82,6 @@ class MemoryInstructionInfo {
 
 };
 
-struct CacheCell {
-    u_int64_t tag;
-    MemoryInstructionInfo info;
-};
-
-#define ASSOCIATIVITY 4
-#define SETS 17
-#define TAG 43
-typedef union { // Union para interpretar um endereço de 64 bits como o endereço de uma cache conjunto associativo com 2^SETS conjuntos e 2^ASSOCIATIVITY vias
-    uint64_t opcode_address;
-    struct {
-        uint64_t offset:ASSOCIATIVITY;
-        uint64_t set:SETS;
-        uint64_t tag:TAG;
-    } cache;
-} instruction_address;
-
-void allocate_cache(CacheCell ***memory_instructions_info) {
-    (*memory_instructions_info) = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << SETS));
-    for (uint64_t i = 0; i < (2 << SETS); i++) {
-        (*memory_instructions_info)[i] = (CacheCell*) malloc(sizeof(CacheCell) * 2 << ASSOCIATIVITY);
-        (*memory_instructions_info)[i]->tag = 0;
-    }
-    return;
-}
 void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
     uint64_t stride = labs(address - memory_access_info->last_address);
     memory_access_info->last_address = address;
@@ -125,4 +103,32 @@ MemoryInstructionInfo *search_instruction_info(uint64_t opcode_address, MemoryIn
         }
     }
     return NULL;
+}
+
+//////////// Mecanismo para guardar as informações obtidas, evitando o baixo desempenho de repetidos mallocs ////////////
+#define ASSOCIATIVITY 3
+#define SETS 18
+#define TAG 43
+// Union para interpretar um endereço de 64 bits como o endereço de uma cache conjunto associativo com 2^SETS conjuntos e 2^ASSOCIATIVITY vias
+typedef union {
+    uint64_t opcode_address;
+    struct {
+        uint64_t offset:ASSOCIATIVITY;
+        uint64_t set:SETS;
+        uint64_t tag:TAG;
+    } cache;
+} instruction_address;
+
+struct CacheCell {
+    u_int64_t tag;
+    MemoryInstructionInfo info;
+};
+
+void allocate_cache(CacheCell ***memory_instructions_info) {
+    (*memory_instructions_info) = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << SETS));
+    for (uint64_t i = 0; i < (2 << SETS); i++) {
+        (*memory_instructions_info)[i] = (CacheCell*) malloc(sizeof(CacheCell) * 2 << ASSOCIATIVITY);
+        (*memory_instructions_info)[i]->tag = 0;
+    }
+    return;
 }

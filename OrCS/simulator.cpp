@@ -148,9 +148,7 @@ int main(int argc, char **argv) {
                     }
 
                     instruction_info->read.count++;
-                    // if(instruction_info->read_status.current_status == STEADY)
-                    //     partially_steady_accesses++;
-
+ 
                     total_memory_accesses++;
                 }
                 
@@ -159,7 +157,6 @@ int main(int argc, char **argv) {
                         instruction_info->read2.first_address = read2_address;
                         instruction_info->read2.last_address = read2_address;
                         instruction_info->read2.status = instruction_info->read2_status.update(0);
-
                         
                     } else {
                         updateAccessInfo(
@@ -173,8 +170,6 @@ int main(int argc, char **argv) {
                     }
 
                     instruction_info->read2.count++;
-                    // if(instruction_info->read2_status.current_status == STEADY)
-                    //     partially_steady_accesses++;
                 
                     total_memory_accesses++;
                 }
@@ -197,8 +192,6 @@ int main(int argc, char **argv) {
                     }
 
                     instruction_info->write.count++;
-                    // if(instruction_info->write_status.current_status == STEADY)
-                    //     partially_steady_accesses++;
 
                     total_memory_accesses++;
                 }
@@ -252,8 +245,6 @@ int main(int argc, char **argv) {
                 }
 
                 instruction_info->count++;
-                // if(instruction_info->status.current_status == STEADY)
-                //     partially_steady_instructions++;
 
                 memory_instructions_analysed++;
             }
@@ -282,8 +273,6 @@ int main(int argc, char **argv) {
                     }
                 }
                 
-                printf("At read indices %lu and %lu stride was %lu\n", i, j, memory_instructions_info[i][j].info.read_status.last_stride);
-
                 if(memory_instructions_info[i][j].info.read2.status != LEARN){
                     read2_accesses += memory_instructions_info[i][j].info.read2.count;
                     if (memory_instructions_info[i][j].info.read2.status == STEADY){
