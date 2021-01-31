@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
         is_write = orcs_engine.trace_reader->current_instruction->is_write;
         
         if ( is_read || is_read2 || is_write ) { // É uma instrução de memória 
-
+            print("%d %d %d\n", is_read || is_read2 || is_write);
             current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
             read_address = orcs_engine.trace_reader->current_instruction->read_address;
             read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
@@ -145,8 +145,8 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read_status.current_status == STEADY)
                             partially_steady_accesses++;
-                            
-                        instruction_info->read.count = instruction_info->read.count + 1;
+
+                        instruction_info->read.count++;
                     }
  
                     total_memory_accesses++;
@@ -170,7 +170,7 @@ int main(int argc, char **argv) {
                         if(instruction_info->read2_status.current_status == STEADY)
                             partially_steady_accesses++;
                         
-                        instruction_info->read2.count = instruction_info->read2.count + 1;
+                        instruction_info->read2.count++;
                     
                     }
 
@@ -196,7 +196,7 @@ int main(int argc, char **argv) {
                         if(instruction_info->write_status.current_status == STEADY)
                             partially_steady_accesses++;
                     
-                        instruction_info->write.count = instruction_info->write.count + 1;
+                        instruction_info->write.count++;
                     }
 
                     total_memory_accesses++;
@@ -252,7 +252,7 @@ int main(int argc, char **argv) {
                     if(instruction_info->status.current_status == STEADY)
                         partially_steady_instructions++;
                 
-                    instruction_info->count = instruction_info->count + 1;
+                    instruction_info->count++;
                     
                 }
 
@@ -299,7 +299,6 @@ int main(int argc, char **argv) {
            
                 if(memory_instructions_info[i][j].info.instruction.status != LEARN){
                     memory_instructions_counted += memory_instructions_info[i][j].info.count;
-                    printf("%lu\n", memory_instructions_info[i][j].info.count);
                     if (memory_instructions_info[i][j].info.instruction.status == STEADY){
                         integrally_steady_instructions += memory_instructions_info[i][j].info.count;
                     }
