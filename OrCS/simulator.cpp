@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
         is_write = orcs_engine.trace_reader->current_instruction->is_write;
         
         if ( is_read || is_read2 || is_write ) { // É uma instrução de memória 
-            print("%d %d %d\n", is_read || is_read2 || is_write);
+            printf("%d %d %d\n", is_read || is_read2 || is_write);
             current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
             read_address = orcs_engine.trace_reader->current_instruction->read_address;
             read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
