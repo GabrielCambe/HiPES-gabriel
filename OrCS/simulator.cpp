@@ -107,7 +107,6 @@ int main(int argc, char **argv) {
         is_write = orcs_engine.trace_reader->current_instruction->is_write;
         
         if ( is_read || is_read2 || is_write ) { // É uma instrução de memória 
-            printf("%d %d %d\n", is_read, is_read2, is_write);
             current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
             read_address = orcs_engine.trace_reader->current_instruction->read_address;
             read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
@@ -151,6 +150,25 @@ int main(int argc, char **argv) {
  
                     total_memory_accesses++;
                     // updateMemoryInfo(&(instruction_info->read), read_address, &(instruction_info->read_status), &partially_steady_accesses, &total_memory_accesses);
+
+                    if (instruction_info->instruction.status == LEARN) {
+                        instruction_info->instruction.first_address = read_address;
+                        instruction_info->instruction.last_address = read_address;
+                        instruction_info->instruction.status = instruction_info->status.update(0);
+                        instruction_info->count = 1;
+                    
+                    } else {
+                        updateAccessInfo(
+                            &(instruction_info->instruction),
+                            read_address,
+                            &(instruction_info->status)
+                        );
+                        
+                        if(instruction_info->status.current_status == STEADY)
+                            partially_steady_instructions++;
+                    
+                        instruction_info->count++;                        
+                    }
                 }
                 
                 if ( is_read2 ) {
@@ -177,6 +195,25 @@ int main(int argc, char **argv) {
                 
                     total_memory_accesses++;
                     // updateMemoryInfo(&(instruction_info->read2), read2_address, &(instruction_info->read2_status), &partially_steady_accesses, &total_memory_accesses);
+
+                    if (instruction_info->instruction.status == LEARN) {
+                        instruction_info->instruction.first_address = read2_address;
+                        instruction_info->instruction.last_address = read2_address;
+                        instruction_info->instruction.status = instruction_info->status.update(0);
+                        instruction_info->count = 1;
+                    
+                    } else {
+                        updateAccessInfo(
+                            &(instruction_info->instruction),
+                            read2_address,
+                            &(instruction_info->status)
+                        );
+
+                        if(instruction_info->status.current_status == STEADY)
+                            partially_steady_instructions++;
+                    
+                        instruction_info->count++;                        
+                    }
                 }
 
                 if ( is_write ) {
@@ -201,59 +238,26 @@ int main(int argc, char **argv) {
 
                     total_memory_accesses++;
                     // updateMemoryInfo(&(instruction_info->write), write_address, &(instruction_info->write_status), &partially_steady_accesses, &total_memory_accesses);
-                }
 
-                if (instruction_info->instruction.status == LEARN) {
-                    if ( is_read ) {                        
-                        instruction_info->instruction.first_address = read_address;
-                        instruction_info->instruction.last_address = read_address;
-                        instruction_info->instruction.status = instruction_info->status.update(0);
-                    }
-
-                    if ( is_read2 ) {
-                        instruction_info->instruction.first_address = read2_address;
-                        instruction_info->instruction.last_address = read2_address;
-                        instruction_info->instruction.status = instruction_info->status.update(0);
-                    }
-
-                    if ( is_write ) {
+                    if (instruction_info->instruction.status == LEARN) {
                         instruction_info->instruction.first_address = write_address;
                         instruction_info->instruction.last_address = write_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                    }
 
-                    instruction_info->count = 1;
-                
-                } else {
-                    if ( is_read ) {
-                        updateAccessInfo(
-                            &(instruction_info->instruction),
-                            read_address,
-                            &(instruction_info->status)
-                        );
-                    }
-
-                    if ( is_read2 ) {
-                        updateAccessInfo(
-                            &(instruction_info->instruction),
-                            read2_address,
-                            &(instruction_info->status)
-                        );
-                    }
-
-                    if ( is_write ) {
+                        instruction_info->count = 1;
+                    
+                    } else {
                         updateAccessInfo(
                             &(instruction_info->instruction),
                             write_address,
                             &(instruction_info->status)
                         );
+                        
+                        if(instruction_info->status.current_status == STEADY)
+                            partially_steady_instructions++;
+                    
+                        instruction_info->count++;                        
                     }
-                    
-                    if(instruction_info->status.current_status == STEADY)
-                        partially_steady_instructions++;
-                
-                    instruction_info->count++;
-                    
                 }
 
                 memory_instructions_analysed++;
