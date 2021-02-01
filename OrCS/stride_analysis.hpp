@@ -59,36 +59,21 @@ class StatusMachine {
 //////////// Mecanismo para analise dos strides ////////////
 class MemoryAccessInfo {
     public:
-        uint64_t first_address;
-        uint64_t last_address;
-        int64_t stride;
-        status_t status;
-        uint64_t count;
-    
-    MemoryAccessInfo() {
-        first_address = 0;
-        last_address = 0;
-        stride = 0;
-        status = LEARN;
-        count = 0;
-    }
+        uint64_t first_address = 0;
+        uint64_t last_address = 0;
+        int64_t stride = 0;
+        status_t status = LEARN;
+        uint64_t count = 0;
 
-    void updateAccessInfo(uint64_t address, StatusMachine *status_state_machine) {
-        int64_t stride = address - last_address;
-        last_address = address;
-        stride = stride;
-        status = status_state_machine->update(stride);
-        return;
-    }
 };
 
-// void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
-//     int64_t stride = address - memory_access_info->last_address;
-//     memory_access_info->last_address = address;
-//     memory_access_info->stride = stride;
-//     memory_access_info->status = status_state_machine->update(stride);
-//     return;
-// }
+void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
+    int64_t stride = address - memory_access_info->last_address;
+    memory_access_info->last_address = address;
+    memory_access_info->stride = stride;
+    memory_access_info->status = status_state_machine->update(stride);
+    return;
+}
 
 class MemoryInstructionInfo {
     public:
@@ -101,20 +86,8 @@ class MemoryInstructionInfo {
         StatusMachine write_status;
         MemoryAccessInfo instruction;
         StatusMachine status;
-        // uint64_t count;
-
-    MemoryInstructionInfo() {
-        opcode_address = 0;
-        read = MemoryAccessInfo();
-        read_status = StatusMachine();
-        read2 = MemoryAccessInfo();
-        read2_status = StatusMachine();
-        write = MemoryAccessInfo();
-        write_status = StatusMachine();
-        instruction = MemoryAccessInfo();
-        status = StatusMachine();
         // uint64_t count = 0;
-    }
+
 };
 
 void updateMemoryInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine, uint64_t* partially_steady_accesses, uint64_t* total_memory_accesses) {
@@ -124,7 +97,8 @@ void updateMemoryInfo(MemoryAccessInfo *memory_access_info, uint64_t address, St
         memory_access_info->status = status_state_machine->update(0);
 
     } else {
-        memory_access_info->updateAccessInfo(
+        updateAccessInfo(
+            memory_access_info,
             address,
             status_state_machine
 
@@ -170,23 +144,16 @@ typedef union {
     } cache;
 } instruction_address;
 
-class CacheCell {
-    public:
-        u_int64_t tag;
-        MemoryInstructionInfo info;
-    
-    CacheCell() {
-        tag = 0;
-        info = MemoryInstructionInfo();
-    }
+struct CacheCell {
+    u_int64_t tag;
+    MemoryInstructionInfo info;
 };
 
 void allocate_cache(CacheCell ***memory_instructions_info) {
     (*memory_instructions_info) = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << SETS));
     for (uint64_t i = 0; i < (2 << SETS); i++) {
         (*memory_instructions_info)[i] = (CacheCell*) malloc(sizeof(CacheCell) * 2 << ASSOCIATIVITY);
-        for (uint64_t j = 0; j < (2 << ASSOCIATIVITY); j++)
-            (*memory_instructions_info)[i][j] = CacheCell(); 
+        (*memory_instructions_info)[i]->tag = 0;
     }
     return;
 }
