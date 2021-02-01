@@ -116,6 +116,10 @@ int main(int argc, char **argv) {
             instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
             tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
 
+            if(current.cache.tag == 0){
+                printf("ERROR TAG==0!\n");
+            }
+
             if ((*tag) == 0){ // O campo da cache não foi inicializado
                 (*tag) = current.cache.tag;
                 instruction_info->opcode_address = current.opcode_address;
@@ -246,7 +250,8 @@ int main(int argc, char **argv) {
                 if(instruction_info->status.current_status == STEADY)
                     partially_steady_instructions++;
 
-                (instruction_info->instruction.count)++;                        
+                instruction_info->instruction.count = instruction_info->instruction.count + 1;
+
                 memory_instructions_analysed++;                    
             }
             cache_hit = false;
@@ -290,7 +295,7 @@ int main(int argc, char **argv) {
            
                 if(memory_instructions_info[i][j].info.instruction.status != LEARN){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
-                    if (memory_instructions_info[i][j].info.instruction.count) {
+                    if (memory_instructions_info[i][j].info.instruction.count < 0) {
                         printf("ERROR!\n");
                     }
                     if (memory_instructions_info[i][j].info.instruction.status == STEADY){
