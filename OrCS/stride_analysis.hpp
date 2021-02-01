@@ -57,13 +57,21 @@ class StatusMachine {
 };
 
 //////////// Mecanismo para analise dos strides ////////////
-struct MemoryAccessInfo {
-    // public:
-        uint64_t first_address = 0;
-        uint64_t last_address = 0;
-        int64_t stride = 0;
-        status_t status = LEARN;
-        uint64_t count = 0;
+class MemoryAccessInfo {
+    public:
+        uint64_t first_address;
+        uint64_t last_address;
+        int64_t stride;
+        status_t status;
+        uint64_t count;
+    
+    MemoryAccessInfo() {
+        first_address = 0;
+        last_address = 0;
+        stride = 0;
+        status = LEARN;
+        count = 0;
+    }
 
 };
 
@@ -75,8 +83,8 @@ void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, St
     return;
 }
 
-struct MemoryInstructionInfo {
-    // public:
+class MemoryInstructionInfo {
+    public:
         uint64_t opcode_address;
         MemoryAccessInfo read;
         StatusMachine read_status;
@@ -86,7 +94,20 @@ struct MemoryInstructionInfo {
         StatusMachine write_status;
         MemoryAccessInfo instruction;
         StatusMachine status;
+        // uint64_t count;
+
+    MemoryInstructionInfo() {
+        uint64_t opcode_address;
+        MemoryAccessInfo read = MemoryAccessInfo();
+        StatusMachine read_status = StatusMachine();
+        MemoryAccessInfo read2 = MemoryAccessInfo();
+        StatusMachine read2_status = StatusMachine();
+        MemoryAccessInfo write = MemoryAccessInfo();
+        StatusMachine write_status = StatusMachine();
+        MemoryAccessInfo instruction = MemoryAccessInfo();
+        StatusMachine status = StatusMachine();
         // uint64_t count = 0;
+    }
 };
 
 void updateMemoryInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine, uint64_t* partially_steady_accesses, uint64_t* total_memory_accesses) {
@@ -143,16 +164,23 @@ typedef union {
     } cache;
 } instruction_address;
 
-struct CacheCell {
-    u_int64_t tag;
-    MemoryInstructionInfo info;
+class CacheCell {
+    public:
+        u_int64_t tag;
+        MemoryInstructionInfo info;
+    
+    CacheCell() {
+        tag = 0;
+        info = MemoryInstructionInfo();
+    }
 };
 
 void allocate_cache(CacheCell ***memory_instructions_info) {
     (*memory_instructions_info) = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << SETS));
     for (uint64_t i = 0; i < (2 << SETS); i++) {
         (*memory_instructions_info)[i] = (CacheCell*) malloc(sizeof(CacheCell) * 2 << ASSOCIATIVITY);
-        (*memory_instructions_info)[i]->tag = 0;
+        for (uint64_t j = 0; j < (2 << ASSOCIATIVITY); j++)
+            (*memory_instructions_info)[i][j] = CacheCell(); 
     }
     return;
 }

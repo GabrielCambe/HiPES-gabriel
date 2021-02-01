@@ -258,7 +258,7 @@ int main(int argc, char **argv) {
     uint64_t integrally_steady_accesses = 0;
 
     for (uint64_t i = 0; i < (2 << SETS); i++){
-        for (uint64_t j = 0; j < ASSOCIATIVITY; j++){
+        for (uint64_t j = 0; j < (2 << ASSOCIATIVITY); j++){
             if (memory_instructions_info[i][j].tag != 0) {
                 if(memory_instructions_info[i][j].info.read.status != LEARN){
                     read_accesses += memory_instructions_info[i][j].info.read.count;
