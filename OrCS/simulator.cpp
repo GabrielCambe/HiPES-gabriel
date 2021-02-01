@@ -285,8 +285,8 @@ int main(int argc, char **argv) {
                     }
                 }
            
+                memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
                 if(memory_instructions_info[i][j].info.instruction.status != LEARN){
-                    memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
                     if (memory_instructions_info[i][j].info.instruction.status == STEADY){
                         integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
                     }
