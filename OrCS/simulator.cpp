@@ -134,8 +134,7 @@ int main(int argc, char **argv) {
                         instruction_info->read.status = instruction_info->read_status.update(0);
 
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->read),
+                        instruction_info->read.updateAccessInfo(
                             read_address,
                             &(instruction_info->read_status)
                         );
@@ -146,7 +145,6 @@ int main(int argc, char **argv) {
  
                     instruction_info->read.count++;
                     total_memory_accesses++;
-                    // updateMemoryInfo(&(instruction_info->read), read_address, &(instruction_info->read_status), &partially_steady_accesses, &total_memory_accesses);
 
                     if (instruction_info->status.current_status == LEARN) {
                         instruction_info->instruction.first_address = read_address;
@@ -155,8 +153,7 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.count = 1;
                     
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->instruction),
+                        instruction_info->instruction.updateAccessInfo(
                             read_address,
                             &(instruction_info->status)
                         );
@@ -170,8 +167,7 @@ int main(int argc, char **argv) {
                         instruction_info->read2.status = instruction_info->read2_status.update(0);
                         
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->read2),
+                        instruction_info->read2.updateAccessInfo(
                             read2_address,
                             &(instruction_info->read2_status)
                         );
@@ -179,11 +175,9 @@ int main(int argc, char **argv) {
                         if(instruction_info->read2_status.current_status == STEADY)
                             partially_steady_accesses++;
                     }
-
                 
                     instruction_info->read2.count++;
                     total_memory_accesses++;
-                    // updateMemoryInfo(&(instruction_info->read2), read2_address, &(instruction_info->read2_status), &partially_steady_accesses, &total_memory_accesses);
 
                     if (instruction_info->status.current_status == LEARN) {
                         instruction_info->instruction.first_address = read2_address;
@@ -192,8 +186,7 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.count = 1;
                     
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->instruction),
+                        instruction_info->instruction.updateAccessInfo(
                             read2_address,
                             &(instruction_info->status)
                         );
@@ -207,8 +200,7 @@ int main(int argc, char **argv) {
                         instruction_info->write.status = instruction_info->write_status.update(0);
                     
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->write),
+                        instruction_info->write.updateAccessInfo(
                             write_address,
                             &(instruction_info->write_status)
                         );
@@ -219,7 +211,6 @@ int main(int argc, char **argv) {
 
                     instruction_info->write.count++;
                     total_memory_accesses++;
-                    // updateMemoryInfo(&(instruction_info->write), write_address, &(instruction_info->write_status), &partially_steady_accesses, &total_memory_accesses);
 
                     if (instruction_info->status.current_status == LEARN) {
                         instruction_info->instruction.first_address = write_address;
@@ -228,8 +219,7 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.count = 1;
                     
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->instruction),
+                        instruction_info->instruction.updateAccessInfo(
                             write_address,
                             &(instruction_info->status)
                         );    

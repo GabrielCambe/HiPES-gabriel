@@ -73,15 +73,23 @@ class MemoryAccessInfo {
         count = 0;
     }
 
-};
-
-void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
-    int64_t stride = address - memory_access_info->last_address;
-    memory_access_info->last_address = address;
-    memory_access_info->stride = stride;
-    memory_access_info->status = status_state_machine->update(stride);
+    void updateAccessInfo(uint64_t address, StatusMachine *status_state_machine) {
+    int64_t stride = address - last_address;
+    last_address = address;
+    stride = stride;
+    status = status_state_machine->update(stride);
     return;
 }
+
+};
+
+// void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
+//     int64_t stride = address - memory_access_info->last_address;
+//     memory_access_info->last_address = address;
+//     memory_access_info->stride = stride;
+//     memory_access_info->status = status_state_machine->update(stride);
+//     return;
+// }
 
 class MemoryInstructionInfo {
     public:
@@ -108,6 +116,10 @@ class MemoryInstructionInfo {
         StatusMachine status = StatusMachine();
         // uint64_t count = 0;
     }
+
+    // void updateMemoryInfo() {
+    // }
+
 };
 
 void updateMemoryInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine, uint64_t* partially_steady_accesses, uint64_t* total_memory_accesses) {
@@ -117,8 +129,7 @@ void updateMemoryInfo(MemoryAccessInfo *memory_access_info, uint64_t address, St
         memory_access_info->status = status_state_machine->update(0);
 
     } else {
-        updateAccessInfo(
-            memory_access_info,
+        memory_access_info->updateAccessInfo(
             address,
             status_state_machine
 
