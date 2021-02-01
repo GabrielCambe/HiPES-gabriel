@@ -90,6 +90,7 @@ int main(int argc, char **argv) {
 
     uint64_t memory_instructions_fetched = 0;
     uint64_t memory_instructions_analysed = 0;
+    uint64_t memory_instructions_counted = 0;
 
     uint64_t total_memory_accesses = 0; // individual accesses from instructions
     uint64_t partially_steady_accesses = 0;
@@ -243,7 +244,8 @@ int main(int argc, char **argv) {
                 if(instruction_info->status.current_status == STEADY)
                     partially_steady_instructions++;
 
-                (instruction_info->instruction.count)++;                        
+                (instruction_info->instruction.count)++;
+                memory_instructions_counted++;                  
                 memory_instructions_analysed++;                    
             }
             cache_hit = false;
@@ -257,7 +259,7 @@ int main(int argc, char **argv) {
     uint64_t read_accesses = 0;
     uint64_t read2_accesses = 0;
     uint64_t write_accesses = 0;
-    uint64_t memory_instructions_counted = 0;
+    // uint64_t memory_instructions_counted = 0;
     uint64_t integrally_steady_instructions = 0;
     uint64_t integrally_steady_accesses = 0;
 
@@ -285,8 +287,11 @@ int main(int argc, char **argv) {
                     }
                 }
            
-                memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
                 if(memory_instructions_info[i][j].info.instruction.status != LEARN){
+                    // memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
+                    if (memory_instructions_info[i][j].info.instruction.count) {
+                        printf("ERROR!\n");
+                    }
                     if (memory_instructions_info[i][j].info.instruction.status == STEADY){
                         integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
                     }
