@@ -151,11 +151,11 @@ int main(int argc, char **argv) {
                     total_memory_accesses++;
                     // updateMemoryInfo(&(instruction_info->read), read_address, &(instruction_info->read_status), &partially_steady_accesses, &total_memory_accesses);
 
-                    if (instruction_info->instruction.status == LEARN) {
+                    if (instruction_info->status.current_status == LEARN) {
                         instruction_info->instruction.first_address = read_address;
                         instruction_info->instruction.last_address = read_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        instruction_info->count = 1;
+                        instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
@@ -163,11 +163,6 @@ int main(int argc, char **argv) {
                             read_address,
                             &(instruction_info->status)
                         );
-                        
-                        if(instruction_info->status.current_status == STEADY)
-                            partially_steady_instructions++;
-                    
-                        instruction_info->count++;                        
                     }
                 }
                 
@@ -196,11 +191,11 @@ int main(int argc, char **argv) {
                     total_memory_accesses++;
                     // updateMemoryInfo(&(instruction_info->read2), read2_address, &(instruction_info->read2_status), &partially_steady_accesses, &total_memory_accesses);
 
-                    if (instruction_info->instruction.status == LEARN) {
+                    if (instruction_info->status.current_status == LEARN) {
                         instruction_info->instruction.first_address = read2_address;
                         instruction_info->instruction.last_address = read2_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        instruction_info->count = 1;
+                        instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
@@ -209,10 +204,6 @@ int main(int argc, char **argv) {
                             &(instruction_info->status)
                         );
 
-                        if(instruction_info->status.current_status == STEADY)
-                            partially_steady_instructions++;
-                    
-                        instruction_info->count++;                        
                     }
                 }
 
@@ -239,12 +230,11 @@ int main(int argc, char **argv) {
                     total_memory_accesses++;
                     // updateMemoryInfo(&(instruction_info->write), write_address, &(instruction_info->write_status), &partially_steady_accesses, &total_memory_accesses);
 
-                    if (instruction_info->instruction.status == LEARN) {
+                    if (instruction_info->status.current_status == LEARN) {
                         instruction_info->instruction.first_address = write_address;
                         instruction_info->instruction.last_address = write_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-
-                        instruction_info->count = 1;
+                        instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
@@ -253,14 +243,15 @@ int main(int argc, char **argv) {
                             &(instruction_info->status)
                         );
                         
-                        if(instruction_info->status.current_status == STEADY)
-                            partially_steady_instructions++;
-                    
-                        instruction_info->count++;                        
                     }
                 }
 
                 memory_instructions_analysed++;
+
+                if(instruction_info->status.current_status == STEADY)
+                    partially_steady_instructions++;
+                    
+                instruction_info->instruction.count++;                        
             }
             cache_miss = false;
         }
@@ -302,9 +293,9 @@ int main(int argc, char **argv) {
                 }
            
                 if(memory_instructions_info[i][j].info.instruction.status != LEARN){
-                    memory_instructions_counted += memory_instructions_info[i][j].info.count;
+                    memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
                     if (memory_instructions_info[i][j].info.instruction.status == STEADY){
-                        integrally_steady_instructions += memory_instructions_info[i][j].info.count;
+                        integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
                     }
                     
                 }

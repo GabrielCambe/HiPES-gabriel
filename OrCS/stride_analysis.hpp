@@ -28,20 +28,20 @@ void display_status(status_t status) {
 
 class StatusMachine {
     public:
-        unsigned int first_access = 1;
+        bool first_access = true;
         status_t current_status = LEARN;
-        uint64_t last_stride;
+        int64_t last_stride;
 
         StatusMachine(){}
 
-        status_t update(uint64_t stride) {
+        status_t update(int64_t stride) {
             if (current_status == LEARN){
                 current_status = STEADY;
             }
             else if (current_status == STEADY){
-                if ((first_access == 1) || (last_stride == stride)){
+                if (first_access || (last_stride == stride)){
                     current_status = STEADY;
-                    first_access = 0;
+                    first_access = false;
                 }
                 else {
                     current_status = NON_LINEAR; 
@@ -61,14 +61,14 @@ class MemoryAccessInfo {
     public:
         uint64_t first_address = 0;
         uint64_t last_address = 0;
-        uint64_t stride = 0;
+        int64_t stride = 0;
         status_t status = LEARN;
         uint64_t count = 0;
 
 };
 
 void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
-    uint64_t stride = labs(address - memory_access_info->last_address);
+    int64_t stride = address - memory_access_info->last_address;
     memory_access_info->last_address = address;
     memory_access_info->stride = stride;
     memory_access_info->status = status_state_machine->update(stride);
@@ -86,7 +86,7 @@ class MemoryInstructionInfo {
         StatusMachine write_status;
         MemoryAccessInfo instruction;
         StatusMachine status;
-        uint64_t count = 0;
+        // uint64_t count = 0;
 
 };
 
