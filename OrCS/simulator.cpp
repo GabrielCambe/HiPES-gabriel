@@ -155,7 +155,7 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = read_address;
                         instruction_info->instruction.last_address = read_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        instruction_info->instruction.count = 1;
+                        // instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
@@ -195,7 +195,7 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = read2_address;
                         instruction_info->instruction.last_address = read2_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        instruction_info->instruction.count = 1;
+                        // instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
@@ -234,7 +234,7 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = write_address;
                         instruction_info->instruction.last_address = write_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        instruction_info->instruction.count = 1;
+                        // instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
