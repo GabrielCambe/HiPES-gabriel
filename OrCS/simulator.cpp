@@ -143,15 +143,15 @@ int main(int argc, char **argv) {
                             &(instruction_info->read_status)
                         );
 
+                        instruction_info->read.count++;
+
                         if(instruction_info->read_status.current_status == STEADY)
                             partially_steady_accesses++;
-
-                        instruction_info->read.count++;
                     }
  
                     total_memory_accesses++;
 
-                    if (instruction_info->status.current_status == LEARN) {
+                    if (instruction_info->instruction.status == LEARN) {
                         instruction_info->instruction.first_address = read_address;
                         instruction_info->instruction.last_address = read_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
@@ -180,15 +180,15 @@ int main(int argc, char **argv) {
                             &(instruction_info->read2_status)
                         );
 
+                        instruction_info->read2.count++;
+
                         if(instruction_info->read2_status.current_status == STEADY)
                             partially_steady_accesses++;
-    
-                        instruction_info->read2.count++;
                     }
 
                     total_memory_accesses++;
 
-                    if (instruction_info->status.current_status == LEARN) {
+                    if (instruction_info->instruction.status == LEARN) {
                         instruction_info->instruction.first_address = read2_address;
                         instruction_info->instruction.last_address = read2_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
@@ -217,15 +217,15 @@ int main(int argc, char **argv) {
                             &(instruction_info->write_status)
                         );
 
+                        instruction_info->write.count++;
+
                         if(instruction_info->write_status.current_status == STEADY)
                             partially_steady_accesses++;
-
-                        instruction_info->write.count++;
                     }
 
                     total_memory_accesses++;
 
-                    if (instruction_info->status.current_status == LEARN) {
+                    if (instruction_info->instruction.status == LEARN) {
                         instruction_info->instruction.first_address = write_address;
                         instruction_info->instruction.last_address = write_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
@@ -243,7 +243,7 @@ int main(int argc, char **argv) {
                 if(instruction_info->status.current_status == STEADY)
                     partially_steady_instructions++;
 
-                instruction_info->instruction.count++;                        
+                (instruction_info->instruction.count)++;                        
                 memory_instructions_analysed++;                    
             }
             cache_hit = false;

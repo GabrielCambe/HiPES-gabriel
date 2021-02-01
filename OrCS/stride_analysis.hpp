@@ -129,8 +129,8 @@ MemoryInstructionInfo *search_instruction_info(uint64_t opcode_address, MemoryIn
 }
 
 //////////// Mecanismo para guardar as informações obtidas, evitando o baixo desempenho de repetidos mallocs ////////////
-#define ASSOCIATIVITY 3
-#define SETS 18
+#define ASSOCIATIVITY 4
+#define SETS 17
 #define TAG 43
 // Union para interpretar um endereço de 64 bits como o endereço de uma cache conjunto associativo com 2^SETS conjuntos e 2^ASSOCIATIVITY vias
 typedef union {
@@ -150,7 +150,7 @@ struct CacheCell {
 void allocate_cache(CacheCell ***memory_instructions_info) {
     (*memory_instructions_info) = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << SETS));
     for (uint64_t i = 0; i < (2 << SETS); i++) {
-        (*memory_instructions_info)[i] = (CacheCell*) malloc(sizeof(CacheCell) * 2 << ASSOCIATIVITY);
+        (*memory_instructions_info)[i] = (CacheCell*) malloc(sizeof(CacheCell) * (2 << ASSOCIATIVITY));
         (*memory_instructions_info)[i]->tag = 0;
     }
     return;
