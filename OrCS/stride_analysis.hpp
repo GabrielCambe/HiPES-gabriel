@@ -104,18 +104,18 @@ class MemoryInstructionInfo {
         StatusMachine status;
         // uint64_t count;
 
-    MemoryInstructionInfo() {
-        uint64_t opcode_address;
-        MemoryAccessInfo read = MemoryAccessInfo();
-        StatusMachine read_status = StatusMachine();
-        MemoryAccessInfo read2 = MemoryAccessInfo();
-        StatusMachine read2_status = StatusMachine();
-        MemoryAccessInfo write = MemoryAccessInfo();
-        StatusMachine write_status = StatusMachine();
-        MemoryAccessInfo instruction = MemoryAccessInfo();
-        StatusMachine status = StatusMachine();
-        // uint64_t count = 0;
-    }
+    // MemoryInstructionInfo() {
+    //     uint64_t opcode_address;
+    //     MemoryAccessInfo read = MemoryAccessInfo();
+    //     StatusMachine read_status = StatusMachine();
+    //     MemoryAccessInfo read2 = MemoryAccessInfo();
+    //     StatusMachine read2_status = StatusMachine();
+    //     MemoryAccessInfo write = MemoryAccessInfo();
+    //     StatusMachine write_status = StatusMachine();
+    //     MemoryAccessInfo instruction = MemoryAccessInfo();
+    //     StatusMachine status = StatusMachine();
+    //     // uint64_t count = 0;
+    // }
 
     // void updateMemoryInfo() {
     // }
