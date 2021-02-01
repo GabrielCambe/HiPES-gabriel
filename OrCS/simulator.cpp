@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
     MemoryInstructionInfo *instruction_info = NULL;
     uint64_t* tag = NULL;
     uint64_t cache_conflicts = 0;
-    bool cache_miss = false;    
+    bool cache_hit = false;    
 
     uint64_t memory_instructions_fetched = 0;
     uint64_t memory_instructions_analysed = 0;
@@ -119,21 +119,19 @@ int main(int argc, char **argv) {
             if ((*tag) == 0){ // O campo da cache não foi inicializado
                 (*tag) = current.cache.tag;
                 instruction_info->opcode_address = current.opcode_address;
+                cache_hit = true;
 
             } else {
-                if ((*tag) != current.cache.tag) { // O campo foi inicializado e a tag corrente é diferente
+                if ((*tag) != current.cache.tag) // O campo foi inicializado e a tag corrente é diferente
                     cache_conflicts++;
-                    cache_miss = true;
-                }             
             }
 
-            if (!cache_miss) {
+            if (cache_hit) {
                 if ( is_read ) {
                     if (instruction_info->read.status == LEARN) {
                         instruction_info->read.first_address = read_address;
                         instruction_info->read.last_address = read_address;
                         instruction_info->read.status = instruction_info->read_status.update(0);
-                        instruction_info->read.count = 1;
 
                     } else {
                         updateAccessInfo(
@@ -144,10 +142,9 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read_status.current_status == STEADY)
                             partially_steady_accesses++;
-
-                        instruction_info->read.count++;
                     }
  
+                    instruction_info->read.count++;
                     total_memory_accesses++;
                     // updateMemoryInfo(&(instruction_info->read), read_address, &(instruction_info->read_status), &partially_steady_accesses, &total_memory_accesses);
 
@@ -155,7 +152,7 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = read_address;
                         instruction_info->instruction.last_address = read_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        // instruction_info->instruction.count = 1;
+                        instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
@@ -171,7 +168,6 @@ int main(int argc, char **argv) {
                         instruction_info->read2.first_address = read2_address;
                         instruction_info->read2.last_address = read2_address;
                         instruction_info->read2.status = instruction_info->read2_status.update(0);
-                        instruction_info->read2.count = 1;
                         
                     } else {
                         updateAccessInfo(
@@ -182,12 +178,10 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read2_status.current_status == STEADY)
                             partially_steady_accesses++;
-                        
-                        instruction_info->read2.count++;
-                    
                     }
 
                 
+                    instruction_info->read2.count++;
                     total_memory_accesses++;
                     // updateMemoryInfo(&(instruction_info->read2), read2_address, &(instruction_info->read2_status), &partially_steady_accesses, &total_memory_accesses);
 
@@ -195,7 +189,7 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = read2_address;
                         instruction_info->instruction.last_address = read2_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        // instruction_info->instruction.count = 1;
+                        instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
@@ -203,7 +197,6 @@ int main(int argc, char **argv) {
                             read2_address,
                             &(instruction_info->status)
                         );
-
                     }
                 }
 
@@ -212,7 +205,6 @@ int main(int argc, char **argv) {
                         instruction_info->write.first_address = write_address;
                         instruction_info->write.last_address = write_address;
                         instruction_info->write.status = instruction_info->write_status.update(0);
-                        instruction_info->write.count = 1;
                     
                     } else {
                         updateAccessInfo(
@@ -223,10 +215,9 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->write_status.current_status == STEADY)
                             partially_steady_accesses++;
-                    
-                        instruction_info->write.count++;
                     }
 
+                    instruction_info->write.count++;
                     total_memory_accesses++;
                     // updateMemoryInfo(&(instruction_info->write), write_address, &(instruction_info->write_status), &partially_steady_accesses, &total_memory_accesses);
 
@@ -234,26 +225,24 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = write_address;
                         instruction_info->instruction.last_address = write_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        // instruction_info->instruction.count = 1;
+                        instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
                             &(instruction_info->instruction),
                             write_address,
                             &(instruction_info->status)
-                        );
-                        
+                        );    
                     }
                 }
 
-                memory_instructions_analysed++;
-
                 if(instruction_info->status.current_status == STEADY)
                     partially_steady_instructions++;
-                    
+
                 instruction_info->instruction.count++;                        
+                memory_instructions_analysed++;                    
             }
-            cache_miss = false;
+            cache_hit = false;
         }
         // =============================================================================
     }
