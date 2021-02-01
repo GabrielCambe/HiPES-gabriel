@@ -74,13 +74,12 @@ class MemoryAccessInfo {
     }
 
     void updateAccessInfo(uint64_t address, StatusMachine *status_state_machine) {
-    int64_t stride = address - last_address;
-    last_address = address;
-    stride = stride;
-    status = status_state_machine->update(stride);
-    return;
-}
-
+        int64_t stride = address - last_address;
+        last_address = address;
+        stride = stride;
+        status = status_state_machine->update(stride);
+        return;
+    }
 };
 
 // void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
@@ -104,22 +103,18 @@ class MemoryInstructionInfo {
         StatusMachine status;
         // uint64_t count;
 
-    // MemoryInstructionInfo() {
-    //     uint64_t opcode_address;
-    //     MemoryAccessInfo read = MemoryAccessInfo();
-    //     StatusMachine read_status = StatusMachine();
-    //     MemoryAccessInfo read2 = MemoryAccessInfo();
-    //     StatusMachine read2_status = StatusMachine();
-    //     MemoryAccessInfo write = MemoryAccessInfo();
-    //     StatusMachine write_status = StatusMachine();
-    //     MemoryAccessInfo instruction = MemoryAccessInfo();
-    //     StatusMachine status = StatusMachine();
-    //     // uint64_t count = 0;
-    // }
-
-    // void updateMemoryInfo() {
-    // }
-
+    MemoryInstructionInfo() {
+        opcode_address = 0;
+        read = MemoryAccessInfo();
+        read_status = StatusMachine();
+        read2 = MemoryAccessInfo();
+        read2_status = StatusMachine();
+        write = MemoryAccessInfo();
+        write_status = StatusMachine();
+        instruction = MemoryAccessInfo();
+        status = StatusMachine();
+        // uint64_t count = 0;
+    }
 };
 
 void updateMemoryInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine, uint64_t* partially_steady_accesses, uint64_t* total_memory_accesses) {
