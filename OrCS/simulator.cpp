@@ -124,6 +124,8 @@ int main(int argc, char **argv) {
             } else {
                 if ((*tag) != current.cache.tag) // O campo foi inicializado e a tag corrente é diferente
                     cache_conflicts++;
+                else 
+                    cache_hit = true;
             }
 
             if (cache_hit) {

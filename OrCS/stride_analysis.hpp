@@ -28,13 +28,13 @@ void display_status(status_t status) {
 
 class StatusMachine {
     public:
-        bool first_access;
-        status_t current_status;
+        bool first_access = true;
+        status_t current_status = LEARN;
         int64_t last_stride;
 
         StatusMachine(){
-            first_access = true;
-            current_status = LEARN;
+            // first_access = true;
+            // current_status = LEARN;
         }
 
         status_t update(int64_t stride) {
@@ -57,15 +57,14 @@ class StatusMachine {
 };
 
 //////////// Mecanismo para analise dos strides ////////////
-class MemoryAccessInfo {
-    public:
+typedef struct {
+    // public:
         uint64_t first_address = 0;
         uint64_t last_address = 0;
         int64_t stride = 0;
         status_t status = LEARN;
         uint64_t count = 0;
-
-};
+}MemoryAccessInfo;
 
 void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
     int64_t stride = address - memory_access_info->last_address;
@@ -75,8 +74,8 @@ void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, St
     return;
 }
 
-class MemoryInstructionInfo {
-    public:
+typedef struct {
+    // public:
         uint64_t opcode_address;
         MemoryAccessInfo read;
         StatusMachine read_status;
@@ -87,8 +86,7 @@ class MemoryInstructionInfo {
         MemoryAccessInfo instruction;
         StatusMachine status;
         // uint64_t count = 0;
-
-};
+} MemoryInstructionInfo;
 
 void updateMemoryInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine, uint64_t* partially_steady_accesses, uint64_t* total_memory_accesses) {
     if (memory_access_info->status == LEARN) {
