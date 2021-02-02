@@ -120,7 +120,18 @@ int main(int argc, char **argv) {
                 (*tag) = current.cache.tag;
                 instruction_info->opcode_address = current.opcode_address;
                 cache_hit = true;
+
+                instruction_info->read.count = 0;
+                instruction_info->read.status = LEARN;
+                
+                instruction_info->read2.count = 0;
+                instruction_info->read2.status = LEARN;
+                
+                instruction_info->write.count = 0;
+                instruction_info->write.status = LEARN;
+                
                 instruction_info->instruction.count = 0;
+                instruction_info->instruction.status = LEARN;
 
             } else {
                 if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
@@ -147,7 +158,7 @@ int main(int argc, char **argv) {
 
                         instruction_info->read.count++;
 
-                        if(instruction_info->read_status.current_status == STEADY)
+                        if(instruction_info->read.status == STEADY)
                             partially_steady_accesses++;
                     }
  
@@ -183,7 +194,7 @@ int main(int argc, char **argv) {
 
                         instruction_info->read2.count++;
 
-                        if(instruction_info->read2_status.current_status == STEADY)
+                        if(instruction_info->read2.status == STEADY)
                             partially_steady_accesses++;
                     }
 
@@ -219,7 +230,7 @@ int main(int argc, char **argv) {
 
                         instruction_info->write.count++;
 
-                        if(instruction_info->write_status.current_status == STEADY)
+                        if(instruction_info->write.status == STEADY)
                             partially_steady_accesses++;
                     }
 
@@ -239,10 +250,10 @@ int main(int argc, char **argv) {
                     }
                 }
 
-                if(instruction_info->status.current_status == STEADY)
+                if(instruction_info->instruction.status == STEADY)
                     partially_steady_instructions++;
 
-                instruction_info->instruction.count = instruction_info->instruction.count + 1;
+                instruction_info->instruction.count++;
 
                 memory_instructions_analysed++;                    
             }
