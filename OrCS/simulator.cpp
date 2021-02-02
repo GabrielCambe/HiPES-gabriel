@@ -116,10 +116,6 @@ int main(int argc, char **argv) {
             instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
             tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
 
-            if(current.cache.tag == 0){
-                printf("ERROR TAG==0!\n");
-            }
-
             if ((*tag) == 0){ // O campo da cache não foi inicializado
                 (*tag) = current.cache.tag;
                 instruction_info->opcode_address = current.opcode_address;
@@ -129,7 +125,6 @@ int main(int argc, char **argv) {
             } else {
                 if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
                     cache_conflicts++;
-                    instruction_info->instruction.count = 0;
                 } else {
                     cache_hit = true;
                 } 
@@ -162,7 +157,6 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = read_address;
                         instruction_info->instruction.last_address = read_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
@@ -199,7 +193,6 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = read2_address;
                         instruction_info->instruction.last_address = read2_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
@@ -236,7 +229,6 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = write_address;
                         instruction_info->instruction.last_address = write_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        instruction_info->instruction.count = 1;
                     
                     } else {
                         updateAccessInfo(
