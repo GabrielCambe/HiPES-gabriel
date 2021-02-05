@@ -11,8 +11,8 @@ memory_instructions_fetched: 906444656
 memory_instructions_analysed: 898326339
 cache_conflicts: 8118317
 memory_instructions_counted: 898326339
-partially_steady_instructions: 461416117
-integrally_steady_instructions: 437776363
+partially_steady_instructions: 461562208
+integrally_steady_instructions: 437776312
 memory_accesses: 910741832
 read_accesses: 520496138
 read2_accesses: 56006

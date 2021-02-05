@@ -270,6 +270,7 @@ int main(int argc, char **argv) {
     uint64_t write_accesses = 0;
     uint64_t memory_instructions_counted = 0;
     uint64_t integrally_steady_instructions = 0;
+    uint64_t accesses_in_integrally_steady_instructions = 0;
     uint64_t integrally_steady_accesses = 0;
 
     for (uint64_t i = 0; i < (2 << SETS); i++){
@@ -299,6 +300,7 @@ int main(int argc, char **argv) {
                 if(memory_instructions_info[i][j].info.instruction.status != LEARN){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
                     if (memory_instructions_info[i][j].info.instruction.status == STEADY){
+                        accesses_in_integrally_steady_instructions += memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count;
                         integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
                     }
                     
@@ -315,6 +317,7 @@ int main(int argc, char **argv) {
     printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
     printf("partially_steady_instructions: %lu\n", partially_steady_instructions);
     printf("integrally_steady_instructions: %lu\n", integrally_steady_instructions);
+    printf("accesses_in_integrally_steady_instructions: %lu\n", accesses_in_integrally_steady_instructions);
 
     printf("memory_accesses: %lu\n", total_memory_accesses);
     printf("read_accesses: %lu\n", read_accesses);

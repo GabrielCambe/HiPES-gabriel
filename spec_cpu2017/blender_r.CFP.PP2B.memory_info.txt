@@ -1,4 +1,21 @@
-memory_instructions_fetched: 720241406
-integrally_steady_instructions: 164999318
-memory_accesses: 720241406
-steady_memory_accesses: 164999318
+End of dynamic simulation trace
+
+End of Simulation
+######################################################
+trace_reader_t
+fetch_instructions:2000001519
+######################################################
+processor_t
+
+memory_instructions_fetched: 719492752
+memory_instructions_analysed: 719492643
+cache_conflicts: 109
+memory_instructions_counted: 719492643
+partially_steady_instructions: 164493490
+integrally_steady_instructions: 164109918
+memory_accesses: 720241297
+read_accesses: 625562179
+read2_accesses: 30
+write_accesses: 94679088
+partially_steady_accesses: 165376340
+integrally_steady_accesses: 164999151

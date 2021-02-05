@@ -16,6 +16,9 @@ parser.add_argument('-p', '--plot', dest='plot', action='store_true')
 parser.add_argument('-v', '--verbose', dest='verbose', action='store_true')
 args = parser.parse_args()
 
+def mean(array):
+    return sum(array)/float(len(array))
+
 # aux
 program_sizes = {}
 GBFACTOR = 1 << 30
@@ -39,53 +42,85 @@ if args.size:
 if args.verbose:
     print(program_sizes, end="\n\n")
 
-# aux
+#aux
 program_names = []
-steady_instructions_percentages = []
-steady_accesses_percentages = []
+pSteady_accesses_percents = []
+iSteady_accesses_percents = []
+
 
 # le arquivo de informações dos acessos passado para a opção -i
-if args.info:
-    with open(args.info, 'r') as info:
+with open(args.info, 'r') as info:
+    # lê primeira linha
+    name = info.readline()
+    memory_instructions_fetched_line = info.readline()
+    memory_instructions_analysed_line = info.readline()
+    cache_conflicts_line = info.readline()
+    memory_instructions_counted_line = info.readline()
+    partially_steady_instructions_line = info.readline()
+    integrally_steady_instructions_line = info.readline()
+    memory_accesses_line = info.readline()
+    read_accesses_line = info.readline()
+    read2_accesses_line = info.readline()
+    write_accesses_line = info.readline()
+    partially_steady_accesses_line = info.readline()
+    integrally_steady_accesses_line = info.readline()
+
+    while name:
+        # processa linha
+        name = name.split('.')[0]
+        label0, memory_instructions_fetched = memory_instructions_fetched_line.split()
+        label1, memory_instructions_analysed = memory_instructions_analysed_line.split()
+        label2, cache_conflicts = cache_conflicts_line.split()
+        label3, memory_instructions_counted = memory_instructions_counted_line.split()
+        label4, partially_steady_instructions = partially_steady_instructions_line.split()
+        label5, integrally_steady_instructions = integrally_steady_instructions_line.split()
+        label6, memory_accesses = memory_accesses_line.split()
+        label7, read_accesses = read_accesses_line.split()
+        label8, read2_accesses = read2_accesses_line.split()
+        label9, write_accesses = write_accesses_line.split()
+        label10, partially_steady_accesses = partially_steady_accesses_line.split()
+        label11, integrally_steady_accesses = integrally_steady_accesses_line.split()
+
+        try:
+            assert int(memory_instructions_analysed) == int(memory_instructions_counted)
+            assert int(memory_accesses) == int(read_accesses) + int(read2_accesses) + int(write_accesses)
+            assert float(cache_conflicts)/float(memory_instructions_fetched) < 0.01
+        except AssertionError:
+            print(name, cache_conflicts, memory_instructions_fetched)
+            print(float(cache_conflicts)/float(memory_instructions_fetched))
+
+        # atualiza aux
+        program_names.append(name)
+        pSteady_accesses_percents.append(float(partially_steady_accesses)/float(memory_accesses))
+        iSteady_accesses_percents.append(float(integrally_steady_accesses)/float(memory_accesses))
+
+        # le próxima linha
         name = info.readline()
-        total_instructions = info.readline()
-        steady_instructions = info.readline()
-        memory_accesses = info.readline()
-        steady_accesses = info.readline()
+        memory_instructions_fetched_line = info.readline()
+        memory_instructions_analysed_line = info.readline()
+        cache_conflicts_line = info.readline()
+        memory_instructions_counted_line = info.readline()
+        partially_steady_instructions_line = info.readline()
+        integrally_steady_instructions_line = info.readline()
+        memory_accesses_line = info.readline()
+        read_accesses_line = info.readline()
+        read2_accesses_line = info.readline()
+        write_accesses_line = info.readline()
+        partially_steady_accesses_line = info.readline()
+        integrally_steady_accesses_line = info.readline()
 
-        while name and total_instructions and steady_instructions:
-            # processa linha
-            name = name.split('.')[0]
-            label1, total = total_instructions.split()
-            label2, steady = steady_instructions.split()
-            label3, total_accesses = memory_accesses.split()
-            label4, steady_accesses = steady_accesses.split()
-
-            # atualiza aux
-            program_names.append(name)
-            steady_instructions_percentages.append(float(steady)/float(total))
-            steady_accesses_percentages.append(float(steady_accesses)/float(total_accesses))
-
-            # le a proxima linha
-            name = info.readline()
-            total_instructions = info.readline()
-            steady_instructions = info.readline()
-            memory_accesses = info.readline()
-            steady_accesses = info.readline()
-
-    # calcula media das porcentagens
-    instruction_percentages_mean = sum(steady_instructions_percentages)/float(len(steady_instructions_percentages))
-    accesses_percentages_mean = sum(steady_accesses_percentages)/float(len(steady_accesses_percentages))
+    # iSteady_instructions_percents_mean = mean(iSteady_instructions_percents)
+    iSteady_accesses_percents_mean = mean(iSteady_accesses_percents)
 
     # aux
-    steady_instructions_plot = list(zip(steady_instructions_percentages, program_names))
+    iSteady_accesses_percents_plot = list(zip(iSteady_accesses_percents, program_names))
     reduced_sizes = []
     reduced_names = []
 
     # calcula o tamanho da redução prevista para os traços uncompressed dos programas
-    for program_steady_percentages in steady_instructions_plot:
-        program_name = program_steady_percentages[1]
-        steady_size = int(program_steady_percentages[0]*program_sizes[program_name])
+    for program_steady_percentage in iSteady_accesses_percents_plot:
+        program_name = program_steady_percentage[1]
+        steady_size = int(program_steady_percentage[0]*program_sizes[program_name])
         reduced_size = program_sizes[program_name] - steady_size
         reduced_sizes.append((reduced_size, program_name))
 

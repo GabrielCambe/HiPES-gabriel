@@ -58,3 +58,5 @@
          1933440179          2024291238   4.5% x264_r.CINT.PP2B.tid0.mem.out
          compressed        uncompressed  ratio uncompressed_name
          2197475927           611271083 -259.5% xalancbmk_s.CINT.PP2B.tid0.mem.out
+         compressed        uncompressed  ratio uncompressed_name
+         1801493415          3269980096  44.9% wrf_s.CFP.PP2B.tid0.mem.out
