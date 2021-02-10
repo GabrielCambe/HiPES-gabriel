@@ -13,6 +13,7 @@ cache_conflicts: 0
 memory_instructions_counted: 815983897
 partially_steady_instructions: 673217073
 integrally_steady_instructions: 673206820
+accesses_in_integrally_steady_instructions: 673206820
 memory_accesses: 815993623
 read_accesses: 667844938
 read2_accesses: 0

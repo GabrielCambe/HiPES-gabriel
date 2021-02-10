@@ -76,17 +76,17 @@ int main(int argc, char **argv) {
     orcs_engine.simulator_alive = true;
 
     // =============================================================================
-    bool is_read, is_read2, is_write;
-    instruction_address current;
+    bool is_read, is_read2, is_write, is_new_info;
+    uint64_t opcode_address;
     uint64_t read_address;
     uint64_t read2_address;
     uint64_t write_address;
 
-    CacheCell **memory_instructions_info = NULL; allocate_cache(&memory_instructions_info);
+    uint64_t size = 0;
+    uint64_t max_size = 2;
+    MemoryInstructionInfo *memory_instructions_info = (MemoryInstructionInfo *) malloc(sizeof(MemoryInstructionInfo) * max_size);
+
     MemoryInstructionInfo *instruction_info = NULL;
-    uint64_t* tag = NULL;
-    uint64_t cache_conflicts = 0;
-    bool cache_hit = false;    
 
     uint64_t memory_instructions_fetched = 0;
     uint64_t memory_instructions_analysed = 0;
@@ -107,41 +107,27 @@ int main(int argc, char **argv) {
         is_write = orcs_engine.trace_reader->current_instruction->is_write;
         
         if ( is_read || is_read2 || is_write ) { // É uma instrução de memória 
-            current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
+            opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
             read_address = orcs_engine.trace_reader->current_instruction->read_address;
             read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
             write_address = orcs_engine.trace_reader->current_instruction->write_address;
             memory_instructions_fetched++;
 
-            instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
-            tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
 
-            if ((*tag) == 0){ // O campo da cache não foi inicializado
-                (*tag) = current.cache.tag;
-                instruction_info->opcode_address = current.opcode_address;
-                cache_hit = true;
-
-                instruction_info->read.count = 0;
-                instruction_info->read.status = LEARN;
-                
-                instruction_info->read2.count = 0;
-                instruction_info->read2.status = LEARN;
-                
-                instruction_info->write.count = 0;
-                instruction_info->write.status = LEARN;
-                
+            if ((instruction_info = search_instruction_info(
+                opcode_address,
+                memory_instructions_info,
+                size
+            )) == NULL){
+                instruction_info = new MemoryInstructionInfo();
+                instruction_info->opcode_address = opcode_address;
                 instruction_info->instruction.count = 0;
-                instruction_info->instruction.status = LEARN;
-
+                is_new_info = true;
             } else {
-                if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
-                    cache_conflicts++;
-                } else {
-                    cache_hit = true;
-                } 
+                is_new_info = false;
             }
 
-            if (cache_hit) {
+
                 if ( is_read ) {
                     if (instruction_info->read.status == LEARN) {
                         instruction_info->read.first_address = read_address;
@@ -255,9 +241,17 @@ int main(int argc, char **argv) {
 
                 instruction_info->instruction.count++;
 
-                memory_instructions_analysed++;                    
+                memory_instructions_analysed++;
+
+            if (is_new_info) {
+                memory_instructions_info[size] = (*instruction_info);
+
+                if (++size == max_size) {
+                    max_size *= 2;
+                    memory_instructions_info = (MemoryInstructionInfo *) realloc(memory_instructions_info, sizeof(MemoryInstructionInfo) * max_size);
+                }
             }
-            cache_hit = false;
+         
         }
         // =============================================================================
     }
@@ -273,61 +267,56 @@ int main(int argc, char **argv) {
     uint64_t accesses_in_integrally_steady_instructions = 0;
     uint64_t integrally_steady_accesses = 0;
 
-    for (uint64_t i = 0; i < (2 << SETS); i++){
-        for (uint64_t j = 0; j < (2 << ASSOCIATIVITY); j++){
-            if (memory_instructions_info[i][j].tag != 0) {
-                if(memory_instructions_info[i][j].info.read.status != LEARN){
-                    read_accesses += memory_instructions_info[i][j].info.read.count;
-                    if (memory_instructions_info[i][j].info.read.status == STEADY){
-                        integrally_steady_accesses += memory_instructions_info[i][j].info.read.count;
+    for (uint64_t i = 0; i < size; i++){
+                if(memory_instructions_info[i].read.status != LEARN){
+                    read_accesses += memory_instructions_info[i].read.count;
+                    if (memory_instructions_info[i].read.status == STEADY){
+                        integrally_steady_accesses += memory_instructions_info[i].read.count;
                     }
                 }
                 
-                if(memory_instructions_info[i][j].info.read2.status != LEARN){
-                    read2_accesses += memory_instructions_info[i][j].info.read2.count;
-                    if (memory_instructions_info[i][j].info.read2.status == STEADY){
-                        integrally_steady_accesses += memory_instructions_info[i][j].info.read2.count;
+                if(memory_instructions_info[i].read2.status != LEARN){
+                    read2_accesses += memory_instructions_info[i].read2.count;
+                    if (memory_instructions_info[i].read2.status == STEADY){
+                        integrally_steady_accesses += memory_instructions_info[i].read2.count;
                     }
                 }
 
-                if(memory_instructions_info[i][j].info.write.status != LEARN){
-                    write_accesses += memory_instructions_info[i][j].info.write.count;
-                    if (memory_instructions_info[i][j].info.write.status == STEADY){
-                        integrally_steady_accesses += memory_instructions_info[i][j].info.write.count;
+                if(memory_instructions_info[i].write.status != LEARN){
+                    write_accesses += memory_instructions_info[i].write.count;
+                    if (memory_instructions_info[i].write.status == STEADY){
+                        integrally_steady_accesses += memory_instructions_info[i].write.count;
                     }
                 }
            
-                if(memory_instructions_info[i][j].info.instruction.status != LEARN){
-                    memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
-                    if (memory_instructions_info[i][j].info.instruction.status == STEADY){
-                        accesses_in_integrally_steady_instructions += memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count;
+                if(memory_instructions_info[i].instruction.status != LEARN){
+                    memory_instructions_counted += memory_instructions_info[i].instruction.count;
+                    if (memory_instructions_info[i].instruction.status == STEADY){
+                        accesses_in_integrally_steady_instructions += memory_instructions_info[i].read.count + memory_instructions_info[i].read2.count + memory_instructions_info[i].write.count;
                         
-                        if(memory_instructions_info[i][j].info.read.count != 0) {
-                            if(memory_instructions_info[i][j].info.read2.count != 0 || memory_instructions_info[i][j].info.write.count != 0) {
+                        if(memory_instructions_info[i].read.count != 0) {
+                            if(memory_instructions_info[i].read2.count != 0 || memory_instructions_info[i].write.count != 0) {
                                 printf("TRUE!\n");
                             }
-                        } else if(memory_instructions_info[i][j].info.read2.count != 0) {
-                            if(memory_instructions_info[i][j].info.read.count != 0 || memory_instructions_info[i][j].info.write.count != 0) {
+                        } else if(memory_instructions_info[i].read2.count != 0) {
+                            if(memory_instructions_info[i].read.count != 0 || memory_instructions_info[i].write.count != 0) {
                                 printf("TRUE!\n");
                             }
-                        } else if(memory_instructions_info[i][j].info.write.count != 0) {
-                            if(memory_instructions_info[i][j].info.read.count != 0 || memory_instructions_info[i][j].info.read2.count != 0) {
+                        } else if(memory_instructions_info[i].write.count != 0) {
+                            if(memory_instructions_info[i].read.count != 0 || memory_instructions_info[i].read2.count != 0) {
                                 printf("TRUE!\n");
                             }
                         }
-                        integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
+                        integrally_steady_instructions += memory_instructions_info[i].instruction.count;
                     }
                     
                 }
-            }
-        }
     }
 
     printf("\n");
     printf("%s\n",  orcs_engine.arg_trace_file_name);
     printf("memory_instructions_fetched: %lu\n", memory_instructions_fetched);
     printf("memory_instructions_analysed: %lu\n", memory_instructions_analysed);
-    printf("cache_conflicts: %lu\n", cache_conflicts);
 
     printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
     printf("partially_steady_instructions: %lu\n", partially_steady_instructions);

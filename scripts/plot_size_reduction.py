@@ -4,6 +4,9 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from calmsize import size, ByteSize
+from matplotlib.pyplot import figure
+figure(num=None, figsize=(10, 6), dpi=80, facecolor='w', edgecolor='k')
+plt.rcParams.update({'font.size': 14})
 
 by_first = lambda x: x[0]
 
@@ -58,6 +61,7 @@ with open(args.info, 'r') as info:
     memory_instructions_counted_line = info.readline()
     partially_steady_instructions_line = info.readline()
     integrally_steady_instructions_line = info.readline()
+    accesses_in_integrally_steady_instructions_line = info.readline()
     memory_accesses_line = info.readline()
     read_accesses_line = info.readline()
     read2_accesses_line = info.readline()
@@ -84,7 +88,7 @@ with open(args.info, 'r') as info:
         try:
             assert int(memory_instructions_analysed) == int(memory_instructions_counted)
             assert int(memory_accesses) == int(read_accesses) + int(read2_accesses) + int(write_accesses)
-            assert float(cache_conflicts)/float(memory_instructions_fetched) < 0.01
+            assert float(cache_conflicts) / float(memory_instructions_fetched) < 0.01
         except AssertionError:
             print(name, cache_conflicts, memory_instructions_fetched)
             print(float(cache_conflicts)/float(memory_instructions_fetched))
@@ -102,6 +106,7 @@ with open(args.info, 'r') as info:
         memory_instructions_counted_line = info.readline()
         partially_steady_instructions_line = info.readline()
         integrally_steady_instructions_line = info.readline()
+        accesses_in_integrally_steady_instructions_line = info.readline()
         memory_accesses_line = info.readline()
         read_accesses_line = info.readline()
         read2_accesses_line = info.readline()
@@ -109,7 +114,6 @@ with open(args.info, 'r') as info:
         partially_steady_accesses_line = info.readline()
         integrally_steady_accesses_line = info.readline()
 
-    # iSteady_instructions_percents_mean = mean(iSteady_instructions_percents)
     iSteady_accesses_percents_mean = mean(iSteady_accesses_percents)
 
     # aux
@@ -134,19 +138,23 @@ with open(args.info, 'r') as info:
 
     if args.plot:
         # seta os labels dos eixos e o tamanho máximo do eixo y
-        plt.xlabel('Programas')
+        #plt.xlabel('Programas')
         plt.ylabel('Tamanho do traço de memória em GB')
         axes = plt.gca()
-        axes.set_ylim([0,4.6])
+        axes.set_ylim([0,4.7])
+        axes.grid(axis="y")
+        axes.set_axisbelow(True)
+
+
 
         # plota tamanho dos traços de memoria uncompressed
         whole_program_sizes = [program_sizes[program_name]/GBFACTOR for program_name in reduced_names]
-        whole_sizes_bar = plt.bar(range(len(whole_program_sizes)), whole_program_sizes, align='center', color=( 1, 0.65, 0.65, 1), edgecolor='r')
+        whole_sizes_bar = plt.bar(range(len(whole_program_sizes)), whole_program_sizes, align='center', color='grey', edgecolor='k')
 
         # plota tamanho das reduções dos traços de memoria uncompressed e sua média
         # plt.axhline(y=reduced_sizes_mean, color='r', linestyle='--')
         reduced_sizes = [x/GBFACTOR for x in reduced_sizes]
-        reduced_sizes_bar = plt.bar(range(len(reduced_sizes)), reduced_sizes, align='center', color='r')
+        reduced_sizes_bar = plt.bar(range(len(reduced_sizes)), reduced_sizes, align='center', color='k')
 
         # Escreve o valor da redução do traço em cima de cada barra
         for rects in zip(whole_sizes_bar, reduced_sizes_bar):
@@ -157,10 +165,10 @@ with open(args.info, 'r') as info:
 
         # plota o nome dos programas no eixo x e seta os ticks do eixo y       
         plt.xticks(range(len(reduced_sizes)), reduced_names, rotation='vertical')
-        plt.yticks(np.arange(0, 4.6, step=0.5))
+        plt.yticks(np.arange(0, 5, step=0.5))
 
         # salva o grafico plotado
         plt.tight_layout()
-        plt.savefig("size_reduction_plt.png")
+        plt.savefig("size_reduction_plt.pdf")
         plt.show()
         plt.clf()
