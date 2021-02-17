@@ -56,6 +56,48 @@ class StatusMachine {
         }
 };
 
+// Máquina de estados do status, com possibilidade de recuperação do estado de Non-Linear
+class StatusMachineV2 {
+    public:
+        status_t current_status = NON_LINEAR;
+        bool first_address = true;
+        bool first_stride = false;
+        int64_t eqCount = 0;
+        int64_t last_stride;
+
+        StatusMachineV2(){}
+
+        status_t update(int64_t stride) {
+            switch (current_status) {
+                case NON_LINEAR:
+                    if (first_address){
+                        first_address = false;
+                        first_stride = true;
+                    }
+                    if (first_stride){
+                        first_stride = false;
+                        last_stride = stride;
+                    }                    
+                    if (last_stride == stride) {
+                        eqCount++;
+                        if (eqCount == 4){
+                            current_status = STEADY;
+                            eqCount = 0;
+                        }
+                    }
+                    break;
+
+                case STEADY:
+                    if (last_stride != stride) {
+                        current_status = NON_LINEAR; 
+                    }
+                    break;
+            }
+
+            return current_status;
+        }
+};
+
 //////////// Mecanismo para analise dos strides ////////////
 typedef struct {
     // public:
