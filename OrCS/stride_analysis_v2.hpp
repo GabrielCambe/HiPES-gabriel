@@ -44,7 +44,7 @@ class StatusMachine {
         status_t update(int64_t stride) {
             switch (current_status) {
                 case UNINITIALIZED:
-                    break;
+                    return LEARN;
                 case LEARN:
                     break;
                 case NON_LINEAR:
@@ -67,14 +67,15 @@ class StatusMachine {
                             return LEARN;
                         }
                     }
-                    return current_status;
+                    break;
 
                 case STEADY:
                     if (last_stride != stride) {
                         current_status = NON_LINEAR; 
                     }
-                    return current_status;
+                    break;
             }
+            return current_status;
         }
 };
 
