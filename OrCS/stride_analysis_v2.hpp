@@ -5,6 +5,7 @@
 
 //////////// Código associado ao status ////////////
 enum status_t {
+    UNINITIALIZED,
     LEARN,
     STEADY,
     NON_LINEAR
@@ -12,6 +13,9 @@ enum status_t {
 
 void display_status(status_t status) {
     switch (status) {
+        case UNINITIALIZED:
+            printf("UNINITIALIZED\n");
+            break;
         case LEARN:
             printf("LEARN\n");
             break;
@@ -75,7 +79,7 @@ typedef struct {
     uint64_t first_address = 0;
     uint64_t last_address = 0;
     int64_t stride = 0;
-    status_t status = LEARN;
+    status_t status = UNINITIALIZED;
     uint64_t count = 0;
     bool integrally_steady = true;
 }MemoryAccessInfo;
@@ -85,6 +89,9 @@ void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, St
     memory_access_info->last_address = address;
     memory_access_info->stride = stride;
     memory_access_info->status = status_state_machine->update(stride);
+    if(memory_access_info->status == NON_LINEAR){
+        memory_access_info->integrally_steady = false;
+    }
     return;
 }
 
@@ -101,7 +108,7 @@ typedef struct {
 } MemoryInstructionInfo;
 
 void updateMemoryInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine, uint64_t* partially_steady_accesses, uint64_t* total_memory_accesses) {
-    if (memory_access_info->status == LEARN) {
+    if (memory_access_info->status == UNINITIALIZED) {
         memory_access_info->first_address = address;
         memory_access_info->last_address = address;
         memory_access_info->status = status_state_machine->update(0);

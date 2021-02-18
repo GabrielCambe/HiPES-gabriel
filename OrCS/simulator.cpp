@@ -4,7 +4,7 @@ orcs_engine_t orcs_engine;
 // =============================================================================
 #include <stdlib.h>     /* malloc, free, realloc */
 #include <inttypes.h>
-#include "stride_analysis.hpp"
+#include "stride_analysis_v2.hpp"
 
 // =============================================================================
 static void display_use() {
@@ -122,16 +122,16 @@ int main(int argc, char **argv) {
                 cache_hit = true;
 
                 instruction_info->read.count = 0;
-                instruction_info->read.status = LEARN;
+                instruction_info->read.status = UNINITIALIZED;
                 
                 instruction_info->read2.count = 0;
-                instruction_info->read2.status = LEARN;
+                instruction_info->read2.status = UNINITIALIZED;
                 
                 instruction_info->write.count = 0;
-                instruction_info->write.status = LEARN;
+                instruction_info->write.status = UNINITIALIZED;
                 
                 instruction_info->instruction.count = 0;
-                instruction_info->instruction.status = LEARN;
+                instruction_info->instruction.status = UNINITIALIZED;
 
             } else {
                 if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
@@ -143,7 +143,7 @@ int main(int argc, char **argv) {
 
             if (cache_hit) {
                 if ( is_read ) {
-                    if (instruction_info->read.status == LEARN) {
+                    if (instruction_info->read.status == UNINITIALIZED) {
                         instruction_info->read.first_address = read_address;
                         instruction_info->read.last_address = read_address;
                         instruction_info->read.status = instruction_info->read_status.update(0);
@@ -164,7 +164,7 @@ int main(int argc, char **argv) {
  
                     total_memory_accesses++;
 
-                    if (instruction_info->instruction.status == LEARN) {
+                    if (instruction_info->instruction.status == UNINITIALIZED) {
                         instruction_info->instruction.first_address = read_address;
                         instruction_info->instruction.last_address = read_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
@@ -179,7 +179,7 @@ int main(int argc, char **argv) {
                 }
                 
                 if ( is_read2 ) {
-                    if (instruction_info->read2.status == LEARN) {
+                    if (instruction_info->read2.status == UNINITIALIZED) {
                         instruction_info->read2.first_address = read2_address;
                         instruction_info->read2.last_address = read2_address;
                         instruction_info->read2.status = instruction_info->read2_status.update(0);
@@ -200,7 +200,7 @@ int main(int argc, char **argv) {
 
                     total_memory_accesses++;
 
-                    if (instruction_info->instruction.status == LEARN) {
+                    if (instruction_info->instruction.status == UNINITIALIZED) {
                         instruction_info->instruction.first_address = read2_address;
                         instruction_info->instruction.last_address = read2_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
@@ -215,7 +215,7 @@ int main(int argc, char **argv) {
                 }
 
                 if ( is_write ) {
-                    if (instruction_info->write.status == LEARN) {
+                    if (instruction_info->write.status == UNINITIALIZED) {
                         instruction_info->write.first_address = write_address;
                         instruction_info->write.last_address = write_address;
                         instruction_info->write.status = instruction_info->write_status.update(0);
@@ -236,7 +236,7 @@ int main(int argc, char **argv) {
 
                     total_memory_accesses++;
 
-                    if (instruction_info->instruction.status == LEARN) {
+                    if (instruction_info->instruction.status == UNINITIALIZED) {
                         instruction_info->instruction.first_address = write_address;
                         instruction_info->instruction.last_address = write_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
@@ -276,30 +276,30 @@ int main(int argc, char **argv) {
     for (uint64_t i = 0; i < (2 << SETS); i++){
         for (uint64_t j = 0; j < (2 << ASSOCIATIVITY); j++){
             if (memory_instructions_info[i][j].tag != 0) {
-                if(memory_instructions_info[i][j].info.read.status != LEARN){
+                if(memory_instructions_info[i][j].info.read.status != UNINITIALIZED){
                     read_accesses += memory_instructions_info[i][j].info.read.count;
-                    if (memory_instructions_info[i][j].info.read.status == STEADY){
+                    if (memory_instructions_info[i][j].info.read.integrally_steady){
                         integrally_steady_accesses += memory_instructions_info[i][j].info.read.count;
                     }
                 }
                 
-                if(memory_instructions_info[i][j].info.read2.status != LEARN){
+                if(memory_instructions_info[i][j].info.read2.status != UNINITIALIZED){
                     read2_accesses += memory_instructions_info[i][j].info.read2.count;
-                    if (memory_instructions_info[i][j].info.read2.status == STEADY){
+                    if (memory_instructions_info[i][j].info.read2.integrally_steady){
                         integrally_steady_accesses += memory_instructions_info[i][j].info.read2.count;
                     }
                 }
 
-                if(memory_instructions_info[i][j].info.write.status != LEARN){
+                if(memory_instructions_info[i][j].info.write.status != UNINITIALIZED){
                     write_accesses += memory_instructions_info[i][j].info.write.count;
-                    if (memory_instructions_info[i][j].info.write.status == STEADY){
+                    if (memory_instructions_info[i][j].info.write.integrally_steady){
                         integrally_steady_accesses += memory_instructions_info[i][j].info.write.count;
                     }
                 }
            
-                if(memory_instructions_info[i][j].info.instruction.status != LEARN){
+                if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
-                    if (memory_instructions_info[i][j].info.instruction.status == STEADY){
+                    if (memory_instructions_info[i][j].info.instruction.integrally_steady){
                         accesses_in_integrally_steady_instructions += memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count;
                         
                         if(memory_instructions_info[i][j].info.read.count != 0) {
