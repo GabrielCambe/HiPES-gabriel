@@ -43,10 +43,8 @@ class StatusMachine {
 
         status_t update(int64_t stride) {
             switch (current_status) {
-                case UNINITIALIZED:
-                    return LEARN;
                 case LEARN:
-                    break;
+                case UNINITIALIZED:
                 case NON_LINEAR:
                     if (first_address){
                         first_address = false;
