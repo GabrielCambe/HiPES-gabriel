@@ -33,7 +33,7 @@ void display_status(status_t status) {
 // Máquina de estados do status, com possibilidade de recuperação do estado de Non-Linear
 class StatusMachine {
     public:
-        status_t current_status = NON_LINEAR;
+        status_t current_status = UNINITIALIZED;
         bool first_address = true;
         bool first_stride = false;
         int64_t eqCount = 0;
