@@ -59,9 +59,9 @@ class StatusMachine {
                         return LEARN;
                     }                    
                     if (last_stride == stride) {
-                        printf("\t\t\t\t\t\tEQUAL ACCESS!!");
                         eqCount++;
                         if (eqCount == 4){
+                            printf("\t\t\t\t\t\tEQUAL ACCESS!!");
                             current_status = STEADY;
                             eqCount = 0;
                         } else {
