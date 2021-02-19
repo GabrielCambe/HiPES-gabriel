@@ -158,8 +158,10 @@ int main(int argc, char **argv) {
 
                         instruction_info->read.count++;
 
-                        if(instruction_info->read.status == STEADY)
+                        if(instruction_info->read.status == STEADY){
+                            printf("\t\tSTEADY ACCESS!!");
                             partially_steady_accesses++;
+                        }
                     }
  
                     total_memory_accesses++;
@@ -194,8 +196,10 @@ int main(int argc, char **argv) {
 
                         instruction_info->read2.count++;
 
-                        if(instruction_info->read2.status == STEADY)
+                        if(instruction_info->read2.status == STEADY){
+                            printf("\t\tSTEADY ACCESS!!");
                             partially_steady_accesses++;
+                        }
                     }
 
                     total_memory_accesses++;
@@ -230,8 +234,10 @@ int main(int argc, char **argv) {
 
                         instruction_info->write.count++;
 
-                        if(instruction_info->write.status == STEADY)
+                        if(instruction_info->write.status == STEADY){
+                            printf("\t\tSTEADY ACCESS!!");
                             partially_steady_accesses++;
+                        }
                     }
 
                     total_memory_accesses++;
@@ -250,8 +256,10 @@ int main(int argc, char **argv) {
                     }
                 }
 
-                if(instruction_info->instruction.status == STEADY)
+                if(instruction_info->instruction.status == STEADY){
+                    printf("\t\tSTEADY ACCESS!!");
                     partially_steady_instructions++;
+                }
 
                 instruction_info->instruction.count++;
 
