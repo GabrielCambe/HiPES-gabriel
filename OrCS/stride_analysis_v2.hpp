@@ -47,16 +47,19 @@ class StatusMachine {
                 case UNINITIALIZED:
                 case NON_LINEAR:
                     if (first_address){
+                        printf("1ST ACCESS!!");
                         first_address = false;
                         first_stride = true;
                         return LEARN;
                     }
                     if (first_stride){
+                        printf("\t\t\t1ST STRIDE!!");
                         first_stride = false;
                         last_stride = stride;
                         return LEARN;
                     }                    
                     if (last_stride == stride) {
+                        printf("\t\t\t\t\t\tEQUAL ACCESS!!");
                         eqCount++;
                         if (eqCount == 4){
                             current_status = STEADY;
