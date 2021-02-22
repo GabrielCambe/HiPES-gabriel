@@ -159,8 +159,8 @@ int main(int argc, char **argv) {
                         instruction_info->read.count++;
 
                         if(instruction_info->read.status == STEADY){
-                            printf("\t\tSTEADY ACCESS!!");
                             partially_steady_accesses++;
+                            printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
  
@@ -197,8 +197,8 @@ int main(int argc, char **argv) {
                         instruction_info->read2.count++;
 
                         if(instruction_info->read2.status == STEADY){
-                            printf("\t\tSTEADY ACCESS!!");
                             partially_steady_accesses++;
+                            printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
 
@@ -235,8 +235,8 @@ int main(int argc, char **argv) {
                         instruction_info->write.count++;
 
                         if(instruction_info->write.status == STEADY){
-                            printf("\t\tSTEADY ACCESS!!");
                             partially_steady_accesses++;
+                            printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
 
@@ -257,8 +257,8 @@ int main(int argc, char **argv) {
                 }
 
                 if(instruction_info->instruction.status == STEADY){
-                    printf("\t\tSTEADY ACCESS!!");
                     partially_steady_instructions++;
+                    // printf("partially_steady_instructions: %lu\n", partially_steady_instructions);
                 }
 
                 instruction_info->instruction.count++;
@@ -309,20 +309,7 @@ int main(int argc, char **argv) {
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
                     if (memory_instructions_info[i][j].info.instruction.integrally_steady){
                         accesses_in_integrally_steady_instructions += memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count;
-                        
-                        if(memory_instructions_info[i][j].info.read.count != 0) {
-                            if(memory_instructions_info[i][j].info.read2.count != 0 || memory_instructions_info[i][j].info.write.count != 0) {
-                                printf("TRUE!\n");
-                            }
-                        } else if(memory_instructions_info[i][j].info.read2.count != 0) {
-                            if(memory_instructions_info[i][j].info.read.count != 0 || memory_instructions_info[i][j].info.write.count != 0) {
-                                printf("TRUE!\n");
-                            }
-                        } else if(memory_instructions_info[i][j].info.write.count != 0) {
-                            if(memory_instructions_info[i][j].info.read.count != 0 || memory_instructions_info[i][j].info.read2.count != 0) {
-                                printf("TRUE!\n");
-                            }
-                        }
+                                    
                         integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
                     }
                     
