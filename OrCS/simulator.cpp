@@ -258,7 +258,7 @@ int main(int argc, char **argv) {
 
                 if(instruction_info->instruction.status == STEADY){
                     partially_steady_instructions++;
-                    // printf("partially_steady_instructions: %lu\n", partially_steady_instructions);
+                    printf("partially_steady_instructions: %lu\n", partially_steady_instructions);
                 }
 
                 instruction_info->instruction.count++;
@@ -284,6 +284,7 @@ int main(int argc, char **argv) {
     for (uint64_t i = 0; i < (2 << SETS); i++){
         for (uint64_t j = 0; j < (2 << ASSOCIATIVITY); j++){
             if (memory_instructions_info[i][j].tag != 0) {
+                printf("Calculating...\n");
                 if(memory_instructions_info[i][j].info.read.status != UNINITIALIZED){
                     read_accesses += memory_instructions_info[i][j].info.read.count;
                     if (memory_instructions_info[i][j].info.read.integrally_steady){
@@ -304,12 +305,16 @@ int main(int argc, char **argv) {
                         integrally_steady_accesses += memory_instructions_info[i][j].info.write.count;
                     }
                 }
+
+                printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
            
                 if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
                     if (memory_instructions_info[i][j].info.instruction.integrally_steady){
                         accesses_in_integrally_steady_instructions += memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count;
-                                    
+                        
+                        
+
                         integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
                     }
                     
