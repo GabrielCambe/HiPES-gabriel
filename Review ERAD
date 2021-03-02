@@ -1,0 +1,293 @@
+===== Review =====
+
+
+*** Originalidade (Avalie a originalidade do trabalho, considerando o
+estado-da-arte na área. Avalie se o trabalho apresenta novos resultados
+ou novas observações relevantes sobre um tema já tratado em outros
+trabalhos. Informe os autores ou autoras caso você conheça trabalhos
+relacionados que não tenham sido citados.): 5: Excelente 4: Bom 3:
+Regular 2: Fraco 1: Ruim
+
+Evaluation=Bom (4)
+
+*** Relevância (Avalie a importância do tema, das questões abordadas e
+dos resultados (esperados ou obtidos) do trabalho. Relacione esta
+importância com os objetivos do Fórum. Caso o trabalho deixe a desejar
+neste item, forneça sugestões aos autores e autoras para tornar o
+trabalho mais relevante.): 5: Excelente 4: Bom 3: Regular 2: Fraco 1:
+Ruim
+
+Evaluation=Excelente (5)
+
+*** Mérito técnico (Avalie o mérito do trabalho proposto, pesando a
+qualidade da sua ideia central e a profundidade dos autores e autoras na
+compreensão do tema, dos problemas e das soluções apresentadas. Nos
+comentários aos autores e autoras, inclua sugestões que possam melhorar
+a qualidade e a profundidade do trabalho.): 5: Excelente 4: Bom 3:
+Regular 2: Fraco 1: Ruim
+
+Evaluation=Bom (4)
+
+*** Qualidade do texto (Avalie a organização do texto, sua legibilidade
+e a qualidade didática da redação. Verifique se a formatação está
+adequada ao estilo proposto.): 5: Excelente 4: Bom 3: Regular 2: Fraco
+1: Ruim
+
+Evaluation=Bom (4)
+
+*** Recomendação (Forneça seu parecer quanto à aceitação/rejeição deste
+trabalho.): 5: Aceitação 4: Aceitação Fraca 3: Neutro 2: Rejeição Fraca
+1: Rejeição
+
+Evaluation=Aceitação (5)
+
+*** Confiança na avaliação (Como avaliador, classifique o seu nível de
+conhecimento sobre o assunto do texto avaliado.): 5: Especialista no
+assunto 4: Bom conhecimento 3: Razoável conhecimento 2: Pouco
+conhecimento 1: Nenhum conhecimento
+
+Evaluation=Especialista no assunto (5)
+
+*** Comentários para o autor (Comente o que você entendeu sobre o
+trabalho. Forneça justificativas para cada uma das notas dadas acima
+(originalidade, relevância, mérito, forma). Ressalte as qualidades e
+aponte defeitos do texto. Explique como o texto e o trabalho poderiam
+ser melhorados.): Originalidade: Apesar de semelhante ao trabalho
+relacionado no que tange à exploração do comportamento de acessos à
+memória, a técnica apresentada pelos autores tem como mérito a análise
+do stride, outro importante comportamento apresentado pelas aplicações.
+Adiconalmente, apesar de o trabalho considerar acessos com distâncias
+regulares (stride regular), o mecanismo proposto claramente possibilita
+que outras formas de stride (strides descrescentes/crescentes) sejam
+exploradas no futuro.
+
+Relevância: O trabalho apresentado ataca dois importantes temas da
+computação moderna: 1 - Simulação (baseada em traços): o trabalho
+objetiva aumentar a eficiência das ferramentas de simulação que são
+essenciais para a exploração de diferentes mecanismos computacionais. 2
+- Caracaterização de aplicações: dentre outras relevâncias, este é um
+importante tema para a arquitetura de computadores, sendo que este tipo
+de estudo possibilita a construção de sistemas computacionais mais
+eficientes quando do processamento destas aplicações.
+
+Mérito Técnico: O trabalho é apresentado com bom teor técnico e boa
+estrutura. Os benchmarks (Spec 2017) adotados são abrangentes para
+diferentes comportamentos, o que reflete em interessantes análises e
+resultados, como apresentado no artigo. A ideia de compactar os traços
+de memória é interessante de modo geral, e a análise de strides e a
+utilização desta informação possibilita uma compactação de dados
+relevante, como demonstrado na figura 2 do artigo. Assim como é um
+problema interessante o da identificacao do nível de stride nas
+aplicações modernas.
+
+Qualidade do Texto: O texto foi escrito de maneira satisfatória, embora
+alguns erros de concordância, gramaticais e de pontuação requeiram
+atenção para a versão final. Uma atenciosa revisão vai facilitar a
+compreensão do leitor no futuro. Os acrônimos devem ser expandidos ao
+menos uma vez. Vale alertar que de acordo com o modelo para publicacao,
+a seção "Resumo" deve conter no máximo 6 linhas.
+
+
+===== Review =====
+
+
+*** Originalidade (Avalie a originalidade do trabalho, considerando o
+estado-da-arte na área. Avalie se o trabalho apresenta novos resultados
+ou novas observações relevantes sobre um tema já tratado em outros
+trabalhos. Informe os autores ou autoras caso você conheça trabalhos
+relacionados que não tenham sido citados.): 5: Excelente 4: Bom 3:
+Regular 2: Fraco 1: Ruim
+
+Evaluation=Bom (4)
+
+*** Relevância (Avalie a importância do tema, das questões abordadas e
+dos resultados (esperados ou obtidos) do trabalho. Relacione esta
+importância com os objetivos do Fórum. Caso o trabalho deixe a desejar
+neste item, forneça sugestões aos autores e autoras para tornar o
+trabalho mais relevante.): 5: Excelente 4: Bom 3: Regular 2: Fraco 1:
+Ruim
+
+Evaluation=Bom (4)
+
+*** Mérito técnico (Avalie o mérito do trabalho proposto, pesando a
+qualidade da sua ideia central e a profundidade dos autores e autoras na
+compreensão do tema, dos problemas e das soluções apresentadas. Nos
+comentários aos autores e autoras, inclua sugestões que possam melhorar
+a qualidade e a profundidade do trabalho.): 5: Excelente 4: Bom 3:
+Regular 2: Fraco 1: Ruim
+
+Evaluation=Excelente (5)
+
+*** Qualidade do texto (Avalie a organização do texto, sua legibilidade
+e a qualidade didática da redação. Verifique se a formatação está
+adequada ao estilo proposto.): 5: Excelente 4: Bom 3: Regular 2: Fraco
+1: Ruim
+
+Evaluation=Bom (4)
+
+*** Recomendação (Forneça seu parecer quanto à aceitação/rejeição deste
+trabalho.): 5: Aceitação 4: Aceitação Fraca 3: Neutro 2: Rejeição Fraca
+1: Rejeição
+
+Evaluation=Aceitação (5)
+
+*** Confiança na avaliação (Como avaliador, classifique o seu nível de
+conhecimento sobre o assunto do texto avaliado.): 5: Especialista no
+assunto 4: Bom conhecimento 3: Razoável conhecimento 2: Pouco
+conhecimento 1: Nenhum conhecimento
+
+Evaluation=Razoável conhecimento (3)
+
+*** Comentários para o autor (Comente o que você entendeu sobre o
+trabalho. Forneça justificativas para cada uma das notas dadas acima
+(originalidade, relevância, mérito, forma). Ressalte as qualidades e
+aponte defeitos do texto. Explique como o texto e o trabalho poderiam
+ser melhorados.): Os autores propõem uma análise da execução de
+aplicações single threaded para identificação de padrões no acesso à
+memória. A identificação desses padrões tem como objetivo final propor
+uma estrutura para arquivos de traço de memória em que não haja
+redundância de informações e, com isso, esses arquivos tenham seu
+tamanho reduzido. Para tal, os autores utilizaram o simulador OrCS e
+aplicações do benchmark SPEC CPU 2017.
+
+O trabalho está bem escrito, com motivação e objetivos claros. Além
+disso, há resultados preliminares e com análise adequada dos gráficos
+apresentados. Embora o espaço seja um fator limitante, seria
+interessante fazer uma análise dos trabalhos relacionados em
+contraposição ao que está sendo proposto.
+
+Para contribuir com a melhora do texto, sugiro algumas
+alterações/correções: - a palavra "traço" é utilizada como tradução para
+"trace". Sugiro o uso da palavra "rastro"; - no final do Resumo, os
+autores mencionam a proposta de melhorias em um simulador de
+arquiteturas. É importante especificar o simulador alvo; - ao final do
+primeiro parágrafo da Introdução a palavra "Giga" é seguida por um
+traço. Embora o traço tenha sido utilizado para acompanhar a palavra
+"Terabytes" sem repetir "bytes", não é necessário utilizá-lo; - é
+importante que palavras em outros idiomas estejam em itálico, mesmo que
+representem a descrição de uma sigla para o nome de algum componente,
+simulador, etc. Exemplo: Ordinary Computer Simulator; - faltou o uso de
+crase na frase: "... tem tamanho variável pois refere-se a uma execução
+específica." -> "... tem tamanho variável pois refere-se à uma execução
+específica."; - faltou acento agudo na palavra: "substitui-los"; -
+descrever a sigla SBC (algoritmo SBC); - remover a crase do artigo "a"
+na frase: "Para uma determinada instrução que acessa à memória..."; -
+corrigir a concordância na seguinte frase: "... de uma determinada
+instruções..."; - corrigir a concordância na seguinte frase: "... para a
+produção do endereços..."; - faltou ponto final na frase: "Apresentamos
+resultados apenas para a primeira caracterização"; - não usar letra
+maiúscula após dois pontos e ponto e vírgula. Exemplo: "... em duas
+maneiras de calcular os strides: Na primeira..."; "... e write com
+write); Na segunda, ..."; - não abreviar a palavra versão. Exemplo:
+"ver."; - sugiro uma breve explicação para o termo "acessos regulares".
+É importante que fique claro para o leitor; - corrigir a palavra "trás"
+na frase: "A Figura 1 (b) trás...". O correto é "traz". No entanto,
+sugiro o uso de outra palavra. Exemplo: apresenta, ilustra, etc; - usar
+crase no artigo "a" na frase: "... de stride nos acessos a memória."; -
+corrigir a palavra "de-compressão".
+
+
+===== Review =====
+
+
+*** Originalidade (Avalie a originalidade do trabalho, considerando o
+estado-da-arte na área. Avalie se o trabalho apresenta novos resultados
+ou novas observações relevantes sobre um tema já tratado em outros
+trabalhos. Informe os autores ou autoras caso você conheça trabalhos
+relacionados que não tenham sido citados.): 5: Excelente 4: Bom 3:
+Regular 2: Fraco 1: Ruim
+
+Evaluation=Regular (3)
+
+*** Relevância (Avalie a importância do tema, das questões abordadas e
+dos resultados (esperados ou obtidos) do trabalho. Relacione esta
+importância com os objetivos do Fórum. Caso o trabalho deixe a desejar
+neste item, forneça sugestões aos autores e autoras para tornar o
+trabalho mais relevante.): 5: Excelente 4: Bom 3: Regular 2: Fraco 1:
+Ruim
+
+Evaluation=Bom (4)
+
+*** Mérito técnico (Avalie o mérito do trabalho proposto, pesando a
+qualidade da sua ideia central e a profundidade dos autores e autoras na
+compreensão do tema, dos problemas e das soluções apresentadas. Nos
+comentários aos autores e autoras, inclua sugestões que possam melhorar
+a qualidade e a profundidade do trabalho.): 5: Excelente 4: Bom 3:
+Regular 2: Fraco 1: Ruim
+
+Evaluation=Excelente (5)
+
+*** Qualidade do texto (Avalie a organização do texto, sua legibilidade
+e a qualidade didática da redação. Verifique se a formatação está
+adequada ao estilo proposto.): 5: Excelente 4: Bom 3: Regular 2: Fraco
+1: Ruim
+
+Evaluation=Bom (4)
+
+*** Recomendação (Forneça seu parecer quanto à aceitação/rejeição deste
+trabalho.): 5: Aceitação 4: Aceitação Fraca 3: Neutro 2: Rejeição Fraca
+1: Rejeição
+
+Evaluation=Aceitação Fraca (4)
+
+*** Confiança na avaliação (Como avaliador, classifique o seu nível de
+conhecimento sobre o assunto do texto avaliado.): 5: Especialista no
+assunto 4: Bom conhecimento 3: Razoável conhecimento 2: Pouco
+conhecimento 1: Nenhum conhecimento
+
+Evaluation=Bom conhecimento (4)
+
+*** Comentários para o autor (Comente o que você entendeu sobre o
+trabalho. Forneça justificativas para cada uma das notas dadas acima
+(originalidade, relevância, mérito, forma). Ressalte as qualidades e
+aponte defeitos do texto. Explique como o texto e o trabalho poderiam
+ser melhorados.): A proposta do paper é avaliar a regularidade do padrão
+dos acessos à memória (endereços e saltos) das aplicações do benchmark
+SPEC CPU-2017 em sua execução single thread. Com isso, os autores
+pretendem fazer melhorias em um simulador de arquiteturas (OrCS) com
+relação à compactação e descompactação dos traços de memória. O paper
+está bem escrito, com problemática, metodologia e resultados bem
+conduzidos. Contudo, alguns pontos podem ser melhorados ou melhor
+explicados. A seguir destacamos alguns deles:
+
+No primeiro parágrafo os autores dizem: Tais simuladores utilizam uma
+máquina real para executar a aplicação de interesse. Um simulador iria
+simular uma máquina real executando uma aplicação de interesse. Da
+maneira que está descrito, tem-se uma máquina real, mas o que se faz é
+executar um programa que vai fazer o monitoramento da execução da
+aplicação e no fim gerar os traços, o que é diferente de uma simulação.
+Se esse for o caso, sugiro reformular essa parte. Seria interessante
+dizer os motivos dos traços dinâmicos e de memória poder variar de
+tamanho. Isto é, varia de acordo com o que? (entrada da aplicação?, não
+determinismo da aplicação/sistema?). Se o sistema também é simulado, tem
+como controlar esse não determinismo? Além disso, vale dizer também o
+quanto varia, pois isso pode interferir na precisão dos seus dados com
+relação a quantidade de execuções da aplicação, onde quanto maior a
+variação, maior deve ser o número de vezes que a aplicação deve ser
+executada. Nos trabalhos relacionados, é importante enfatizar o que a
+proposta dos autores tem de diferente com relação aos outros da
+literatura, destacando o que ele avança no estado da arte. Qual a
+diferença entre read e read2? Só no penúltimo parágrafo  dos resultados
+é que consegue-se entender que são acessos de uma única instrução: Como
+esperado, misturar os acessos de read, read2 e write da mesma
+instrucão.... Recomendo deixar isso mais claro no texto logo na primeira
+ocorrência desses termos. Os autores dizem que consideram resultados
+apenas para o status linear ao final da simulação. Eu vejo um problema
+em com isso (posso está errado): suponha que é executada uma aplicação
+que trabalha sobre uma grande quantidade de dados. A aplicação lê os
+dados, processa e os armazena num grande vetor. Nesse exemplo, pegar o
+status linear ao final da execução vai pegar apenas o traço dos acessos
+à memória para escrita no vetor de resultado em vez de pegar o
+comportamento da computação feita pela aplicação. O ideal então seria
+pegar a caracterização por partes da execução? Sugiro aos autores
+explicarem por que usar o primeiro caso, se o segundo é bem mais
+preciso. Na Figura 2, é importante dizer como os autores fizeram essa
+estimativa do tamanho esperado após a compressão.
+
+
+Minor: Seria interessante definir o que é traço logo na introdução. O
+que é SBC? O termo strides aparece nos trabalhos relacionados, mas só é
+definido na seção posterior. Sugiro definir logo no primeiro uso.
+Verificar a ortografia em alguns pontos no texto. Ex: sec.3 determinada
+instruções"; sec.4 Inserir "." final. Padronizar: descompressão e
+de-compressão.

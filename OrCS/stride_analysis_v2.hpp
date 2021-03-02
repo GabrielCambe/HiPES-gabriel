@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>     /* malloc, free, realloc, abs */
 #include <inttypes.h>
+#include <assert.h>     /* assert */
 
 
 //////////// Código associado ao status ////////////
@@ -88,9 +89,9 @@ typedef struct {
     uint64_t first_address = 0;
     uint64_t last_address = 0;
     int64_t stride = 0;
-    status_t status = UNINITIALIZED;
+    status_t status;
     uint64_t count = 0;
-    bool integrally_steady = true;
+    bool integrally_steady;
 }MemoryAccessInfo;
 
 void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {

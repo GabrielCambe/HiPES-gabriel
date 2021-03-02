@@ -118,20 +118,30 @@ int main(int argc, char **argv) {
 
             if ((*tag) == 0){ // O campo da cache não foi inicializado
                 (*tag) = current.cache.tag;
+                assert ((*tag) != 0);
+
                 instruction_info->opcode_address = current.opcode_address;
                 cache_hit = true;
 
                 instruction_info->read.count = 0;
                 instruction_info->read.status = UNINITIALIZED;
+                instruction_info->read.integrally_steady = true;
+                instruction_info->read.count = 0;
                 
                 instruction_info->read2.count = 0;
                 instruction_info->read2.status = UNINITIALIZED;
+                instruction_info->read2.integrally_steady = true;
+                instruction_info->read2.count = 0;
                 
                 instruction_info->write.count = 0;
                 instruction_info->write.status = UNINITIALIZED;
+                instruction_info->write.integrally_steady = true;
+                instruction_info->write.count = 0;                    
                 
                 instruction_info->instruction.count = 0;
                 instruction_info->instruction.status = UNINITIALIZED;
+                instruction_info->instruction.integrally_steady = true;
+                instruction_info->instruction.count = 1;
 
             } else {
                 if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
@@ -147,7 +157,6 @@ int main(int argc, char **argv) {
                         instruction_info->read.first_address = read_address;
                         instruction_info->read.last_address = read_address;
                         instruction_info->read.status = instruction_info->read_status.update(0);
-                        instruction_info->read.count = 1;
 
                     } else {
                         updateAccessInfo(
@@ -156,21 +165,20 @@ int main(int argc, char **argv) {
                             &(instruction_info->read_status)
                         );
 
-                        instruction_info->read.count++;
-
                         if(instruction_info->read.status == STEADY){
                             partially_steady_accesses++;
                             // printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
- 
+                    
+                    instruction_info->read.count++; 
                     total_memory_accesses++;
 
                     if (instruction_info->instruction.status == UNINITIALIZED) {
                         instruction_info->instruction.first_address = read_address;
                         instruction_info->instruction.last_address = read_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                    
+                        
                     } else {
                         updateAccessInfo(
                             &(instruction_info->instruction),
@@ -185,7 +193,6 @@ int main(int argc, char **argv) {
                         instruction_info->read2.first_address = read2_address;
                         instruction_info->read2.last_address = read2_address;
                         instruction_info->read2.status = instruction_info->read2_status.update(0);
-                        instruction_info->read2.count = 1;
                         
                     } else {
                         updateAccessInfo(
@@ -194,14 +201,13 @@ int main(int argc, char **argv) {
                             &(instruction_info->read2_status)
                         );
 
-                        instruction_info->read2.count++;
-
                         if(instruction_info->read2.status == STEADY){
                             partially_steady_accesses++;
                             // printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
 
+                    instruction_info->read2.count++;
                     total_memory_accesses++;
 
                     if (instruction_info->instruction.status == UNINITIALIZED) {
@@ -223,7 +229,6 @@ int main(int argc, char **argv) {
                         instruction_info->write.first_address = write_address;
                         instruction_info->write.last_address = write_address;
                         instruction_info->write.status = instruction_info->write_status.update(0);
-                        instruction_info->write.count = 1;                    
 
                     } else {
                         updateAccessInfo(
@@ -232,14 +237,13 @@ int main(int argc, char **argv) {
                             &(instruction_info->write_status)
                         );
 
-                        instruction_info->write.count++;
-
                         if(instruction_info->write.status == STEADY){
                             partially_steady_accesses++;
                             // printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
 
+                    instruction_info->write.count++;
                     total_memory_accesses++;
 
                     if (instruction_info->instruction.status == UNINITIALIZED) {
@@ -262,7 +266,6 @@ int main(int argc, char **argv) {
                 }
 
                 instruction_info->instruction.count++;
-
                 memory_instructions_analysed++;                    
             }
             cache_hit = false;
@@ -281,10 +284,10 @@ int main(int argc, char **argv) {
     uint64_t accesses_in_integrally_steady_instructions = 0;
     uint64_t integrally_steady_accesses = 0;
 
+    printf("Counting and calculating results...\n");
     for (uint64_t i = 0; i < (2 << SETS); i++){
         for (uint64_t j = 0; j < (2 << ASSOCIATIVITY); j++){
             if (memory_instructions_info[i][j].tag != 0) {
-                // printf("Calculating...\n");
                 if(memory_instructions_info[i][j].info.read.status != UNINITIALIZED){
                     read_accesses += memory_instructions_info[i][j].info.read.count;
                     if (memory_instructions_info[i][j].info.read.integrally_steady){
@@ -312,8 +315,20 @@ int main(int argc, char **argv) {
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
                     if (memory_instructions_info[i][j].info.instruction.integrally_steady){
                         accesses_in_integrally_steady_instructions += memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count;
-                        
-                        
+
+                        if(memory_instructions_info[i][j].info.read.count != 0) {
+                            if(memory_instructions_info[i][j].info.read2.count != 0 || memory_instructions_info[i][j].info.write.count != 0) {
+                                printf("Instrução integralmente estável tem mais de um tipo de acesso!\n");
+                            }
+                        } else if(memory_instructions_info[i][j].info.read2.count != 0) {
+                            if(memory_instructions_info[i][j].info.read.count != 0 || memory_instructions_info[i][j].info.write.count != 0) {
+                                printf("Instrução integralmente estável tem mais de um tipo de acesso!!\n");
+                            }
+                        } else if(memory_instructions_info[i][j].info.write.count != 0) {
+                            if(memory_instructions_info[i][j].info.read.count != 0 || memory_instructions_info[i][j].info.read2.count != 0) {
+                                printf("Instrução integralmente estável tem mais de um tipo de acesso!!\n");
+                            }
+                        }
 
                         integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
                     }
