@@ -160,7 +160,7 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read.status == STEADY){
                             partially_steady_accesses++;
-                            printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
+                            // printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
  
@@ -198,7 +198,7 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read2.status == STEADY){
                             partially_steady_accesses++;
-                            printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
+                            // printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
 
@@ -236,7 +236,7 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->write.status == STEADY){
                             partially_steady_accesses++;
-                            printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
+                            // printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
 
@@ -258,7 +258,7 @@ int main(int argc, char **argv) {
 
                 if(instruction_info->instruction.status == STEADY){
                     partially_steady_instructions++;
-                    printf("partially_steady_instructions: %lu\n", partially_steady_instructions);
+                    // printf("partially_steady_instructions: %lu\n", partially_steady_instructions);
                 }
 
                 instruction_info->instruction.count++;
@@ -284,7 +284,7 @@ int main(int argc, char **argv) {
     for (uint64_t i = 0; i < (2 << SETS); i++){
         for (uint64_t j = 0; j < (2 << ASSOCIATIVITY); j++){
             if (memory_instructions_info[i][j].tag != 0) {
-                printf("Calculating...\n");
+                // printf("Calculating...\n");
                 if(memory_instructions_info[i][j].info.read.status != UNINITIALIZED){
                     read_accesses += memory_instructions_info[i][j].info.read.count;
                     if (memory_instructions_info[i][j].info.read.integrally_steady){
@@ -306,7 +306,7 @@ int main(int argc, char **argv) {
                     }
                 }
 
-                printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
+                // printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
            
                 if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
@@ -323,24 +323,24 @@ int main(int argc, char **argv) {
         }
     }
 
-    printf("\n");
-    printf("%s\n",  orcs_engine.arg_trace_file_name);
-    printf("memory_instructions_fetched: %lu\n", memory_instructions_fetched);
-    printf("memory_instructions_analysed: %lu\n", memory_instructions_analysed);
-    printf("cache_conflicts: %lu\n", cache_conflicts);
+    ORCS_PRINTF("\n");
+    ORCS_PRINTF("%s\n",  orcs_engine.arg_trace_file_name);
+    ORCS_PRINTF("memory_instructions_fetched: %lu\n", memory_instructions_fetched);
+    ORCS_PRINTF("memory_instructions_analysed: %lu\n", memory_instructions_analysed);
+    ORCS_PRINTF("cache_conflicts: %lu\n", cache_conflicts);
 
-    printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
-    printf("partially_steady_instructions: %lu\n", partially_steady_instructions);
-    printf("integrally_steady_instructions: %lu\n", integrally_steady_instructions);
-    printf("accesses_in_integrally_steady_instructions: %lu\n", accesses_in_integrally_steady_instructions);
+    ORCS_PRINTF("memory_instructions_counted: %lu\n", memory_instructions_counted);
+    ORCS_PRINTF("partially_steady_instructions: %lu\n", partially_steady_instructions);
+    ORCS_PRINTF("integrally_steady_instructions: %lu\n", integrally_steady_instructions);
+    ORCS_PRINTF("accesses_in_integrally_steady_instructions: %lu\n", accesses_in_integrally_steady_instructions);
 
-    printf("memory_accesses: %lu\n", total_memory_accesses);
-    printf("read_accesses: %lu\n", read_accesses);
-    printf("read2_accesses: %lu\n", read2_accesses);
-    printf("write_accesses: %lu\n", write_accesses);
+    ORCS_PRINTF("memory_accesses: %lu\n", total_memory_accesses);
+    ORCS_PRINTF("read_accesses: %lu\n", read_accesses);
+    ORCS_PRINTF("read2_accesses: %lu\n", read2_accesses);
+    ORCS_PRINTF("write_accesses: %lu\n", write_accesses);
 
-    printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
-    printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
+    ORCS_PRINTF("partially_steady_accesses: %lu\n", partially_steady_accesses);
+    ORCS_PRINTF("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
 
     return(EXIT_SUCCESS);
 }
