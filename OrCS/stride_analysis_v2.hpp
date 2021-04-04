@@ -86,11 +86,11 @@ class StatusMachine {
 
 //////////// Mecanismo para analise dos strides ////////////
 typedef struct {
-    uint64_t first_address = 0;
-    uint64_t last_address = 0;
-    int64_t stride = 0;
+    uint64_t first_address;
+    uint64_t last_address;
+    int64_t stride;
     status_t status;
-    uint64_t count = 0;
+    uint64_t count;
     bool integrally_steady;
 }MemoryAccessInfo;
 
