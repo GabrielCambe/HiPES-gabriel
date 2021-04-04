@@ -275,7 +275,8 @@ int main(int argc, char **argv) {
                 }
 
                 instruction_info->instruction.count += 1;
-                memory_instructions_analysed += 1;           
+                memory_instructions_analysed += 1; 
+                printf("memory_instructions_analysed: %lu\n", memory_instructions_analysed);          
             }
             cache_hit = false;
         }
@@ -322,7 +323,7 @@ int main(int argc, char **argv) {
            
                 if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
-                    
+
                     if (memory_instructions_info[i][j].info.instruction.integrally_steady){
                         accesses_in_integrally_steady_instructions += (memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count);
 
