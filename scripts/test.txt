@@ -1,0 +1,9 @@
+{'fetch_instructions': 2000001495, 'memory_instructions_fetched': 823464808, 'memory_instructions_analysed': 801893863, 'cache_conflicts': 21570945, 'memory_instructions_counted': 801954758, 'partially_steady_instructions': 327259118, 'integrally_steady_instructions': 306491502, 'accesses_in_integrally_steady_instructions': 306431216, 'memory_accesses': 804213411, 'read_accesses': 644648653, 'read2_accesses': 0, 'write_accesses': 159564296, 'partially_steady_accesses': 331485046, 'integrally_steady_accesses': 310478191}
+Failed memory_instructions_analysed == memory_instructions_counted
+memory_instructions_analysed:  801893863
+memory_instructions_counted:  801954758
+Failed memory_accesses == read_accesses + read2_accesses + write_accesses
+memory_accesses:  804213411
+read_accesses:  644648653
+read2_accesses:  0
+write_accesses:  159564296
