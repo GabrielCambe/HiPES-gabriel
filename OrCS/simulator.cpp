@@ -123,22 +123,6 @@ int main(int argc, char **argv) {
                 instruction_info->opcode_address = current.opcode_address;
                 cache_hit = true;
 
-                // instruction_info->read.count = 0;
-                // instruction_info->read.status = UNINITIALIZED;
-                // instruction_info->read.integrally_steady = true;
-                
-                // instruction_info->read2.count = 0;
-                // instruction_info->read2.status = UNINITIALIZED;
-                // instruction_info->read2.integrally_steady = true;
-                
-                // instruction_info->write.count = 0;
-                // instruction_info->write.status = UNINITIALIZED;
-                // instruction_info->write.integrally_steady = true;
-                
-                // instruction_info->instruction.count = 0;
-                // instruction_info->instruction.status = UNINITIALIZED;
-                // instruction_info->instruction.integrally_steady = true;
-
             } else {
                 if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
                     cache_conflicts += 1;
@@ -310,7 +294,8 @@ int main(int argc, char **argv) {
            
                 if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
-                    printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
+                    // printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
+                    printf("memory_instructions_info[i][j].info.instruction.count: %lu\n", memory_instructions_info[i][j].info.instruction.count);
 
                     if (memory_instructions_info[i][j].info.instruction.integrally_steady){
                         accesses_in_integrally_steady_instructions += (memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count);

@@ -34,13 +34,19 @@ void display_status(status_t status) {
 // Máquina de estados do status, com possibilidade de recuperação do estado de Non-Linear
 class StatusMachine {
     public:
-        status_t current_status = UNINITIALIZED;
-        bool first_address = true;
-        bool first_stride = false;
-        int64_t eqCount = 0;
+        status_t current_status;
+        bool first_address;
+        bool first_stride;
+        int64_t eqCount;
         int64_t last_stride;
 
-        StatusMachine(){}
+        StatusMachine(){
+            current_status = UNINITIALIZED;
+            first_address = true;
+            first_stride = false;
+            eqCount = 0;
+            last_stride = 0;
+        }
 
         status_t update(int64_t stride) {
             switch (current_status) {
@@ -48,13 +54,11 @@ class StatusMachine {
                 case UNINITIALIZED:
                 case NON_LINEAR:
                     if (first_address){
-                        // printf("1ST ACCESS!!");
                         first_address = false;
                         first_stride = true;
                         return LEARN;
                     }
                     if (first_stride){
-                        // printf("\t1ST STRIDE!!");
                         first_stride = false;
                         last_stride = stride;
                         return LEARN;
@@ -62,7 +66,6 @@ class StatusMachine {
                     if (last_stride == stride) {
                         eqCount++;
                         if (eqCount == 4){
-                            // printf("\t\tEQUAL ACCESS!!");
                             current_status = STEADY;
                             eqCount = 0;
                             return current_status;
