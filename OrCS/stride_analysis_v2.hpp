@@ -180,7 +180,26 @@ void allocate_cache(CacheCell ***memory_instructions_info) {
     (*memory_instructions_info) = (CacheCell **) malloc(sizeof(CacheCell*) * (2 << SETS));
     for (uint64_t i = 0; i < (2 << SETS); i++) {
         (*memory_instructions_info)[i] = (CacheCell*) malloc(sizeof(CacheCell) * (2 << ASSOCIATIVITY));
-        (*memory_instructions_info)[i]->tag = 0;
+
+        for (uint64_t j = 0; j < (2 << ASSOCIATIVITY); j++) {
+            (*memory_instructions_info)[i][j].tag = 0;
+
+            (*memory_instructions_info)[i][j].info.read.count = 0;
+            (*memory_instructions_info)[i][j].info.read.status = UNINITIALIZED;
+            (*memory_instructions_info)[i][j].info.read.integrally_steady = true;
+                    
+            (*memory_instructions_info)[i][j].info.read2.count = 0;
+            (*memory_instructions_info)[i][j].info.read2.status = UNINITIALIZED;
+            (*memory_instructions_info)[i][j].info.read2.integrally_steady = true;
+                    
+            (*memory_instructions_info)[i][j].info.write.count = 0;
+            (*memory_instructions_info)[i][j].info.write.status = UNINITIALIZED;
+            (*memory_instructions_info)[i][j].info.write.integrally_steady = true;
+                    
+            (*memory_instructions_info)[i][j].info.instruction.count = 0;
+            (*memory_instructions_info)[i][j].info.instruction.status = UNINITIALIZED;
+            (*memory_instructions_info)[i][j].info.instruction.integrally_steady = true;
+        }
     }
     return;
 }

@@ -123,38 +123,25 @@ int main(int argc, char **argv) {
                 instruction_info->opcode_address = current.opcode_address;
                 cache_hit = true;
 
-                instruction_info->read.count = 0;
-                instruction_info->read.status = UNINITIALIZED;
-                instruction_info->read.integrally_steady = true;
+                // instruction_info->read.count = 0;
+                // instruction_info->read.status = UNINITIALIZED;
+                // instruction_info->read.integrally_steady = true;
                 
-                instruction_info->read2.count = 0;
-                instruction_info->read2.status = UNINITIALIZED;
-                instruction_info->read2.integrally_steady = true;
+                // instruction_info->read2.count = 0;
+                // instruction_info->read2.status = UNINITIALIZED;
+                // instruction_info->read2.integrally_steady = true;
                 
-                instruction_info->write.count = 0;
-                instruction_info->write.status = UNINITIALIZED;
-                instruction_info->write.integrally_steady = true;
+                // instruction_info->write.count = 0;
+                // instruction_info->write.status = UNINITIALIZED;
+                // instruction_info->write.integrally_steady = true;
                 
-                instruction_info->instruction.count = 0;
-                instruction_info->instruction.status = UNINITIALIZED;
-                instruction_info->instruction.integrally_steady = true;
+                // instruction_info->instruction.count = 0;
+                // instruction_info->instruction.status = UNINITIALIZED;
+                // instruction_info->instruction.integrally_steady = true;
 
             } else {
                 if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
                     cache_conflicts += 1;
-
-                    instruction_info->read.count = 0;
-                    instruction_info->read.status = UNINITIALIZED;
-                    
-                    instruction_info->read2.count = 0;
-                    instruction_info->read2.status = UNINITIALIZED;
-                    
-                    instruction_info->write.count = 0;
-                    instruction_info->write.status = UNINITIALIZED;
-                    
-                    instruction_info->instruction.count = 0;
-                    instruction_info->instruction.status = UNINITIALIZED;
-
                 } else {
                     cache_hit = true;
                 } 
