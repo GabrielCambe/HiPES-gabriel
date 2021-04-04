@@ -113,8 +113,8 @@ int main(int argc, char **argv) {
             write_address = orcs_engine.trace_reader->current_instruction->write_address;
             memory_instructions_fetched += 1;
 
-            instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
             tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
+            instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
 
             if ((*tag) == 0){ // O campo da cache não foi inicializado
                 (*tag) = current.cache.tag;
@@ -122,10 +122,13 @@ int main(int argc, char **argv) {
 
                 instruction_info->opcode_address = current.opcode_address;
                 cache_hit = true;
+                
+                printf("instruction_info->instruction.count: %lu\n", instruction_info->instruction.count);
 
             } else {
                 if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
                     cache_conflicts += 1;
+                    cache_hit = false;
                 } else {
                     cache_hit = true;
                 } 
@@ -248,8 +251,9 @@ int main(int argc, char **argv) {
                 instruction_info->instruction.count += 1;
                 memory_instructions_analysed += 1; 
                 // printf("memory_instructions_analysed: %lu\n", memory_instructions_analysed);          
+                
+                cache_hit = false;
             }
-            cache_hit = false;
         }
         // =============================================================================
     }
@@ -292,10 +296,10 @@ int main(int argc, char **argv) {
 
                 // printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
            
-                if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
+                // if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
                     // printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
-                    printf("memory_instructions_info[i][j].info.instruction.count: %lu\n", memory_instructions_info[i][j].info.instruction.count);
+                    // printf("memory_instructions_info[i][j].info.instruction.count: %lu\n", memory_instructions_info[i][j].info.instruction.count);
 
                     if (memory_instructions_info[i][j].info.instruction.integrally_steady){
                         accesses_in_integrally_steady_instructions += (memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count);
@@ -317,7 +321,7 @@ int main(int argc, char **argv) {
                         integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
                     }
                     
-                }
+                // }
             }
         }
     }
