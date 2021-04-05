@@ -230,7 +230,6 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.status = instruction_info->status.update(0);
 
                     } else {
-                        printf("!UNINITIALIZED.\n");
                         updateAccessInfo(
                             &(instruction_info->instruction),
                             write_address,
@@ -309,10 +308,10 @@ int main(int argc, char **argv) {
                         }
 
                         integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
-                    } else {
-                        error += memory_instructions_info[i][j].info.instruction.count;
                     }
                     
+                } else {
+                        error += memory_instructions_info[i][j].info.instruction.count;
                 }
             }
         }
