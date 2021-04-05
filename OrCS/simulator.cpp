@@ -231,8 +231,10 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = write_address;
                         instruction_info->instruction.last_address = write_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                    
+                        display_status(instruction_info->instruction.status);
+
                     } else {
+                        printf("!UNINITIALIZED.\n");
                         updateAccessInfo(
                             &(instruction_info->instruction),
                             write_address,
