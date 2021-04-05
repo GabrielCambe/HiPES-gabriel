@@ -189,19 +189,19 @@ void allocate_cache(CacheCell ***memory_instructions_info) {
 
             (*memory_instructions_info)[i][j].info.read.count = 0;
             (*memory_instructions_info)[i][j].info.read.status = UNINITIALIZED;
-            (*memory_instructions_info)[i][j].info.read.integrally_steady = true;
+            (*memory_instructions_info)[i][j].info.read.integrally_steady = false;
                     
             (*memory_instructions_info)[i][j].info.read2.count = 0;
             (*memory_instructions_info)[i][j].info.read2.status = UNINITIALIZED;
-            (*memory_instructions_info)[i][j].info.read2.integrally_steady = true;
+            (*memory_instructions_info)[i][j].info.read2.integrally_steady = false;
                     
             (*memory_instructions_info)[i][j].info.write.count = 0;
             (*memory_instructions_info)[i][j].info.write.status = UNINITIALIZED;
-            (*memory_instructions_info)[i][j].info.write.integrally_steady = true;
+            (*memory_instructions_info)[i][j].info.write.integrally_steady = false;
                     
             (*memory_instructions_info)[i][j].info.instruction.count = 0;
             (*memory_instructions_info)[i][j].info.instruction.status = UNINITIALIZED;
-            (*memory_instructions_info)[i][j].info.instruction.integrally_steady = true;
+            (*memory_instructions_info)[i][j].info.instruction.integrally_steady = false;
         }
     }
     return;
