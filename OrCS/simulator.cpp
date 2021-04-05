@@ -123,8 +123,6 @@ int main(int argc, char **argv) {
                 instruction_info->opcode_address = current.opcode_address;
                 cache_hit = true;
                 
-                printf("instruction_info->instruction.count: %lu\n", instruction_info->instruction.count);
-
             } else {
                 if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
                     cache_conflicts += 1;
@@ -296,7 +294,7 @@ int main(int argc, char **argv) {
 
                 // printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
            
-                // if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
+                if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
                     // printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
                     // printf("memory_instructions_info[i][j].info.instruction.count: %lu\n", memory_instructions_info[i][j].info.instruction.count);
@@ -321,7 +319,7 @@ int main(int argc, char **argv) {
                         integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
                     }
                     
-                // }
+                }
             }
         }
     }
