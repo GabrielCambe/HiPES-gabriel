@@ -56,14 +56,16 @@ if args.file:
     else:
         print ('\nPassed memory_instructions_analysed == memory_instructions_counted')
 
-    if ['memory_accesses'] != ['read_accesses'] + ['read2_accesses'] + ['write_accesses']:
+    if stride_analysis_info['memory_accesses'] != (stride_analysis_info['read_accesses'] + stride_analysis_info['read2_accesses'] + stride_analysis_info['write_accesses']):
         print ('\nFailed memory_accesses == read_accesses + read2_accesses + write_accesses')
         print ('memory_accesses: ', stride_analysis_info['memory_accesses'])
         print ('read_accesses: ', stride_analysis_info['read_accesses'])
         print ('read2_accesses: ', stride_analysis_info['read2_accesses'])
         print ('write_accesses: ', stride_analysis_info['write_accesses'])
+
+
     else:
-        print ('\nFailed memory_accesses == read_accesses + read2_accesses + write_accesses')
+        print ('\nPassed memory_accesses == read_accesses + read2_accesses + write_accesses')
     
 
 
