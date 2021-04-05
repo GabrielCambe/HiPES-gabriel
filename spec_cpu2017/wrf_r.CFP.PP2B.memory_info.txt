@@ -6,19 +6,18 @@ trace_reader_t
 fetch_instructions:2000001495
 ######################################################
 processor_t
-Counting and calculating results...
 
 ../spec_cpu2017/spec_cpu2017/wrf_r.CFP.PP2B
 memory_instructions_fetched: 823464808
 memory_instructions_analysed: 801893863
 cache_conflicts: 21570945
-memory_instructions_counted: 801885352
+memory_instructions_counted: 794136103
 partially_steady_instructions: 327259118
-integrally_steady_instructions: 306431216
-accesses_in_integrally_steady_instructions: 306431216
+integrally_steady_instructions: 303703762
+accesses_in_integrally_steady_instructions: 303703762
 memory_accesses: 804213411
-read_accesses: 644648653
+read_accesses: 638141793
 read2_accesses: 0
-write_accesses: 159564296
-partially_steady_accesses: 331485046
-integrally_steady_accesses: 310478191
+write_accesses: 158313718
+partially_steady_accesses: 331484498
+integrally_steady_accesses: 307734639
