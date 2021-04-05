@@ -148,7 +148,6 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read.status == STEADY){
                             partially_steady_accesses += 1;
-                            // printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
                     
@@ -184,7 +183,6 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read2.status == STEADY){
                             partially_steady_accesses += 1;
-                            // printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
 
@@ -220,7 +218,6 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->write.status == STEADY){
                             partially_steady_accesses += 1;
-                            // printf("partially_steady_accesses: %lu\n", partially_steady_accesses);
                         }
                     }
 
@@ -231,7 +228,6 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = write_address;
                         instruction_info->instruction.last_address = write_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        display_status(instruction_info->instruction.status);
 
                     } else {
                         printf("!UNINITIALIZED.\n");
@@ -245,12 +241,10 @@ int main(int argc, char **argv) {
 
                 if(instruction_info->instruction.status == STEADY){
                     partially_steady_instructions += 1;
-                    // printf("partially_steady_instructions: %lu\n", partially_steady_instructions);
                 }
 
                 instruction_info->instruction.count += 1;
                 memory_instructions_analysed += 1; 
-                // printf("memory_instructions_analysed: %lu\n", memory_instructions_analysed);          
                 
                 cache_hit = false;
             }
@@ -268,8 +262,8 @@ int main(int argc, char **argv) {
     uint64_t integrally_steady_instructions = 0;
     uint64_t accesses_in_integrally_steady_instructions = 0;
     uint64_t integrally_steady_accesses = 0;
+    uint64_t error = 0;
 
-    // printf("Counting and calculating results...\n");
     for (uint64_t i = 0; i < (2 << SETS); i++){
         for (uint64_t j = 0; j < (2 << ASSOCIATIVITY); j++){
             if (memory_instructions_info[i][j].tag != 0) {
@@ -293,13 +287,9 @@ int main(int argc, char **argv) {
                         integrally_steady_accesses += memory_instructions_info[i][j].info.write.count;
                     }
                 }
-
-                // printf("integrally_steady_accesses: %lu\n", integrally_steady_accesses);
            
                 if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
-                    // printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
-                    // printf("memory_instructions_info[i][j].info.instruction.count: %lu\n", memory_instructions_info[i][j].info.instruction.count);
 
                     if (memory_instructions_info[i][j].info.instruction.integrally_steady){
                         accesses_in_integrally_steady_instructions += (memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count);
@@ -319,6 +309,8 @@ int main(int argc, char **argv) {
                         }
 
                         integrally_steady_instructions += memory_instructions_info[i][j].info.instruction.count;
+                    } else {
+                        error += memory_instructions_info[i][j].info.instruction.count;
                     }
                     
                 }
@@ -333,6 +325,8 @@ int main(int argc, char **argv) {
     printf("cache_conflicts: %lu\n", cache_conflicts);
 
     printf("memory_instructions_counted: %lu\n", memory_instructions_counted);
+    printf("error: %lu\n", error);
+
     printf("partially_steady_instructions: %lu\n", partially_steady_instructions);
     printf("integrally_steady_instructions: %lu\n", integrally_steady_instructions);
     printf("accesses_in_integrally_steady_instructions: %lu\n", accesses_in_integrally_steady_instructions);
