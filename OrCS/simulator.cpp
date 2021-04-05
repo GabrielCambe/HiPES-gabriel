@@ -122,6 +122,11 @@ int main(int argc, char **argv) {
 
                 instruction_info->opcode_address = current.opcode_address;
                 cache_hit = true;
+
+                instruction_info->read.integrally_steady = false;          
+                instruction_info->read2.integrally_steady = false;
+                instruction_info->write.integrally_steady = false;
+                instruction_info->instruction.integrally_steady = false;
                 
             } else {
                 if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
