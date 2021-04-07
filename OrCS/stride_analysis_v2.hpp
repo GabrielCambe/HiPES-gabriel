@@ -58,27 +58,29 @@ class StatusMachine {
                         first_stride = true;
                         current_status = LEARN;
                     }
+                    
                     if (first_stride){
                         first_stride = false;
-                        last_stride = stride;
                         current_status = STEADY;
-                    }                    
+                    }
+
                     if (last_stride == stride) {
                         eqCount++;
                         if (eqCount == 4){
-                            current_status = STEADY;
                             eqCount = 0;
-
+                            current_status = STEADY;
                         } else {
                             current_status = LEARN;
                         }
                     }
+                    last_stride = stride;
                     break;
 
                 case STEADY:
                     if (last_stride != stride) {
-                        current_status = NON_LINEAR; 
+                        current_status = NON_LINEAR;
                     }
+                    last_stride = stride; 
                     break;
             }
             return current_status;
