@@ -150,8 +150,7 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read.status == STEADY){
                             partially_steady_accesses += 1;
-                        } else if (instruction_info->read.status  == NON_LINEAR){
-                            printf("NON-LINEAR\n");
+                        } else if (instruction_info->read.status == NON_LINEAR){
                             instruction_info->read.integrally_steady = false;
 
                         }
@@ -191,8 +190,7 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read2.status == STEADY){
                             partially_steady_accesses += 1;
-                        } else if (instruction_info->read2.status  == NON_LINEAR){
-                            printf("NON-LINEAR\n");
+                        } else if (instruction_info->read2.status == NON_LINEAR){
                             instruction_info->read2.integrally_steady = false;
 
                         }
@@ -232,8 +230,7 @@ int main(int argc, char **argv) {
 
                         if (instruction_info->write.status == STEADY){
                             partially_steady_accesses += 1;
-                        } else if (instruction_info->write.status  == NON_LINEAR){
-                            printf("NON-LINEAR\n");
+                        } else if (instruction_info->write.status == NON_LINEAR){
                             instruction_info->write.integrally_steady = false;
 
                         }
@@ -259,8 +256,7 @@ int main(int argc, char **argv) {
 
                 if(instruction_info->instruction.status == STEADY){
                     partially_steady_instructions += 1;
-                } else if (instruction_info->instruction.status  == NON_LINEAR){
-                    printf("INSTRUCTION NON-LINEAR\n");
+                } else if (instruction_info->instruction.status == NON_LINEAR){
                     instruction_info->instruction.integrally_steady = false;
 
                 }
@@ -316,30 +312,34 @@ int main(int argc, char **argv) {
                     if (memory_instructions_info[i][j].info.instruction.integrally_steady){
                         accesses_in_integrally_steady_instructions += (memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count);
 
-                        if(memory_instructions_info[i][j].info.read.count != 0) {
-                            if(memory_instructions_info[i][j].info.read2.count != 0 || memory_instructions_info[i][j].info.write.count != 0) {
+                        if(memory_instructions_info[i][j].info.read.count > 0) {
+                            if(memory_instructions_info[i][j].info.read2.count > 0 || memory_instructions_info[i][j].info.write.count > 0) {
                                 printf("\nInstrução integralmente estável tem mais de um tipo de acesso!\n");
 
+                                printf("read:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.read.first_address, memory_instructions_info[i][j].info.read.last_address, memory_instructions_info[i][j].info.read.stride, memory_instructions_info[i][j].info.read.count);
+
                                 printf("read2:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.read2.first_address, memory_instructions_info[i][j].info.read2.last_address, memory_instructions_info[i][j].info.read2.stride, memory_instructions_info[i][j].info.read2.count);
 
                                 printf("write:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.write.first_address, memory_instructions_info[i][j].info.write.last_address, memory_instructions_info[i][j].info.write.stride, memory_instructions_info[i][j].info.write.count);
-
                             }
-                        } else if(memory_instructions_info[i][j].info.read2.count != 0) {
-                            if(memory_instructions_info[i][j].info.read.count != 0 || memory_instructions_info[i][j].info.write.count != 0) {
-                                printf("Instrução integralmente estável tem mais de um tipo de acesso!!\n");
-
-                                printf("read:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.read.first_address, memory_instructions_info[i][j].info.read.last_address, memory_instructions_info[i][j].info.read.stride, memory_instructions_info[i][j].info.read.count);
-
-                                printf("write:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.write.first_address, memory_instructions_info[i][j].info.write.last_address, memory_instructions_info[i][j].info.write.stride, memory_instructions_info[i][j].info.write.count);
-                            }
-                        } else if(memory_instructions_info[i][j].info.write.count != 0) {
-                            if(memory_instructions_info[i][j].info.read.count != 0 || memory_instructions_info[i][j].info.read2.count != 0) {
+                        } else if(memory_instructions_info[i][j].info.read2.count > 0) {
+                            if(memory_instructions_info[i][j].info.read.count > 0 || memory_instructions_info[i][j].info.write.count > 0) {
                                 printf("Instrução integralmente estável tem mais de um tipo de acesso!!\n");
 
                                 printf("read:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.read.first_address, memory_instructions_info[i][j].info.read.last_address, memory_instructions_info[i][j].info.read.stride, memory_instructions_info[i][j].info.read.count);
 
                                 printf("read2:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.read2.first_address, memory_instructions_info[i][j].info.read2.last_address, memory_instructions_info[i][j].info.read2.stride, memory_instructions_info[i][j].info.read2.count);
+
+                                printf("write:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.write.first_address, memory_instructions_info[i][j].info.write.last_address, memory_instructions_info[i][j].info.write.stride, memory_instructions_info[i][j].info.write.count);                            }
+                        } else if(memory_instructions_info[i][j].info.write.count > 0) {
+                            if(memory_instructions_info[i][j].info.read.count > 0 || memory_instructions_info[i][j].info.read2.count > 0) {
+                                printf("Instrução integralmente estável tem mais de um tipo de acesso!!\n");
+
+                                printf("read:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.read.first_address, memory_instructions_info[i][j].info.read.last_address, memory_instructions_info[i][j].info.read.stride, memory_instructions_info[i][j].info.read.count);
+
+                                printf("read2:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.read2.first_address, memory_instructions_info[i][j].info.read2.last_address, memory_instructions_info[i][j].info.read2.stride, memory_instructions_info[i][j].info.read2.count);
+
+                                printf("write:\n first_address: %lu last_address: %lu stride: %lu count: %lu\n", memory_instructions_info[i][j].info.write.first_address, memory_instructions_info[i][j].info.write.last_address, memory_instructions_info[i][j].info.write.stride, memory_instructions_info[i][j].info.write.count);
                             }
                         }
 
