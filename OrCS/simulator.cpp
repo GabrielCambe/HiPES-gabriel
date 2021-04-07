@@ -309,6 +309,7 @@ int main(int argc, char **argv) {
                 if(memory_instructions_info[i][j].info.instruction.status != UNINITIALIZED){
                     memory_instructions_counted += memory_instructions_info[i][j].info.instruction.count;
 
+                    printf("%d\n", memory_instructions_info[i][j].info.instruction.integrally_steady);
                     if (memory_instructions_info[i][j].info.instruction.integrally_steady){
                         accesses_in_integrally_steady_instructions += (memory_instructions_info[i][j].info.read.count + memory_instructions_info[i][j].info.read2.count + memory_instructions_info[i][j].info.write.count);
 
@@ -347,7 +348,7 @@ int main(int argc, char **argv) {
                     }
                     
                 } else {
-                        error += memory_instructions_info[i][j].info.instruction.count;
+                    error += memory_instructions_info[i][j].info.instruction.count;
                 }
             }
         }
