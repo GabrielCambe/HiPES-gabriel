@@ -150,6 +150,10 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read.status == STEADY){
                             partially_steady_accesses += 1;
+                        } else if (instruction_info->read.status  == NON_LINEAR){
+                            printf("NON-LINEAR\n");
+                            instruction_info->read.integrally_steady = false;
+
                         }
                     }
                     
@@ -187,6 +191,10 @@ int main(int argc, char **argv) {
 
                         if(instruction_info->read2.status == STEADY){
                             partially_steady_accesses += 1;
+                        } else if (instruction_info->read2.status  == NON_LINEAR){
+                            printf("NON-LINEAR\n");
+                            instruction_info->read2.integrally_steady = false;
+
                         }
                     }
 
@@ -222,8 +230,12 @@ int main(int argc, char **argv) {
                             &(instruction_info->write_status)
                         );
 
-                        if(instruction_info->write.status == STEADY){
+                        if (instruction_info->write.status == STEADY){
                             partially_steady_accesses += 1;
+                        } else if (instruction_info->write.status  == NON_LINEAR){
+                            printf("NON-LINEAR\n");
+                            instruction_info->write.integrally_steady = false;
+
                         }
                     }
 
@@ -241,12 +253,16 @@ int main(int argc, char **argv) {
                             &(instruction_info->instruction),
                             write_address,
                             &(instruction_info->status)
-                        );    
+                        );          
                     }
                 }
 
                 if(instruction_info->instruction.status == STEADY){
                     partially_steady_instructions += 1;
+                } else if (instruction_info->instruction.status  == NON_LINEAR){
+                    printf("INSTRUCTION NON-LINEAR\n");
+                    instruction_info->instruction.integrally_steady = false;
+
                 }
 
                 instruction_info->instruction.count += 1;

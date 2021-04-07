@@ -102,10 +102,10 @@ void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, St
     memory_access_info->last_address = address;
     memory_access_info->stride = stride;
     memory_access_info->status = status_state_machine->update(stride);
-    if(memory_access_info->status == NON_LINEAR){
-        printf("NON-LINEAR\n");
-        memory_access_info->integrally_steady = false;
-    }
+    // if(memory_access_info->status == NON_LINEAR){
+    //     // printf("NON-LINEAR\n");
+    //     memory_access_info->integrally_steady = false;
+    // }
     return;
 }
 
