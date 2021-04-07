@@ -122,11 +122,6 @@ int main(int argc, char **argv) {
 
                 instruction_info->opcode_address = current.opcode_address;
                 cache_hit = true;
-
-                instruction_info->read.integrally_steady = true;          
-                instruction_info->read2.integrally_steady = true;
-                instruction_info->write.integrally_steady = true;
-                instruction_info->instruction.integrally_steady = true;
                 
             } else {
                 if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
@@ -143,6 +138,8 @@ int main(int argc, char **argv) {
                         instruction_info->read.first_address = read_address;
                         instruction_info->read.last_address = read_address;
                         instruction_info->read.status = instruction_info->read_status.update(0);
+                        instruction_info->read.integrally_steady = true;          
+
 
                     } else {
                         updateAccessInfo(
@@ -163,7 +160,8 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = read_address;
                         instruction_info->instruction.last_address = read_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                        
+                        instruction_info->instruction.integrally_steady = true;
+
                     } else {
                         updateAccessInfo(
                             &(instruction_info->instruction),
@@ -178,6 +176,7 @@ int main(int argc, char **argv) {
                         instruction_info->read2.first_address = read2_address;
                         instruction_info->read2.last_address = read2_address;
                         instruction_info->read2.status = instruction_info->read2_status.update(0);
+                        instruction_info->read2.integrally_steady = true;
                         
                     } else {
                         updateAccessInfo(
@@ -198,7 +197,8 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = read2_address;
                         instruction_info->instruction.last_address = read2_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
-                    
+                        instruction_info->instruction.integrally_steady = true;
+            
                     } else {
                         updateAccessInfo(
                             &(instruction_info->instruction),
@@ -213,6 +213,7 @@ int main(int argc, char **argv) {
                         instruction_info->write.first_address = write_address;
                         instruction_info->write.last_address = write_address;
                         instruction_info->write.status = instruction_info->write_status.update(0);
+                        instruction_info->write.integrally_steady = true;
 
                     } else {
                         updateAccessInfo(
@@ -233,6 +234,7 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.first_address = write_address;
                         instruction_info->instruction.last_address = write_address;
                         instruction_info->instruction.status = instruction_info->status.update(0);
+                        instruction_info->instruction.integrally_steady = true;
 
                     } else {
                         updateAccessInfo(
