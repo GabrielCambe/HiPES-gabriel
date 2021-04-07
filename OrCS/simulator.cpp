@@ -142,11 +142,10 @@ int main(int argc, char **argv) {
 
 
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->read),
-                            read_address,
-                            &(instruction_info->read_status)
-                        );
+                        int64_t stride = read_address - instruction_info->read.last_address;
+                        instruction_info->read.status = instruction_info->read_status.update(stride);
+                        instruction_info->read.last_address = read_address;
+                        instruction_info->read.stride = stride;
 
                         if(instruction_info->read.status == STEADY){
                             partially_steady_accesses += 1;
@@ -166,11 +165,10 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.integrally_steady = true;
 
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->instruction),
-                            read_address,
-                            &(instruction_info->status)
-                        );
+                        int64_t stride = read_address - instruction_info->instruction.last_address;
+                        instruction_info->instruction.status = instruction_info->status.update(stride);
+                        instruction_info->instruction.last_address = read_address;
+                        instruction_info->instruction.stride = stride;
                     }
                 }
                 
@@ -182,11 +180,10 @@ int main(int argc, char **argv) {
                         instruction_info->read2.integrally_steady = true;
                         
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->read2),
-                            read2_address,
-                            &(instruction_info->read2_status)
-                        );
+                        int64_t stride = read2_address - instruction_info->read2.last_address;
+                        instruction_info->read2.status = instruction_info->read2_status.update(stride);
+                        instruction_info->read2.last_address = read2_address;
+                        instruction_info->read2.stride = stride;
 
                         if(instruction_info->read2.status == STEADY){
                             partially_steady_accesses += 1;
@@ -206,11 +203,10 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.integrally_steady = true;
             
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->instruction),
-                            read2_address,
-                            &(instruction_info->status)
-                        );
+                        int64_t stride = read2_address - instruction_info->instruction.last_address;
+                        instruction_info->instruction.status = instruction_info->status.update(stride);
+                        instruction_info->instruction.last_address = read2_address;
+                        instruction_info->instruction.stride = stride;
                     }
                 }
 
@@ -222,11 +218,10 @@ int main(int argc, char **argv) {
                         instruction_info->write.integrally_steady = true;
 
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->write),
-                            write_address,
-                            &(instruction_info->write_status)
-                        );
+                        int64_t stride = write_address - instruction_info->write.last_address;
+                        instruction_info->write.status = instruction_info->write_status.update(stride);
+                        instruction_info->write.last_address = write_address;
+                        instruction_info->write.stride = stride;
 
                         if (instruction_info->write.status == STEADY){
                             partially_steady_accesses += 1;
@@ -246,11 +241,10 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.integrally_steady = true;
 
                     } else {
-                        updateAccessInfo(
-                            &(instruction_info->instruction),
-                            write_address,
-                            &(instruction_info->status)
-                        );          
+                        int64_t stride = write_address - instruction_info->instruction.last_address;
+                        instruction_info->instruction.status = instruction_info->status.update(stride);
+                        instruction_info->instruction.last_address = write_address;
+                        instruction_info->instruction.stride = stride;
                     }
                 }
 
