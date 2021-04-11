@@ -119,13 +119,13 @@ int main(int argc, char **argv) {
         instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
             
         if ( is_read || is_read2 || is_write ) { // É uma instrução de memória 
-            if (
-                (is_read && is_read2) || 
-                (is_read && is_write) || 
-                (is_read2 && is_write) 
-            ) {
-                printf("Acesso duplo!\n");
-            }
+            // if (
+            //     (is_read && is_read2) || 
+            //     (is_read && is_write) || 
+            //     (is_read2 && is_write) 
+            // ) {
+            //     printf("Acesso duplo!\n");
+            // }
 
             if ((*tag) == 0){ // O campo da cache não foi inicializado
                 (*tag) = current.cache.tag;
