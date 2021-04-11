@@ -106,6 +106,17 @@ int main(int argc, char **argv) {
         is_read2 = orcs_engine.trace_reader->current_instruction->is_read2;
         is_write = orcs_engine.trace_reader->current_instruction->is_write;
         
+        current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
+        read_address = orcs_engine.trace_reader->current_instruction->read_address;
+        read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
+        write_address = orcs_engine.trace_reader->current_instruction->write_address;
+        memory_instructions_fetched += 1;
+
+        // assert(!(read_address == 0 || read2_address == 0 || write_address == 0));
+
+        tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
+        instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
+            
         if ( is_read || is_read2 || is_write ) { // É uma instrução de memória 
             if (
                 (is_read && is_read2) || 
@@ -114,16 +125,6 @@ int main(int argc, char **argv) {
             ) {
                 printf("Acesso duplo!\n");
             }
-            current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
-            read_address = orcs_engine.trace_reader->current_instruction->read_address;
-            read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
-            write_address = orcs_engine.trace_reader->current_instruction->write_address;
-            memory_instructions_fetched += 1;
-
-            // assert(!(read_address == 0 || read2_address == 0 || write_address == 0));
-
-            tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
-            instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
 
             if ((*tag) == 0){ // O campo da cache não foi inicializado
                 (*tag) = current.cache.tag;
@@ -142,7 +143,7 @@ int main(int argc, char **argv) {
             }
 
             if (cache_hit) {
-                
+
                 if ( is_read ) {
                     if (instruction_info->read.status == UNINITIALIZED) {
                         instruction_info->read.first_address = read_address;
