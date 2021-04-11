@@ -120,6 +120,8 @@ int main(int argc, char **argv) {
             write_address = orcs_engine.trace_reader->current_instruction->write_address;
             memory_instructions_fetched += 1;
 
+            assert(!(read_address == 0 || read2_address == 0 || write_address == 0));
+
             tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
             instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
 
