@@ -106,6 +106,7 @@ int main(int argc, char **argv) {
         is_read2 = orcs_engine.trace_reader->current_instruction->is_read2;
         is_write = orcs_engine.trace_reader->current_instruction->is_write;
         
+        assert(orcs_engine.trace_reader->current_instruction->opcode_address != 0);
         current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
         assert(current.opcode_address != 0);
         read_address = orcs_engine.trace_reader->current_instruction->read_address;
