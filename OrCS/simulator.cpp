@@ -81,6 +81,7 @@ int main(int argc, char **argv) {
     uint64_t read_address;
     uint64_t read2_address;
     uint64_t write_address;
+    int64_t stride;
 
     CacheCell **memory_instructions_info = NULL; allocate_cache(&memory_instructions_info);
     MemoryInstructionInfo *instruction_info = NULL;
@@ -94,6 +95,7 @@ int main(int argc, char **argv) {
     uint64_t total_memory_accesses = 0; // individual accesses from instructions
     uint64_t partially_steady_accesses = 0;
     uint64_t partially_steady_instructions = 0;
+    bool already_incremented_partially_steady_instructions = false;
     // =============================================================================
 
     /// Start CLOCK for all the components
@@ -110,20 +112,29 @@ int main(int argc, char **argv) {
         read_address = orcs_engine.trace_reader->current_instruction->read_address;
         read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
         write_address = orcs_engine.trace_reader->current_instruction->write_address;
+        if (is_read == true){
+            assert(read_address != 0);
+        }
+        if (is_read2 == true){
+            assert(read2_address != 0);
+        }
+        if (is_write == true){
+            assert(write_address != 0);
+        }
         memory_instructions_fetched += 1;
 
-        tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
-        instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
-            
-        if ( is_read || is_read2 || is_write ) { // É uma instrução de memória 
+        if ( (is_read == true) || (is_read2 == true) || (is_write == true) ) { // É uma instrução de memória 
+            tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
+
             if ((*tag) == 0 && current.cache.tag != 0){ // O campo da cache não foi inicializado
                 (*tag) = current.cache.tag;
 
+                instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
                 instruction_info->opcode_address = current.opcode_address;
                 cache_hit = true;
                 
             } else {
-                if ((*tag) != current.cache.tag || current.cache.tag == 0){ // O campo foi inicializado e a tag corrente é diferente
+                if ((*tag) != current.cache.tag || current.cache.tag == 0){ // O campo foi inicializado e a tag corrente é diferente ou a tag corrente é igual à zero
                     cache_conflicts += 1;
                     cache_hit = false;
                 } else {
@@ -131,21 +142,22 @@ int main(int argc, char **argv) {
                 } 
             }
 
-            if (cache_hit) {
 
-                if ( is_read ) {
+            if (cache_hit == true) {
+                if ( is_read == true ) {
                     if (instruction_info->read.status == UNINITIALIZED) {
                         instruction_info->read.first_address = read_address;
                         instruction_info->read.last_address = read_address;
                         instruction_info->read.status = instruction_info->read_status.update(0);
+                        display_status(instruction_info->read.status);
                         instruction_info->read.integrally_steady = true;          
 
-
                     } else {
-                        int64_t stride = read_address - instruction_info->read.last_address;
-                        instruction_info->read.status = instruction_info->read_status.update(stride);
-                        instruction_info->read.last_address = read_address;
+                        stride = read_address - instruction_info->read.last_address;
                         instruction_info->read.stride = stride;
+                        instruction_info->read.status = instruction_info->read_status.update(stride);
+                        display_status(instruction_info->read.status);
+                        instruction_info->read.last_address = read_address;
 
                         if(instruction_info->read.status == STEADY){
                             partially_steady_accesses += 1;
@@ -165,14 +177,22 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.integrally_steady = true;
 
                     } else {
-                        int64_t stride = read_address - instruction_info->instruction.last_address;
+                        stride = read_address - instruction_info->instruction.last_address;
+                        instruction_info->instruction.stride = stride;
                         instruction_info->instruction.status = instruction_info->status.update(stride);
                         instruction_info->instruction.last_address = read_address;
-                        instruction_info->instruction.stride = stride;
+
+                        if (instruction_info->instruction.status == NON_LINEAR){
+                            instruction_info->instruction.integrally_steady = false;
+                        } if(instruction_info->instruction.status == STEADY && !already_incremented_partially_steady_instructions){
+                            partially_steady_instructions += 1;
+                            already_incremented_partially_steady_instructions = true;
+                        }
                     }
                 }
                 
-                if ( is_read2 ) {
+
+                if ( is_read2 == true ) {
                     if (instruction_info->read2.status == UNINITIALIZED) {
                         instruction_info->read2.first_address = read2_address;
                         instruction_info->read2.last_address = read2_address;
@@ -180,10 +200,10 @@ int main(int argc, char **argv) {
                         instruction_info->read2.integrally_steady = true;
                         
                     } else {
-                        int64_t stride = read2_address - instruction_info->read2.last_address;
+                        stride = read2_address - instruction_info->read2.last_address;
+                        instruction_info->read2.stride = stride;
                         instruction_info->read2.status = instruction_info->read2_status.update(stride);
                         instruction_info->read2.last_address = read2_address;
-                        instruction_info->read2.stride = stride;
 
                         if(instruction_info->read2.status == STEADY){
                             partially_steady_accesses += 1;
@@ -203,14 +223,22 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.integrally_steady = true;
             
                     } else {
-                        int64_t stride = read2_address - instruction_info->instruction.last_address;
+                        stride = read2_address - instruction_info->instruction.last_address;
+                        instruction_info->instruction.stride = stride;
                         instruction_info->instruction.status = instruction_info->status.update(stride);
                         instruction_info->instruction.last_address = read2_address;
-                        instruction_info->instruction.stride = stride;
+
+                        if (instruction_info->instruction.status == NON_LINEAR){
+                            instruction_info->instruction.integrally_steady = false;
+                        } if(instruction_info->instruction.status == STEADY && !already_incremented_partially_steady_instructions){
+                            partially_steady_instructions += 1;
+                            already_incremented_partially_steady_instructions = true;
+                        }
                     }
                 }
 
-                if ( is_write ) {
+
+                if ( is_write == true ) {
                     if (instruction_info->write.status == UNINITIALIZED) {
                         instruction_info->write.first_address = write_address;
                         instruction_info->write.last_address = write_address;
@@ -218,10 +246,10 @@ int main(int argc, char **argv) {
                         instruction_info->write.integrally_steady = true;
 
                     } else {
-                        int64_t stride = write_address - instruction_info->write.last_address;
+                        stride = write_address - instruction_info->write.last_address;
+                        instruction_info->write.stride = stride;
                         instruction_info->write.status = instruction_info->write_status.update(stride);
                         instruction_info->write.last_address = write_address;
-                        instruction_info->write.stride = stride;
 
                         if (instruction_info->write.status == STEADY){
                             partially_steady_accesses += 1;
@@ -241,23 +269,25 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.integrally_steady = true;
 
                     } else {
-                        int64_t stride = write_address - instruction_info->instruction.last_address;
+                        stride = write_address - instruction_info->instruction.last_address;
+                        instruction_info->instruction.stride = stride;
                         instruction_info->instruction.status = instruction_info->status.update(stride);
                         instruction_info->instruction.last_address = write_address;
-                        instruction_info->instruction.stride = stride;
+                 
+                        if (instruction_info->instruction.status == NON_LINEAR){
+                            instruction_info->instruction.integrally_steady = false;
+                        } if(instruction_info->instruction.status == STEADY && !already_incremented_partially_steady_instructions){
+                            partially_steady_instructions += 1;
+                            already_incremented_partially_steady_instructions = true;
+                        }
+
                     }
-                }
-
-                if(instruction_info->instruction.status == STEADY){
-                    partially_steady_instructions += 1;
-                } else if (instruction_info->instruction.status == NON_LINEAR){
-                    instruction_info->instruction.integrally_steady = false;
-
                 }
 
                 instruction_info->instruction.count += 1;
                 memory_instructions_analysed += 1; 
-                
+                already_incremented_partially_steady_instructions = false;
+
                 cache_hit = false;
             }
         }

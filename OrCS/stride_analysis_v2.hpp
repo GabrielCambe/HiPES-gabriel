@@ -98,14 +98,6 @@ typedef struct {
     bool integrally_steady;
 }MemoryAccessInfo;
 
-// void updateAccessInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine) {
-//     int64_t stride = address - memory_access_info->last_address;
-//     memory_access_info->status = status_state_machine->update(stride);
-//     memory_access_info->last_address = address;
-//     memory_access_info->stride = stride;
-//     return;
-// }
-
 typedef struct {
     uint64_t opcode_address;
     MemoryAccessInfo read;
@@ -117,31 +109,6 @@ typedef struct {
     MemoryAccessInfo instruction;
     StatusMachine status;
 } MemoryInstructionInfo;
-
-// void updateMemoryInfo(MemoryAccessInfo *memory_access_info, uint64_t address, StatusMachine *status_state_machine, uint64_t* partially_steady_accesses, uint64_t* total_memory_accesses) {
-//     if (memory_access_info->status == UNINITIALIZED) {
-//         memory_access_info->first_address = address;
-//         memory_access_info->last_address = address;
-//         memory_access_info->status = status_state_machine->update(0);
-
-//     } else {
-//         updateAccessInfo(
-//             memory_access_info,
-//             address,
-//             status_state_machine
-
-//         );
-
-//         if(status_state_machine->current_status == STEADY)
-//             (*partially_steady_accesses)++;
-//     }
-
-//     memory_access_info->count++;
- 
-//     (*total_memory_accesses)++;
-    
-//     return;
-// }
 
 MemoryInstructionInfo *search_instruction_info(uint64_t opcode_address, MemoryInstructionInfo *infos, uint64_t size){
     for (uint64_t i = 0; i < size; i++){
