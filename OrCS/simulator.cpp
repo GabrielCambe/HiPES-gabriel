@@ -106,37 +106,24 @@ int main(int argc, char **argv) {
         is_read2 = orcs_engine.trace_reader->current_instruction->is_read2;
         is_write = orcs_engine.trace_reader->current_instruction->is_write;
         
-        assert(orcs_engine.trace_reader->current_instruction->opcode_address != 0);
         current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
-        assert(current.opcode_address != 0);
         read_address = orcs_engine.trace_reader->current_instruction->read_address;
         read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
         write_address = orcs_engine.trace_reader->current_instruction->write_address;
         memory_instructions_fetched += 1;
 
-        // assert(!(read_address == 0 || read2_address == 0 || write_address == 0));
-
         tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
         instruction_info = &(memory_instructions_info[current.cache.set][current.cache.offset].info);
             
         if ( is_read || is_read2 || is_write ) { // É uma instrução de memória 
-            // if (
-            //     (is_read && is_read2) || 
-            //     (is_read && is_write) || 
-            //     (is_read2 && is_write) 
-            // ) {
-            //     printf("Acesso duplo!\n");
-            // }
-
-            if ((*tag) == 0){ // O campo da cache não foi inicializado
+            if ((*tag) == 0 && current.cache.tag != 0){ // O campo da cache não foi inicializado
                 (*tag) = current.cache.tag;
-                assert ((*tag) != 0);
 
                 instruction_info->opcode_address = current.opcode_address;
                 cache_hit = true;
                 
             } else {
-                if ((*tag) != current.cache.tag){ // O campo foi inicializado e a tag corrente é diferente
+                if ((*tag) != current.cache.tag || current.cache.tag == 0){ // O campo foi inicializado e a tag corrente é diferente
                     cache_conflicts += 1;
                     cache_hit = false;
                 } else {
