@@ -104,23 +104,26 @@ int main(int argc, char **argv) {
         orcs_engine.global_cycle++;
 
         // =============================================================================
-        is_read = orcs_engine.trace_reader->current_instruction->is_read;
-        is_read2 = orcs_engine.trace_reader->current_instruction->is_read2;
-        is_write = orcs_engine.trace_reader->current_instruction->is_write;
-        
         current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
+        
+        is_read = orcs_engine.trace_reader->current_instruction->is_read;
         read_address = orcs_engine.trace_reader->current_instruction->read_address;
-        read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
-        write_address = orcs_engine.trace_reader->current_instruction->write_address;
         if (is_read == true){
-            assert(read_address != 0);
+            assert(orcs_engine.trace_reader->current_instruction->read_address != 0);
         }
+        
+        is_read2 = orcs_engine.trace_reader->current_instruction->is_read2;
+        read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
         if (is_read2 == true){
-            assert(read2_address != 0);
+            assert(orcs_engine.trace_reader->current_instruction->read2_address != 0);
         }
+        
+        is_write = orcs_engine.trace_reader->current_instruction->is_write;
+        write_address = orcs_engine.trace_reader->current_instruction->write_address;
         if (is_write == true){
-            assert(write_address != 0);
+            assert(orcs_engine.trace_reader->current_instruction->write_address != 0);
         }
+        
         memory_instructions_fetched += 1;
 
         if ( (is_read == true) || (is_read2 == true) || (is_write == true) ) { // É uma instrução de memória 
@@ -153,7 +156,7 @@ int main(int argc, char **argv) {
                         instruction_info->read.integrally_steady = true;          
 
                     } else {
-                        stride = read_address - instruction_info->read.last_address;
+                        stride = instruction_info->read.last_address - read_address;
                         instruction_info->read.stride = stride;
                         instruction_info->read.status = instruction_info->read_status.update(stride);
                         display_status(instruction_info->read.status);
@@ -177,14 +180,14 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.integrally_steady = true;
 
                     } else {
-                        stride = read_address - instruction_info->instruction.last_address;
+                        stride = instruction_info->instruction.last_address - read_address;
                         instruction_info->instruction.stride = stride;
                         instruction_info->instruction.status = instruction_info->status.update(stride);
                         instruction_info->instruction.last_address = read_address;
 
                         if (instruction_info->instruction.status == NON_LINEAR){
                             instruction_info->instruction.integrally_steady = false;
-                        } if(instruction_info->instruction.status == STEADY && !already_incremented_partially_steady_instructions){
+                        } else if (instruction_info->instruction.status == STEADY && !already_incremented_partially_steady_instructions){
                             partially_steady_instructions += 1;
                             already_incremented_partially_steady_instructions = true;
                         }
@@ -200,7 +203,7 @@ int main(int argc, char **argv) {
                         instruction_info->read2.integrally_steady = true;
                         
                     } else {
-                        stride = read2_address - instruction_info->read2.last_address;
+                        stride = instruction_info->read2.last_address - read2_address;
                         instruction_info->read2.stride = stride;
                         instruction_info->read2.status = instruction_info->read2_status.update(stride);
                         instruction_info->read2.last_address = read2_address;
@@ -209,7 +212,6 @@ int main(int argc, char **argv) {
                             partially_steady_accesses += 1;
                         } else if (instruction_info->read2.status == NON_LINEAR){
                             instruction_info->read2.integrally_steady = false;
-
                         }
                     }
 
@@ -223,14 +225,14 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.integrally_steady = true;
             
                     } else {
-                        stride = read2_address - instruction_info->instruction.last_address;
+                        stride = instruction_info->instruction.last_address - read2_address;
                         instruction_info->instruction.stride = stride;
                         instruction_info->instruction.status = instruction_info->status.update(stride);
                         instruction_info->instruction.last_address = read2_address;
 
                         if (instruction_info->instruction.status == NON_LINEAR){
                             instruction_info->instruction.integrally_steady = false;
-                        } if(instruction_info->instruction.status == STEADY && !already_incremented_partially_steady_instructions){
+                        } else if (instruction_info->instruction.status == STEADY && !already_incremented_partially_steady_instructions){
                             partially_steady_instructions += 1;
                             already_incremented_partially_steady_instructions = true;
                         }
@@ -246,7 +248,7 @@ int main(int argc, char **argv) {
                         instruction_info->write.integrally_steady = true;
 
                     } else {
-                        stride = write_address - instruction_info->write.last_address;
+                        stride = instruction_info->write.last_address - write_address;
                         instruction_info->write.stride = stride;
                         instruction_info->write.status = instruction_info->write_status.update(stride);
                         instruction_info->write.last_address = write_address;
@@ -269,14 +271,14 @@ int main(int argc, char **argv) {
                         instruction_info->instruction.integrally_steady = true;
 
                     } else {
-                        stride = write_address - instruction_info->instruction.last_address;
+                        stride = instruction_info->instruction.last_address - write_address;
                         instruction_info->instruction.stride = stride;
                         instruction_info->instruction.status = instruction_info->status.update(stride);
                         instruction_info->instruction.last_address = write_address;
                  
                         if (instruction_info->instruction.status == NON_LINEAR){
                             instruction_info->instruction.integrally_steady = false;
-                        } if(instruction_info->instruction.status == STEADY && !already_incremented_partially_steady_instructions){
+                        } else if (instruction_info->instruction.status == STEADY && !already_incremented_partially_steady_instructions){
                             partially_steady_instructions += 1;
                             already_incremented_partially_steady_instructions = true;
                         }
