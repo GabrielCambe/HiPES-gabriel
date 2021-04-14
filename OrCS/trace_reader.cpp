@@ -410,16 +410,19 @@ bool trace_reader_t::trace_fetch(opcode_package_t *m) {
     bool mem_is_read;
     if (m->is_read) {
         trace_next_memory(&m->read_address, &m->read_size, &mem_is_read);
+        //ORCS_PRINTF ("read1: %lu | ", m->read_address)
         ERROR_ASSERT_PRINTF(mem_is_read == true, "Expecting a read from memory trace\n");
     }
 
     if (m->is_read2) {
-        trace_next_memory(&m->read_address, &m->read_size, &mem_is_read);
+        trace_next_memory(&m->read2_address, &m->read2_size, &mem_is_read);
+        //ORCS_PRINTF ("read2: %lu | ", m->read2_address) 
         ERROR_ASSERT_PRINTF(mem_is_read == true, "Expecting a read2 from memory trace\n");
     }
 
     if (m->is_write) {
-        trace_next_memory(&m->read_address, &m->read_size, &mem_is_read);
+        trace_next_memory(&m->write_address, &m->write_size, &mem_is_read);
+        //ORCS_PRINTF ("write: %lu | ", m->write_address)
         ERROR_ASSERT_PRINTF(mem_is_read == false, "Expecting a write from memory trace\n");
     }
 
