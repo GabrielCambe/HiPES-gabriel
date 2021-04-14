@@ -1,5 +1,7 @@
 #include "simulator.hpp"
 
+#include <assert.h>     /* assert */
+
 // =====================================================================
 trace_reader_t::trace_reader_t() {
 
@@ -356,6 +358,8 @@ bool trace_reader_t::trace_next_memory(uint64_t *mem_address, uint32_t *mem_size
 
             sub_string = strtok_r(NULL, " ", &tmp_ptr);
             *mem_address = strtoull(sub_string, NULL, 10);
+            ///////////////
+            assert(*mem_address != 0);
 
             sub_string = strtok_r(NULL, " ", &tmp_ptr);
             valid_memory = true;
