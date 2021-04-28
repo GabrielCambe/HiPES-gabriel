@@ -1,4 +1,6 @@
 #include <stdio.h>
+// #include <iostream>
+// std::cout << someString << "\n";
 #include <stdlib.h>     /* malloc, free, realloc, abs */
 #include <inttypes.h>
 #include <assert.h>     /* assert */
@@ -66,7 +68,7 @@ class StatusMachine {
 
                     if (last_stride == stride) {
                         eqCount++;
-                        if (eqCount == 4){
+                        if (eqCount == 2){
                             eqCount = 0;
                             current_status = STEADY;
                         } else {
