@@ -37,14 +37,12 @@ void display_status(status_t status) {
 class StatusMachine {
     public:
         status_t current_status;
-        bool first_address;
         bool first_stride;
         int64_t eqCount;
         int64_t last_stride;
 
         StatusMachine(){
             current_status = UNINITIALIZED;
-            first_address = true;
             first_stride = false;
             eqCount = 0;
             last_stride = 0;
@@ -52,16 +50,14 @@ class StatusMachine {
 
         status_t update(int64_t stride) {
             switch (current_status) {
-                case LEARN:
                 case UNINITIALIZED:
-                case NON_LINEAR:
-                    if (first_address){
-                        first_address = false;
-                        first_stride = true;
-                        current_status = LEARN;
-                    }
-                    
-                    if (first_stride){
+                    first_stride = true;
+                    current_status = LEARN;
+                    break;
+
+                case LEARN:
+                case NON_LINEAR:                    
+                    if (first_stride == true){
                         first_stride = false;
                         current_status = STEADY;
                     }
