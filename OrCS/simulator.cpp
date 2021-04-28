@@ -343,30 +343,30 @@ int main(int argc, char **argv) {
                             if(memory_instructions_info[i][j].info.read2.count > 0 || memory_instructions_info[i][j].info.write.count > 0) {
                                 printf("\nInstrução integralmente estável tem mais de um tipo de acesso!\n");
 
-                                printf("read:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %#" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read.first_address, memory_instructions_info[i][j].info.read.last_address, memory_instructions_info[i][j].info.read.stride, memory_instructions_info[i][j].info.read.count);
+                                printf("read:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read.first_address, memory_instructions_info[i][j].info.read.last_address, memory_instructions_info[i][j].info.read.stride, memory_instructions_info[i][j].info.read.count);
 
-                                printf("read2:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %#" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read2.first_address, memory_instructions_info[i][j].info.read2.last_address, memory_instructions_info[i][j].info.read2.stride, memory_instructions_info[i][j].info.read2.count);
+                                printf("read2:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read2.first_address, memory_instructions_info[i][j].info.read2.last_address, memory_instructions_info[i][j].info.read2.stride, memory_instructions_info[i][j].info.read2.count);
 
-                                printf("write:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %#" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.write.first_address, memory_instructions_info[i][j].info.write.last_address, memory_instructions_info[i][j].info.write.stride, memory_instructions_info[i][j].info.write.count);
+                                printf("write:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.write.first_address, memory_instructions_info[i][j].info.write.last_address, memory_instructions_info[i][j].info.write.stride, memory_instructions_info[i][j].info.write.count);
                             }
                         } else if(memory_instructions_info[i][j].info.read2.count > 0) {
                             if(memory_instructions_info[i][j].info.read.count > 0 || memory_instructions_info[i][j].info.write.count > 0) {
                                 printf("Instrução integralmente estável tem mais de um tipo de acesso!!\n");
 
-                                printf("read:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %#" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read.first_address, memory_instructions_info[i][j].info.read.last_address, memory_instructions_info[i][j].info.read.stride, memory_instructions_info[i][j].info.read.count);
+                                printf("read:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read.first_address, memory_instructions_info[i][j].info.read.last_address, memory_instructions_info[i][j].info.read.stride, memory_instructions_info[i][j].info.read.count);
 
-                                printf("read2:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %#" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read2.first_address, memory_instructions_info[i][j].info.read2.last_address, memory_instructions_info[i][j].info.read2.stride, memory_instructions_info[i][j].info.read2.count);
+                                printf("read2:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read2.first_address, memory_instructions_info[i][j].info.read2.last_address, memory_instructions_info[i][j].info.read2.stride, memory_instructions_info[i][j].info.read2.count);
 
-                                printf("write:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %#" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.write.first_address, memory_instructions_info[i][j].info.write.last_address, memory_instructions_info[i][j].info.write.stride, memory_instructions_info[i][j].info.write.count);                            }
+                                printf("write:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.write.first_address, memory_instructions_info[i][j].info.write.last_address, memory_instructions_info[i][j].info.write.stride, memory_instructions_info[i][j].info.write.count);                            }
                         } else if(memory_instructions_info[i][j].info.write.count > 0) {
                             if(memory_instructions_info[i][j].info.read.count > 0 || memory_instructions_info[i][j].info.read2.count > 0) {
                                 printf("Instrução integralmente estável tem mais de um tipo de acesso!!\n");
 
-                                printf("read:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %#" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read.first_address, memory_instructions_info[i][j].info.read.last_address, memory_instructions_info[i][j].info.read.stride, memory_instructions_info[i][j].info.read.count);
+                                printf("read:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read.first_address, memory_instructions_info[i][j].info.read.last_address, memory_instructions_info[i][j].info.read.stride, memory_instructions_info[i][j].info.read.count);
 
-                                printf("read2:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %#" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read2.first_address, memory_instructions_info[i][j].info.read2.last_address, memory_instructions_info[i][j].info.read2.stride, memory_instructions_info[i][j].info.read2.count);
+                                printf("read2:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.read2.first_address, memory_instructions_info[i][j].info.read2.last_address, memory_instructions_info[i][j].info.read2.stride, memory_instructions_info[i][j].info.read2.count);
 
-                                printf("write:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %#" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.write.first_address, memory_instructions_info[i][j].info.write.last_address, memory_instructions_info[i][j].info.write.stride, memory_instructions_info[i][j].info.write.count);
+                                printf("write:\n first_address: %" PRIu64 " last_address: %" PRIu64 " stride: %" PRId64 " count: %" PRIu64 "\n", memory_instructions_info[i][j].info.write.first_address, memory_instructions_info[i][j].info.write.last_address, memory_instructions_info[i][j].info.write.stride, memory_instructions_info[i][j].info.write.count);
                             }
                         }
 
