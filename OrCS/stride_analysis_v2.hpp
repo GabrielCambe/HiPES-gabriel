@@ -68,7 +68,6 @@ class StatusMachine {
                             eqCount = 0;
                             current_status = STEADY;
                         } else {
-                            eqCount = 0;
                             current_status = LEARN;
                         }
                     }
