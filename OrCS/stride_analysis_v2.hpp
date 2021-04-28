@@ -64,7 +64,7 @@ class StatusMachine {
 
                     if (last_stride == stride) {
                         eqCount++;
-                        if (eqCount == 2){
+                        if (eqCount == 1){
                             eqCount = 0;
                             current_status = STEADY;
                         } else {
