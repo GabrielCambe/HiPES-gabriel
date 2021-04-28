@@ -152,14 +152,14 @@ int main(int argc, char **argv) {
                         instruction_info->read.first_address = read_address;
                         instruction_info->read.last_address = read_address;
                         instruction_info->read.status = instruction_info->read_status.update(0);
-                        display_status(instruction_info->read.status);
+                        // display_status(instruction_info->read.status);
                         instruction_info->read.integrally_steady = true;          
 
                     } else {
                         stride = instruction_info->read.last_address - read_address;
                         instruction_info->read.stride = stride;
                         instruction_info->read.status = instruction_info->read_status.update(stride);
-                        display_status(instruction_info->read.status);
+                        // display_status(instruction_info->read.status);
                         instruction_info->read.last_address = read_address;
 
                         if(instruction_info->read.status == STEADY){
