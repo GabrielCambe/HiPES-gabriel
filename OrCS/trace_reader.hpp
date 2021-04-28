@@ -19,7 +19,7 @@ class trace_reader_t {
 		uint64_t fetch_instructions;
 
     public:
-        opcode_package_t *current_instruction;
+        opcode_package_t current_instruction;
 
         // ====================================================================
         /// Methods

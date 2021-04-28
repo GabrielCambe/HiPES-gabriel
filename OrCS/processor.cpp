@@ -19,7 +19,7 @@ void processor_t::clock() {
 		/// If EOF
 		orcs_engine.simulator_alive = false;
 	}
-	orcs_engine.trace_reader->current_instruction = &new_instruction;
+	orcs_engine.trace_reader->current_instruction = new_instruction;
 
 };
 
