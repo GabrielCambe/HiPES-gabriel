@@ -108,24 +108,25 @@ int main(int argc, char **argv) {
         
         is_read = orcs_engine.trace_reader->current_instruction->is_read;
         read_address = orcs_engine.trace_reader->current_instruction->read_address;
+        is_read2 = orcs_engine.trace_reader->current_instruction->is_read2;
+        read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
+        is_write = orcs_engine.trace_reader->current_instruction->is_write;
+        write_address = orcs_engine.trace_reader->current_instruction->write_address;
+
+        memory_instructions_fetched += 1;
+
         if (is_read == true){
             assert(read_address != 0);
         }
         
-        is_read2 = orcs_engine.trace_reader->current_instruction->is_read2;
-        read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
         if (is_read2 == true){
             assert(read2_address != 0);
         }
         
-        is_write = orcs_engine.trace_reader->current_instruction->is_write;
-        write_address = orcs_engine.trace_reader->current_instruction->write_address;
         if (is_write == true){
             assert(write_address != 0);
         }
         
-        memory_instructions_fetched += 1;
-
         if ( (is_read == true) || (is_read2 == true) || (is_write == true) ) { // É uma instrução de memória 
             tag = &(memory_instructions_info[current.cache.set][current.cache.offset].tag);
 
