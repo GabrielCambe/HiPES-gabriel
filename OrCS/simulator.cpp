@@ -104,14 +104,14 @@ int main(int argc, char **argv) {
         orcs_engine.global_cycle++;
 
         // =============================================================================
-        current.opcode_address = orcs_engine.trace_reader->current_instruction.opcode_address;
+        current.opcode_address = orcs_engine.trace_reader->current_instruction->opcode_address;
         
-        is_read = orcs_engine.trace_reader->current_instruction.is_read;
-        read_address = orcs_engine.trace_reader->current_instruction.read_address;
-        is_read2 = orcs_engine.trace_reader->current_instruction.is_read2;
-        read2_address = orcs_engine.trace_reader->current_instruction.read2_address;
-        is_write = orcs_engine.trace_reader->current_instruction.is_write;
-        write_address = orcs_engine.trace_reader->current_instruction.write_address;
+        is_read = orcs_engine.trace_reader->current_instruction->is_read;
+        read_address = orcs_engine.trace_reader->current_instruction->read_address;
+        is_read2 = orcs_engine.trace_reader->current_instruction->is_read2;
+        read2_address = orcs_engine.trace_reader->current_instruction->read2_address;
+        is_write = orcs_engine.trace_reader->current_instruction->is_write;
+        write_address = orcs_engine.trace_reader->current_instruction->write_address;
 
         memory_instructions_fetched += 1;
 
