@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['fetch_5fbuffer_1477',['FETCH_BUFFER',['../classprocessor__t.html#ac2a200df0734cf3547eebb4fb4e6aa18',1,'processor_t']]],
+  ['fetch_5fcount_1478',['fetch_count',['../classvima__vector__t.html#ac3f24fd425fb38a133c33d11188022df',1,'vima_vector_t']]],
+  ['fetch_5finstructions_1479',['fetch_instructions',['../classtrace__reader__t.html#a4e1e03d20be5e6dc7b674c21ba845007',1,'trace_reader_t']]],
+  ['fetch_5flatency_1480',['FETCH_LATENCY',['../classprocessor__t.html#a822df4d0e52dbaf1e5da044e496c3078',1,'processor_t']]],
+  ['fetch_5flatency_5ftotal_1481',['fetch_latency_total',['../classvima__vector__t.html#ae5475c0ce9e4e544863b16528fc990b8',1,'vima_vector_t']]],
+  ['fetch_5fstart_1482',['fetch_start',['../classvima__vector__t.html#a7e91b7496f6bdf83f0fe7016ed5274e5',1,'vima_vector_t']]],
+  ['fetch_5fwidth_1483',['FETCH_WIDTH',['../classprocessor__t.html#a735abda80b5e98b3ceed67c46b44fa15',1,'processor_t']]],
+  ['fetchbuffer_1484',['fetchBuffer',['../classprocessor__t.html#a93da3bf53fedeab750015a94b7b224d3',1,'processor_t']]],
+  ['fetchcounter_1485',['fetchCounter',['../classprocessor__t.html#a63d6725e17f96315af1cfe702e3d11a8',1,'processor_t']]],
+  ['forwarded_5fdata_1486',['forwarded_data',['../classmemory__order__buffer__line__t.html#adc82fde42c569f8017a5566da9b75ed2',1,'memory_order_buffer_line_t']]],
+  ['fp_5falu_1487',['FP_ALU',['../classprocessor__t.html#a233c1779507f6ca194d2aa1b3aaeea7c',1,'processor_t']]],
+  ['fp_5fdiv_1488',['FP_DIV',['../classprocessor__t.html#a5c782e46960d66cbf5e3460328b370e9',1,'processor_t']]],
+  ['fp_5fmul_1489',['FP_MUL',['../classprocessor__t.html#a2060c4c2f6ecabcf9e204cd44ad90f10',1,'processor_t']]],
+  ['fu_5ffp_5falu_1490',['fu_fp_alu',['../classprocessor__t.html#a74e59cc95ed7891a6400e48e89030900',1,'processor_t']]],
+  ['fu_5ffp_5fdiv_1491',['fu_fp_div',['../classprocessor__t.html#a839ddf7e3f6877816ee14bee858dca0b',1,'processor_t']]],
+  ['fu_5ffp_5fmul_1492',['fu_fp_mul',['../classprocessor__t.html#a1fcd2404481a260db85b286b3dfe8814',1,'processor_t']]],
+  ['fu_5fint_5falu_1493',['fu_int_alu',['../classprocessor__t.html#a80a29525a33c9fb99379c4a86eb0ca2d',1,'processor_t']]],
+  ['fu_5fint_5fdiv_1494',['fu_int_div',['../classprocessor__t.html#a7f44358cd8ea2082b66cab7a9f136ab4',1,'processor_t']]],
+  ['fu_5fint_5fmul_1495',['fu_int_mul',['../classprocessor__t.html#ab02644949f84c82af91a8aa160fad66f',1,'processor_t']]],
+  ['fu_5fmem_5fhive_1496',['fu_mem_hive',['../classprocessor__t.html#a7421be9628b0f92c1048f09480a9953e',1,'processor_t']]],
+  ['fu_5fmem_5fload_1497',['fu_mem_load',['../classprocessor__t.html#a10d15705f9c5e4eec9948822f72cc6f5',1,'processor_t']]],
+  ['fu_5fmem_5fstore_1498',['fu_mem_store',['../classprocessor__t.html#a8e1a8f22e255e29d6fff9fc0eb48cc8b',1,'processor_t']]],
+  ['fu_5fmem_5fvima_1499',['fu_mem_vima',['../classprocessor__t.html#ac31a71c53b4f94c3ad03ae677b380125',1,'processor_t']]]
+];

@@ -1,0 +1,95 @@
+Plotar miss ratio x tempo de execução (ou global cycle #): até 09/06
+	FEITO - Encontrar onde estão as variáveis de interesse no código do OrCS.
+		FEITO - Olhar na função que imprime estatísticas de onde que os valores vêm:
+			Tempo de execução pode ser pego como:
+				timeval end_timer;
+				...
+				gettimeofday(&end_timer, NULL);
+    				double uSeconds_spent = end_timer.tv_usec - orcs_engine.stat_timer_start.tv_usec;
+
+			Global cycle pode ser pego por:
+				orcs_engine.get_global_cycle().
+
+			Miss ratio pode ser pego como:
+				Cache_miss_ratio:
+					for (uint32_t core_id = 0; core_id < NUMBER_OF_PROCESSORS; core_id++) {
+						int32_t *cache_indexes = new int32_t[POINTER_LEVELS]();
+	    					orcs_engine.cacheManager->generateIndexArray(core_id, cache_indexes);
+						for (uint32_t i = 0; i < DATA_LEVELS; i++) {
+							orcs_engine.cacheManager->data_cache[i][cache_indexes[i]].get_cache_miss();
+						}
+						for (uint32_t i = 0; i < DATA_LEVELS; i++) {
+							orcs_engine.cacheManager->data_cache[i][cache_indexes[i]].get_cache_miss();
+						}
+					}
+					Olhar apenas a Last Level Cache?
+					
+				Row_Buffer_Miss_Ratio:
+					total_rb_misses += orcs_engine.memory_controller->channels[i].get_stat_row_buffer_miss()
+					ratio = (float) total_rb_misses/orcs_engine.memory_controller->get_requests_made()
+	Debugar geração do plot.
+		FEITO - Usar cache_miss_ratio e não cache_miss.
+		FEITO - Colocar uma lógica com modulo para só pegar metade dos pontos ou algo assim (Ex: if global_cycle % 2: print data).
+		
+	Descobrir como plotar tantos pontos.
+		FEITO - Esconder ticks.
+		
+	Perguntar pra Mariana como ela gerou os gráficos de cache miss?
+	
+	Assistir no video qual o plot que o professor falou mesmo.
+		
+Plotar # de write backs x tempo de execução (ou global cycle #): até 09/06
+	FEITO - Encontrar onde estão as variáveis de interesse no código do OrCS.
+		Writeback pode ser pego como:
+			for (uint32_t core_id = 0; core_id < NUMBER_OF_PROCESSORS; core_id++) {
+				int32_t *cache_indexes = new int32_t[POINTER_LEVELS]();
+	    			orcs_engine.cacheManager->generateIndexArray(core_id, cache_indexes);
+				for (uint32_t i = 0; i < DATA_LEVELS; i++) {
+					orcs_engine.cacheManager->data_cache[i][cache_indexes[i]].get_cache_writeback();
+				}
+				for (uint32_t i = 0; i < DATA_LEVELS; i++) {
+					orcs_engine.cacheManager->data_cache[i][cache_indexes[i]].get_cache_writeback();
+				}
+			}
+			Olhar apenas a Last Level Cache?
+		
+		Tempo de execução já foi achado.
+								
+	Colocar prints estratégicos no código do simulador.
+	Suprimir print das estatísticas ao final.
+	Gerar plot.
+	
+Terminar implementação da tlb simples: até 11/06
+	Revisar o fluxo de dados e quais são os parâmetros do writeback da cache no OrCS.
+	Descobrir qual memory_address tenho que enviar ao fazer writeback de uma linha de cache de uma página. 
+	
+Plotar algo com cache_eviction?
+
+
+
+
+
+
+
+
+            // timeval end_timer;
+			// gettimeofday(&end_timer, NULL);
+    		// long double uSeconds_spent = end_timer.tv_usec - orcs_engine.stat_timer_start.tv_usec;
+            // fprintf(stdout, "SIMULATION_TIME %Lf\n", uSeconds_spent);
+
+            uint64_t cycle = orcs_engine.get_global_cycle();
+            if (cycle % 4 == 0) {
+                fprintf(stdout, "GLOBAL_CYCLE  %lu\n", cycle);
+                fprintf(stdout,"ROW_BUFFER_MISS_RATIO %f\n", orcs_engine.memory_controller->get_row_buffer_miss_ratio());
+            //     uint32_t core_id = 0;
+            //     int32_t *cache_indexes = new int32_t[orcs_engine.cacheManager->get_POINTER_LEVELS()]();
+                
+            //     orcs_engine.cacheManager->generateIndexArray(core_id, cache_indexes);
+                    
+            //     uint32_t i = orcs_engine.cacheManager->get_DATA_LEVELS() - 1;
+                
+            //     // fprintf(stdout, "CACHE_MISS_RATIO  %lf\n", (double) orcs_engine.cacheManager->data_cache[i][cache_indexes[i]].get_cache_miss()/ (double) orcs_engine.cacheManager->data_cache[i][cache_indexes[i]].get_cache_access());
+
+            //     fprintf(stdout, "CACHE_ACCESS  %lu\n", orcs_engine.cacheManager->data_cache[i][cache_indexes[i]].get_cache_access());
+            //     fprintf(stdout, "CACHE_MISS  %lu\n", orcs_engine.cacheManager->data_cache[i][cache_indexes[i]].get_cache_miss());
+

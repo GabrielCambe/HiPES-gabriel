@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['valid_915',['valid',['../classline__t.html#a6f5760c850c7957968002221bf596a5f',1,'line_t']]],
+  ['validade_916',['validade',['../classbtb__line__t.html#aa9e40ebdab5dc2bf9f7b5818729fe0a3',1,'btb_line_t']]],
+  ['verify_917',['verify',['../classstride__prefetcher__t.html#a98f2c7b7b55410a070893ae3996c59ae',1,'stride_prefetcher_t']]],
+  ['vima_5fbuffer_918',['VIMA_BUFFER',['../classvima__controller__t.html#af1986d339b9dfffbb88084caf2eaab68',1,'vima_controller_t']]],
+  ['vima_5fbuffer_919',['vima_buffer',['../classvima__controller__t.html#abe018edfe158c76f67a733b391f929b9',1,'vima_controller_t']]],
+  ['vima_5fcache_5fassociativity_920',['VIMA_CACHE_ASSOCIATIVITY',['../classvima__controller__t.html#aec7e2aac46bde5457e709f39ad27a319',1,'vima_controller_t']]],
+  ['vima_5fcache_5flatency_921',['VIMA_CACHE_LATENCY',['../classvima__controller__t.html#acf99810c14979f1abe7e47c7c22c09cf',1,'vima_controller_t']]],
+  ['vima_5fcache_5fsize_922',['VIMA_CACHE_SIZE',['../classvima__controller__t.html#a652d7cf586feb0f549a08bd8a3882426',1,'vima_controller_t']]],
+  ['vima_5fcontroller_923',['vima_controller',['../classorcs__engine__t.html#a208efac09e9c2e93a29b1e437b95dd69',1,'orcs_engine_t']]],
+  ['vima_5fcontroller_2ecpp_924',['vima_controller.cpp',['../vima__controller_8cpp.html',1,'']]],
+  ['vima_5fcontroller_2ehpp_925',['vima_controller.hpp',['../vima__controller_8hpp.html',1,'']]],
+  ['vima_5fcontroller_5ft_926',['vima_controller_t',['../classvima__controller__t.html',1,'vima_controller_t'],['../classvima__controller__t.html#a5ffa542f5fae86823dabaedba314efea',1,'vima_controller_t::vima_controller_t()']]],
+  ['vima_5fcycle_927',['vima_cycle',['../classmemory__package__t.html#ade5a3c899cafe7e360ef90bc21676be6',1,'memory_package_t']]],
+  ['vima_5fdebug_928',['VIMA_DEBUG',['../defines_8hpp.html#a103502aee895811c7e3e2ed773f16870',1,'defines.hpp']]],
+  ['vima_5fexcept_929',['VIMA_EXCEPT',['../classprocessor__t.html#ad9e0a0ee229aaa3cd11d14066c24464f',1,'processor_t']]],
+  ['vima_5fop_5flatencies_930',['vima_op_latencies',['../classvima__controller__t.html#af0a6742aa1ba5467b6ab5c4a96858d19',1,'vima_controller_t']]],
+  ['vima_5fread1_931',['vima_read1',['../classmemory__package__t.html#a503742b789880d341a44c3392d8bc980',1,'memory_package_t::vima_read1()'],['../classmemory__order__buffer__line__t.html#af5d3870d36d753cee8528d6f7ccdf8d0',1,'memory_order_buffer_line_t::vima_read1()']]],
+  ['vima_5fread2_932',['vima_read2',['../classmemory__package__t.html#a4db9fbf0b24ee64fe7b0f02a749605a3',1,'memory_package_t::vima_read2()'],['../classmemory__order__buffer__line__t.html#a98eaa826044a1dc6b06df1045069e8ac',1,'memory_order_buffer_line_t::vima_read2()']]],
+  ['vima_5funbalanced_933',['VIMA_UNBALANCED',['../classvima__controller__t.html#a38d31991b1ddb7c3db41a53cd5a7e686',1,'vima_controller_t']]],
+  ['vima_5funit_934',['VIMA_UNIT',['../classprocessor__t.html#a28650dfa8e8d4a2beab4f5b44423109c',1,'processor_t']]],
+  ['vima_5fvector_2ecpp_935',['vima_vector.cpp',['../vima__vector_8cpp.html',1,'']]],
+  ['vima_5fvector_2ehpp_936',['vima_vector.hpp',['../vima__vector_8hpp.html',1,'']]],
+  ['vima_5fvector_5fsize_937',['VIMA_VECTOR_SIZE',['../classvima__controller__t.html#a9952a0c8d5376d4a32a1ef6010d7820d',1,'vima_controller_t::VIMA_VECTOR_SIZE()'],['../classvima__vector__t.html#a4da8f39b56010bd9f18eae9ec20d4ec0',1,'vima_vector_t::VIMA_VECTOR_SIZE()']]],
+  ['vima_5fvector_5ft_938',['vima_vector_t',['../classvima__vector__t.html#ad21e83fd9120ac8514e48e2b4e39a72a',1,'vima_vector_t::vima_vector_t()'],['../classvima__vector__t.html',1,'vima_vector_t']]],
+  ['vima_5fwrite_939',['vima_write',['../classmemory__package__t.html#a39dd64109165170a9f94acd967e44e74',1,'memory_package_t::vima_write()'],['../classmemory__order__buffer__line__t.html#a27a05fe8425882b6fe90bc065a9eb17a',1,'memory_order_buffer_line_t::vima_write()']]]
+];

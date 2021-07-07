@@ -1,0 +1,52 @@
+<map id="processor_t::clock" name="processor_t::clock">
+<area shape="rect" id="node1" title=" " alt="" coords="5,1265,144,1291"/>
+<area shape="rect" id="node2" href="$classcache__manager__t.html#aacad363e691e36066e4eb217b62f021e" title=" " alt="" coords="400,85,579,111"/>
+<area shape="rect" id="node5" href="$classorcs__engine__t.html#a1c033e3455736ba89052a40c69ebe0af" title=" " alt="" coords="985,1148,1127,1189"/>
+<area shape="rect" id="node10" href="$classhive__controller__t.html#aa8fad72e8d908fe343c025449bd8b299" title=" " alt="" coords="203,320,341,361"/>
+<area shape="rect" id="node13" href="$classvima__controller__t.html#a73d7a7381958a2a041a4987a1e370744" title=" " alt="" coords="417,455,561,496"/>
+<area shape="rect" id="node18" href="$classprocessor__t.html#ad251a0c6f999d23b5d28293656a5b32c" title=" " alt="" coords="412,962,567,989"/>
+<area shape="rect" id="node25" href="$classprocessor__t.html#aea8786b2f99c1e3fa36d92779849d855" title=" " alt="" coords="413,1265,565,1291"/>
+<area shape="rect" id="node29" href="$classprocessor__t.html#a8ff8132838c38bdb809e9b088d889816" title=" " alt="" coords="192,1870,352,1897"/>
+<area shape="rect" id="node31" href="$classprocessor__t.html#a6a55429b6d50c51f4522446b686792c9" title=" " alt="" coords="194,1738,350,1765"/>
+<area shape="rect" id="node43" href="$classprocessor__t.html#a4230c749732989bffe36e7cfb71ae2d5" title=" " alt="" coords="420,2703,559,2730"/>
+<area shape="rect" id="node49" href="$classprocessor__t.html#a30f1e48e34d87b416d06cbd7032a8ee3" title=" " alt="" coords="198,1971,346,1998"/>
+<area shape="rect" id="node50" href="$classprocessor__t.html#a33abe3b2a0b0b64a71e0dc38c5db4bd8" title=" " alt="" coords="412,2485,567,2511"/>
+<area shape="rect" id="node3" href="$classcache__manager__t.html#ac2ea6d26b6ec710cd28626cc4c59ae23" title=" " alt="" coords="637,237,871,263"/>
+<area shape="rect" id="node6" href="$classcache__manager__t.html#a1d0eab3491ced37cfc80481d8e71274f" title=" " alt="" coords="955,27,1157,68"/>
+<area shape="rect" id="node7" href="$classcache__manager__t.html#a37606cca9a350138963c31b9aa4cea61" title=" " alt="" coords="661,34,847,61"/>
+<area shape="rect" id="node8" href="$classcache__manager__t.html#a777bf25f873455973ba3464314947865" title=" " alt="" coords="657,769,851,795"/>
+<area shape="rect" id="node4" href="$enumerations_8cpp.html#abb39d040475b58d11b29c242b33091e1" title="Enumerates the MEMORY OPERATION OF MOB,debug only." alt="" coords="929,1927,1183,1954"/>
+<area shape="rect" id="node9" href="$enumerations_8cpp.html#a4f1219a7c31d137c368e36cea5be9128" title="Enumerates the package state,." alt="" coords="945,1495,1167,1522"/>
+<area shape="rect" id="node11" href="$classhive__controller__t.html#a7abfe0e54e92a108b45354a5d8347612" title=" " alt="" coords="413,320,566,361"/>
+<area shape="rect" id="node12" href="$classhive__controller__t.html#a2a1a4c81752c7f26ad4b514de50eb955" title=" " alt="" coords="420,255,559,296"/>
+<area shape="rect" id="node14" href="$classvima__controller__t.html#a9ae21ca712231747eb4a8bbdc5d3e3e6" title=" " alt="" coords="682,389,826,431"/>
+<area shape="rect" id="node15" href="$classvima__controller__t.html#ac1123448bf23f55b4fc892e98daa3477" title=" " alt="" coords="682,455,826,496"/>
+<area shape="rect" id="node16" href="$classvima__vector__t.html#ac8311e5ca5d93c3307935b8a197a9f74" title=" " alt="" coords="675,287,833,314"/>
+<area shape="rect" id="node17" href="$classvima__controller__t.html#ad4d9dbf89599fe22bec6695539b80374" title=" " alt="" coords="682,820,826,861"/>
+<area shape="rect" id="node19" href="$enumerations_8cpp.html#a29b4f0c7eca5c960bab850a56e5e411c" title=" " alt="" coords="975,2813,1137,2855"/>
+<area shape="rect" id="node20" href="$enumerations_8cpp.html#ad105be945954dbff8a0b2ce5a2a93b98" title="Enumerates the processor stages, used to indicate when the branch will be solved." alt="" coords="675,1425,833,1467"/>
+<area shape="rect" id="node21" href="$classprocessor__t.html#acbe870e9326b5517e6d7e341f8e896f1" title=" " alt="" coords="677,572,831,613"/>
+<area shape="rect" id="node22" href="$classprocessor__t.html#aa321c9817e68e63c76a1330dff73c83a" title=" " alt="" coords="677,637,831,679"/>
+<area shape="rect" id="node23" href="$classprocessor__t.html#a73da897081265ba6582e2b445816d319" title=" " alt="" coords="677,703,831,744"/>
+<area shape="rect" id="node24" href="$classprocessor__t.html#a6f2fa03ef45b101353ea478759c307e4" title=" " alt="" coords="646,937,862,963"/>
+<area shape="rect" id="node26" href="$classuop__package__t.html#a273ee9c8f907e3fcc415009f8dec34e1" title=" " alt="" coords="667,1257,841,1299"/>
+<area shape="rect" id="node27" href="$classuop__package__t.html#a16775f00efc03adcde9ac66548393182" title=" " alt="" coords="663,1089,845,1131"/>
+<area shape="rect" id="node28" href="$classuop__package__t.html#a5b30b643c82424f1cb1ea9e8d53239ed" title=" " alt="" coords="627,1978,881,2005"/>
+<area shape="rect" id="node30" href="$classreorder__buffer__line__t.html#a2a9e8c57dc5b9bf026066c34c2c96111" title=" " alt="" coords="412,1461,567,1503"/>
+<area shape="rect" id="node32" href="$classprocessor__t.html#a2ca47788ef60274a3c7c75bbeed5b937" title=" " alt="" coords="419,1527,559,1568"/>
+<area shape="rect" id="node33" href="$classprocessor__t.html#ab540e86ab9de9721a2075a88a2349454" title=" " alt="" coords="668,1593,840,1635"/>
+<area shape="rect" id="node34" href="$classuop__package__t.html#ab9107a1302625134f30a9afac742f110" title=" " alt="" coords="641,1659,867,1700"/>
+<area shape="rect" id="node35" href="$classprocessor__t.html#a42e55d7af6db90dc06410651595b9bcb" title=" " alt="" coords="419,1760,559,1801"/>
+<area shape="rect" id="node36" href="$classprocessor__t.html#aeb01fdfc511e9af22f49eaed59ee3e39" title=" " alt="" coords="419,1592,559,1633"/>
+<area shape="rect" id="node37" href="$classprocessor__t.html#a32e0c59549bbd10f3093438f2ddb9bf7" title=" " alt="" coords="405,2181,574,2207"/>
+<area shape="rect" id="node40" href="$classprocessor__t.html#a4062a8d02b124029ce05628caf709a32" title=" " alt="" coords="404,2231,575,2258"/>
+<area shape="rect" id="node41" href="$classprocessor__t.html#ab6cab56903b94d4fba3c9830566509f3" title=" " alt="" coords="402,2079,577,2106"/>
+<area shape="rect" id="node42" href="$classprocessor__t.html#a90a8c46ba17814623b91803134e8f4dc" title=" " alt="" coords="402,1826,577,1853"/>
+<area shape="rect" id="node38" href="$classcache__manager__t.html#a9abccd4bc20a33397cc207c091ffc0bc" title=" " alt="" coords="651,2130,857,2157"/>
+<area shape="rect" id="node39" href="$classcache__manager__t.html#a0e4328a6d039b46fedab6919517db075" title=" " alt="" coords="645,2231,863,2258"/>
+<area shape="rect" id="node44" href="$classopcode__package__t.html#a67b78e521cdf87d4a6277d01bc58272b" title=" " alt="" coords="655,2755,853,2796"/>
+<area shape="rect" id="node45" href="$classopcode__package__t.html#a2626dd96d965b6af59811e8284f4eafa" title=" " alt="" coords="652,2923,856,2964"/>
+<area shape="rect" id="node46" href="$classbranch__predictor__t.html#aaf87ef1f72c9cb7f792877ba49b58977" title=" " alt="" coords="683,2988,825,3029"/>
+<area shape="rect" id="node47" href="$classtrace__reader__t.html#ae9133afcfcc6137dc6b81fa0035864a4" title=" " alt="" coords="675,3053,833,3095"/>
+<area shape="rect" id="node48" href="$classmemory__request__client__t.html#acadcca4b5382d385ac1bc8f281ccf985" title=" " alt="" coords="666,2536,842,2577"/>
+</map>

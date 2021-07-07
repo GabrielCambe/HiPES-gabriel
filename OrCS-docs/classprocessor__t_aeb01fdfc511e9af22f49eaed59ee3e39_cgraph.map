@@ -1,0 +1,8 @@
+<map id="processor_t::clean_mob_vima" name="processor_t::clean_mob_vima">
+<area shape="rect" id="node1" title=" " alt="" coords="5,123,145,164"/>
+<area shape="rect" id="node2" href="$enumerations_8cpp.html#ad105be945954dbff8a0b2ce5a2a93b98" title="Enumerates the processor stages, used to indicate when the branch will be solved." alt="" coords="227,5,385,47"/>
+<area shape="rect" id="node3" href="$classorcs__engine__t.html#a1c033e3455736ba89052a40c69ebe0af" title=" " alt="" coords="467,188,608,229"/>
+<area shape="rect" id="node4" href="$classdesambiguation__t.html#a5c526b3dcc16c2e45af95aadd1f00c4d" title=" " alt="" coords="215,123,397,164"/>
+<area shape="rect" id="node5" href="$classprocessor__t.html#ab540e86ab9de9721a2075a88a2349454" title=" " alt="" coords="220,188,392,229"/>
+<area shape="rect" id="node6" href="$classuop__package__t.html#ab9107a1302625134f30a9afac742f110" title=" " alt="" coords="193,253,419,295"/>
+</map>

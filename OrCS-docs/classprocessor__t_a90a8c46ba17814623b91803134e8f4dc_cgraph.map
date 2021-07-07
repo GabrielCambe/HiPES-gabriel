@@ -1,0 +1,20 @@
+<map id="processor_t::mob_write" name="processor_t::mob_write">
+<area shape="rect" id="node1" title=" " alt="" coords="5,573,180,599"/>
+<area shape="rect" id="node2" href="$classcache__manager__t.html#a9abccd4bc20a33397cc207c091ffc0bc" title=" " alt="" coords="238,17,443,43"/>
+<area shape="rect" id="node4" href="$enumerations_8cpp.html#abb39d040475b58d11b29c242b33091e1" title="Enumerates the MEMORY OPERATION OF MOB,debug only." alt="" coords="752,154,1005,181"/>
+<area shape="rect" id="node5" href="$classorcs__engine__t.html#a1c033e3455736ba89052a40c69ebe0af" title=" " alt="" coords="808,565,949,607"/>
+<area shape="rect" id="node6" href="$classprocessor__t.html#aa7230de4cfee2b7a447fa181a7417ba8" title=" " alt="" coords="521,624,684,665"/>
+<area shape="rect" id="node7" href="$classprocessor__t.html#a7c56b2294325149b4d392a595879935a" title=" " alt="" coords="263,401,418,443"/>
+<area shape="rect" id="node14" href="$classcache__manager__t.html#a0e4328a6d039b46fedab6919517db075" title=" " alt="" coords="231,289,450,315"/>
+<area shape="rect" id="node16" href="$classdesambiguation__t.html#a5c526b3dcc16c2e45af95aadd1f00c4d" title=" " alt="" coords="249,791,432,832"/>
+<area shape="rect" id="node17" href="$classprocessor__t.html#ab540e86ab9de9721a2075a88a2349454" title=" " alt="" coords="517,689,689,731"/>
+<area shape="rect" id="node18" href="$classuop__package__t.html#ab9107a1302625134f30a9afac742f110" title=" " alt="" coords="228,725,453,767"/>
+<area shape="rect" id="node3" href="$classcache__manager__t.html#a1d0eab3491ced37cfc80481d8e71274f" title=" " alt="" coords="501,5,704,47"/>
+<area shape="rect" id="node8" href="$classmemory__order__buffer__line__t.html#ab207bfff4362a0f5976d62747ab18109" title=" " alt="" coords="521,274,684,330"/>
+<area shape="rect" id="node10" href="$enumerations_8cpp.html#a4f1219a7c31d137c368e36cea5be9128" title="Enumerates the package state,." alt="" coords="767,373,990,399"/>
+<area shape="rect" id="node13" href="$classmemory__order__buffer__line__t.html#a604d280b24282534c4785ce0c1bd7fa9" title=" " alt="" coords="518,456,687,497"/>
+<area shape="rect" id="node9" href="$classutils__t.html#a6119f6b64f0de103f7e051345fe2e87f" title=" " alt="" coords="797,271,960,298"/>
+<area shape="rect" id="node11" href="$classutils__t.html#a710d0f0a1d8f5561bb63460d2c833391" title=" " alt="" coords="795,322,962,349"/>
+<area shape="rect" id="node12" href="$classutils__t.html#aa30deed2def3a1339369e6806073e9fd" title=" " alt="" coords="813,205,944,247"/>
+<area shape="rect" id="node15" href="$classcache__manager__t.html#a0a94cd6337296baa14acfe4c640ce821" title=" " alt="" coords="519,173,687,199"/>
+</map>
